@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KAITAI MATCH</title>
+  <script src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Noto Sans JP',sans-serif;background:#f5f5f5;color:#1a1a1a;min-height:100vh}
+
+    /* ── Loading ── */
+    #loading{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#FF5722;position:fixed;inset:0;z-index:9999}
+    .loading-logo{font-size:30px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:6px}
+    .loading-sub{font-size:12px;color:rgba(255,255,255,.8);margin-bottom:44px}
+    .spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ── Screen ── */
+    .screen{display:none;min-height:100vh}
+    .screen.active{display:block}
+
+    /* ── Header ── */
+    .header{background:#FF5722;padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+    .header-title{font-size:17px;font-weight:800;color:#fff;letter-spacing:-.3px}
+    .header-back{color:#fff;font-size:22px;cursor:pointer;line-height:1;padding-right:4px}
+
+    /* ── Content ── */
+    .content{padding:20px}
+
+    /* ── Cards ── */
+    .card{background:#fff;border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+
+    /* ── Hero ── */
+    .home-hero{background:linear-gradient(135deg,#FF5722,#FF8A65);border-radius:16px;padding:28px 24px;margin-bottom:20px;color:#fff}
+    .hero-badge{font-size:11px;font-weight:700;background:rgba(255,255,255,.2);border-radius:20px;padding:4px 10px;display:inline-block;margin-bottom:10px;letter-spacing:.5px}
+    .hero-title{font-size:24px;font-weight:900;line-height:1.3;margin-bottom:8px}
+    .hero-sub{font-size:13px;opacity:.85;line-height:1.6}
+
+    /* ── Buttons ── */
+    .btn-primary{width:100%;background:#FF5722;color:#fff;border:none;border-radius:12px;padding:16px;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:-.3px;transition:opacity .2s;font-family:inherit}
+    .btn-primary:active{opacity:.85}
+    .btn-primary:disabled{opacity:.4;cursor:not-allowed}
+    .btn-secondary{width:100%;background:#fff;color:#FF5722;border:2px solid #FF5722;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:12px;font-family:inherit}
+    .btn-secondary:active{opacity:.8}
+    .btn-accept{width:100%;background:#2E7D32;color:#fff;border:none;border-radius:12px;padding:17px;font-size:17px;font-weight:800;cursor:pointer;margin-bottom:12px;font-family:inherit}
+    .btn-accept:active{opacity:.85}
+    .btn-decline{width:100%;background:#fff;color:#999;border:2px solid #ddd;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+
+    /* ── Forms ── */
+    .form-group{margin-bottom:20px}
+    .form-label{font-size:13px;font-weight:700;color:#333;margin-bottom:8px;display:block}
+    .form-label .req{color:#FF5722;margin-left:3px}
+    .form-input,.form-select,.form-textarea{width:100%;border:2px solid #e8e8e8;border-radius:10px;padding:14px;font-size:15px;color:#1a1a1a;background:#fff;outline:none;transition:border-color .2s;-webkit-appearance:none;font-family:inherit}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:#FF5722}
+    .form-select{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:44px}
+    .form-textarea{resize:vertical;min-height:80px}
+
+    /* ── Skill / Area toggles ── */
+    .skill-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    .skill-tag,.area-chip{border:2px solid #e8e8e8;border-radius:8px;padding:10px 12px;font-size:13px;font-weight:600;color:#555;cursor:pointer;text-align:center;transition:all .15s;background:#fff;user-select:none}
+    .area-chip{border-radius:20px;padding:8px 14px}
+    .area-chips{display:flex;flex-wrap:wrap;gap:8px}
+    .skill-tag.on,.area-chip.on{border-color:#FF5722;background:#FFF3F0;color:#FF5722}
+
+    /* ── Counter ── */
+    .counter-wrap{display:flex;align-items:center;gap:14px}
+    .counter-btn{width:46px;height:46px;border:2px solid #e8e8e8;border-radius:10px;background:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:inherit}
+    .counter-val{font-size:26px;font-weight:900;color:#1a1a1a;min-width:40px;text-align:center}
+    .counter-unit{font-size:14px;color:#888;font-weight:600}
+
+    /* ── Step indicator ── */
+    .steps{display:flex;align-items:center;gap:6px;margin-bottom:24px}
+    .step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;transition:all .3s}
+    .step-dot.done{background:#FF5722;color:#fff}
+    .step-dot.todo{background:#e8e8e8;color:#999}
+    .step-line{flex:1;height:2px;background:#e8e8e8;transition:background .3s}
+    .step-line.done{background:#FF5722}
+
+    /* ── Info rows ── */
+    .info-row{display:flex;justify-content:space-between;align-items:flex-start;padding:13px 0;border-bottom:1px solid #f5f5f5;font-size:14px;gap:12px}
+    .info-row:last-child{border-bottom:none}
+    .info-label{color:#888;font-weight:600;flex-shrink:0}
+    .info-value{color:#1a1a1a;font-weight:700;text-align:right}
+
+    /* ── Job card ── */
+    .job-card{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:4px solid #FF5722}
+    .job-date{font-size:15px;font-weight:800;color:#1a1a1a}
+    .job-wage{font-size:20px;font-weight:900;color:#FF5722;margin:6px 0}
+    .job-skills{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+    .skill-badge{font-size:11px;font-weight:600;background:#f0f0f0;color:#666;padding:4px 8px;border-radius:4px}
+
+    /* ── Status badges ── */
+    .badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px}
+    .badge-open{background:#E3F2FD;color:#1565C0}
+    .badge-matched{background:#E8F5E9;color:#2E7D32}
+    .badge-closed{background:#F3F4F6;color:#6B7280}
+
+    /* ── Notice ── */
+    .notice{background:#FFF3F0;border-radius:10px;padding:14px;font-size:13px;color:#666;line-height:1.6}
+    .notice strong{color:#FF5722}
+    .notice-green{background:#E8F5E9;border-radius:10px;padding:14px;font-size:13px;color:#2E7D32;font-weight:600;margin-bottom:20px}
+
+    /* ── Section label ── */
+    .section-label{font-size:11px;font-weight:700;color:#888;letter-spacing:.5px;margin-bottom:12px;text-transform:uppercase}
+
+    /* ── Type cards ── */
+    .type-card{background:#fff;border:2px solid #e8e8e8;border-radius:16px;padding:22px;margin-bottom:14px;cursor:pointer;transition:all .2s;-webkit-user-select:none}
+    .type-card:active{transform:scale(.98)}
+    .type-card.on{border-color:#FF5722;background:#FFF3F0}
+    .type-icon{font-size:36px;margin-bottom:10px}
+    .type-title{font-size:18px;font-weight:800;color:#1a1a1a;margin-bottom:5px}
+    .type-desc{font-size:13px;color:#888;line-height:1.5}
+
+    /* ── Tab bar ── */
+    .tab-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #f0f0f0;display:flex;padding-bottom:env(safe-area-inset-bottom,0)}
+    .tab-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0;cursor:pointer;color:#bbb;font-size:10px;font-weight:600;gap:3px;transition:color .2s}
+    .tab-item.on{color:#FF5722}
+    .tab-icon{font-size:22px;line-height:1}
+    .tab-spacer{height:70px}
+
+    /* ── Success ── */
+    .success-icon{font-size:64px;text-align:center;margin-bottom:16px;margin-top:40px}
+    .success-title{font-size:22px;font-weight:900;text-align:center;margin-bottom:8px}
+    .success-sub{font-size:14px;color:#666;text-align:center;line-height:1.6;margin-bottom:28px}
+    .stat-row{display:flex;gap:12px;margin-bottom:24px}
+    .stat-box{flex:1;background:#FFF3F0;border-radius:12px;padding:16px;text-align:center}
+    .stat-num{font-size:28px;font-weight:900;color:#FF5722;line-height:1;margin-bottom:4px}
+    .stat-lbl{font-size:11px;color:#888;font-weight:600}
+
+    /* ── Divider ── */
+    .divider{height:1px;background:#f0f0f0;margin:16px 0}
+
+    /* ── Empty state ── */
+    .empty{text-align:center;padding:48px 20px;color:#bbb;font-size:14px;line-height:1.7}
+    .empty-icon{font-size:40px;margin-bottom:12px}
+
+    /* ── Safe area ── */
+    .safe-bottom{height:calc(env(safe-area-inset-bottom,0px) + 20px)}
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     LOADING
+════════════════════════════════════ -->
+<div id="loading">
+  <div class="loading-logo">KAITAI MATCH</div>
+  <div class="loading-sub">解体業の119番</div>
+  <div class="spinner"></div>
+</div>
+
+<!-- ════════════════════════════════════
+     [1] ユーザータイプ選択（初回登録）
+════════════════════════════════════ -->
+<div id="s-type" class="screen">
+  <div class="header"><div class="header-title">KAITAI MATCH</div></div>
+  <div class="content">
+    <div class="card" style="background:#FFF3F0;border:none;margin-bottom:24px">
+      <p style="font-size:13px;color:#FF5722;font-weight:600">初回登録です。あなたはどちらですか？</p>
+    </div>
+    <div class="type-card" id="tc-contractor" onclick="pickType('contractor')">
+      <div class="type-icon">🏗️</div>
+      <div class="type-title">番頭・業者</div>
+      <div class="type-desc">人工を発注する側。<br>案件を登録して職人を手配します。</div>
+    </div>
+    <div class="type-card" id="tc-worker" onclick="pickType('worker')">
+      <div class="type-icon">👷</div>
+      <div class="type-title">職人</div>
+      <div class="type-desc">現場で働く側。<br>案件の通知を受け取り、承諾します。</div>
+    </div>
+    <button class="btn-primary" id="btn-type-next" onclick="goReg()" disabled style="opacity:.4;margin-top:4px">次へ →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     [2] 業者登録
+════════════════════════════════════ -->
+<div id="s-reg-c" class="screen">
+  <div class="header">
+    <span class="header-back" onclick="go('s-type')">←</span>
+    <div class="header-title">業者登録</div>
+  </div>
+  <div class="content">
+    <div class="notice" style="margin-bottom:20px">
+      <strong>最初の3ヶ月は完全無料。</strong><br>
+      その後、成立時のみ日当の5〜8%の手数料が発生します。
+    </div>
+    <div class="form-group">
+      <label class="form-label">会社名<span class="req">*</span></label>
+      <input class="form-input" id="c-company" type="text" placeholder="○○解体工業">
+    </div>
+    <div class="form-group">
+      <label class="form-label">担当者名<span class="req">*</span></label>
+      <input class="form-input" id="c-name" type="text" placeholder="山田 太郎">
+    </div>
+    <div class="form-group">
+      <label class="form-label">電話番号<span class="req">*</span></label>
+      <input class="form-input" id="c-phone" type="tel" placeholder="090-1234-5678">
+    </div>
+    <div class="form-group">
+      <label class="form-label">主な活動エリア<span class="req">*</span></label>
+      <select class="form-select" id="c-area">
+        <option value="">選択してください</option>
+        <option value="足立区">足立区</option><option value="荒川区">荒川区</option>
+        <option value="葛飾区">葛飾区</option><option value="墨田区">墨田区</option>
+        <option value="江東区">江東区</option><option value="江戸川区">江戸川区</option>
+        <option value="台東区">台東区</option><option value="北区">北区</option>
+        <option value="その他">その他23区</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">事業規模</label>
+      <select class="form-select" id="c-scale">
+        <option value="solo">個人（一人親方）</option>
+        <option value="small" selected>2〜5名</option>
+        <option value="medium">6〜20名</option>
+        <option value="large">21名以上</option>
+      </select>
+    </div>
+    <button class="btn-primary" id="btn-reg-c" onclick="regContractor()">登録する</button>
+    <div class="safe-bottom"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     [3] 職人登録
+════════════════════════════════════ -->
+<div id="s-reg-w" class="screen">
+  <div class="header">
+    <span class="header-back" onclick="go('s-type')">←</span>
+    <div class="header-title">職人登録</div>
+  </div>
+  <div class="content">
+    <div class="notice-green">👷 登録・利用は完全無料です。</div>
+    <div class="form-group">
+      <label class="form-label">氏名<span class="req">*</span></label>
+      <input class="form-input" id="w-name" type="text" placeholder="田中 一郎">
+    </div>
+    <div class="form-group">
+      <label class="form-label">電話番号<span class="req">*</span></label>
+      <input class="form-input" id="w-phone" type="tel" placeholder="090-1234-5678">
+    </div>
+    <div class="form-group">
+      <label class="form-label">希望日当（下限）<span class="req">*</span></label>
+      <select class="form-select" id="w-wage">
+        <option value="15000">¥15,000〜</option><option value="18000">¥18,000〜</option>
+        <option value="20000" selected>¥20,000〜</option><option value="22000">¥22,000〜</option>
+        <option value="25000">¥25,000〜</option><option value="28000">¥28,000〜</option>
+        <option value="30000">¥30,000〜</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">稼働可能エリア<span class="req">*</span>（複数可）</label>
+      <div class="area-chips" id="w-areas">
+        <div class="area-chip" data-v="足立区" onclick="toggle(this,'areas')">足立区</div>
+        <div class="area-chip" data-v="荒川区" onclick="toggle(this,'areas')">荒川区</div>
+        <div class="area-chip" data-v="葛飾区" onclick="toggle(this,'areas')">葛飾区</div>
+        <div class="area-chip" data-v="墨田区" onclick="toggle(this,'areas')">墨田区</div>
+        <div class="area-chip" data-v="江東区" onclick="toggle(this,'areas')">江東区</div>
+        <div class="area-chip" data-v="江戸川区" onclick="toggle(this,'areas')">江戸川区</div>
+        <div class="area-chip" data-v="台東区" onclick="toggle(this,'areas')">台東区</div>
+        <div class="area-chip" data-v="北区" onclick="toggle(this,'areas')">北区</div>
+        <div class="area-chip" data-v="その他" onclick="toggle(this,'areas')">その他23区</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">スキル・資格<span class="req">*</span>（複数可）</label>
+      <div class="skill-grid" id="w-skills">
+        <div class="skill-tag" data-v="手元・雑工" onclick="toggle(this,'wSkills')">🔨 手元・雑工</div>
+        <div class="skill-tag" data-v="内装解体" onclick="toggle(this,'wSkills')">🏠 内装解体</div>
+        <div class="skill-tag" data-v="木造解体" onclick="toggle(this,'wSkills')">🌲 木造解体</div>
+        <div class="skill-tag" data-v="RC解体" onclick="toggle(this,'wSkills')">🧱 RC解体</div>
+        <div class="skill-tag" data-v="鉄骨解体" onclick="toggle(this,'wSkills')">⚙️ 鉄骨解体</div>
+        <div class="skill-tag" data-v="外壁解体" onclick="toggle(this,'wSkills')">🏗️ 外壁解体</div>
+        <div class="skill-tag" data-v="基礎解体" onclick="toggle(this,'wSkills')">⛏️ 基礎解体</div>
+        <div class="skill-tag" data-v="重機(ユンボ)" onclick="toggle(this,'wSkills')">🚜 重機(ユンボ)</div>
+        <div class="skill-tag" data-v="重機(クレーン)" onclick="toggle(this,'wSkills')">🏗️ 重機(クレーン)</div>
+        <div class="skill-tag" data-v="アスベスト除去" onclick="toggle(this,'wSkills')">🦺 アスベスト除去</div>
+        <div class="skill-tag" data-v="アスベスト主任" onclick="toggle(this,'wSkills')">📋 アスベスト主任</div>
+        <div class="skill-tag" data-v="大型運転" onclick="toggle(this,'wSkills')">🚛 大型運転</div>
+        <div class="skill-tag" data-v="産廃処理" onclick="toggle(this,'wSkills')">♻️ 産廃処理</div>
+        <div class="skill-tag" data-v="安全衛生責任者" onclick="toggle(this,'wSkills')">⛑️ 安全衛生</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn-reg-w" onclick="regWorker()">登録する</button>
+    <div class="safe-bottom"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     [4] 業者ホーム
+════════════════════════════════════ -->
+<div id="s-c-home" class="screen">
+  <div class="header"><div class="header-title">KAITAI MATCH</div></div>
+  <div class="content" style="padding-bottom:80px">
+    <div class="home-hero">
+      <div class="hero-badge">解体業の119番</div>
+      <div class="hero-title">明日の穴を<br>5分で埋める</div>
+      <div class="hero-sub">条件を入力するだけ。合う職人に自動でLINEが届きます。</div>
+    </div>
+    <button class="btn-primary" onclick="go('s-post-job')" style="font-size:17px;padding:18px;margin-bottom:24px">
+      ＋ 案件を登録する
+    </button>
+    <div class="section-label">最近の案件</div>
+    <div id="c-job-list">
+      <div class="empty"><div class="empty-icon">📋</div>まだ案件がありません</div>
+    </div>
+    <div class="tab-spacer"></div>
+  </div>
+  <div class="tab-bar">
+    <div class="tab-item on"><div class="tab-icon">🏠</div><span>ホーム</span></div>
+    <div class="tab-item" onclick="go('s-c-profile')"><div class="tab-icon">👤</div><span>プロフィール</span></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     [5] 案件登録（3ステップ）
+════════════════════════════════════ -->
+<div id="s-post-job" class="screen">
+  <div class="header">
+    <span class="header-back" onclick="go('s-c-home')">←</span>
+    <div class="header-title">案件を登録する</div>
+  </div>
+  <div class="content" style="padding-bottom:100px">
+
+    <!-- Step indicator -->
+    <div class="steps">
+      <div class="step-dot done" id="sd1">1</div>
+      <div class="step-line" id="sl1"></div>
+      <div class="step-dot todo" id="sd2">2</div>
+      <div class="step-line" id="sl2"></div>
+      <div class="step-dot todo" id="sd3">3</div>
+    </div>
+
+    <!-- ─ Step 1: 日程・エリア ─ -->
+    <div id="js1">
+      <div class="form-group">
+        <label class="form-label">作業日<span class="req">*</span></label>
+        <input class="form-input" id="j-date" type="date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">現場エリア<span class="req">*</span></label>
+        <select class="form-select" id="j-area">
+          <option value="">選択してください</option>
+          <option value="足立区">足立区</option><option value="荒川区">荒川区</option>
+          <option value="葛飾区">葛飾区</option><option value="墨田区">墨田区</option>
+          <option value="江東区">江東区</option><option value="江戸川区">江戸川区</option>
+          <option value="台東区">台東区</option><option value="北区">北区</option>
+          <option value="その他">その他23区</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">現場名・住所（任意）</label>
+        <input class="form-input" id="j-location" type="text" placeholder="○○ビル解体現場">
+      </div>
+      <button class="btn-primary" onclick="jNext(2)">次へ →</button>
+    </div>
+
+    <!-- ─ Step 2: スキル・人数 ─ -->
+    <div id="js2" style="display:none">
+      <div class="form-group">
+        <label class="form-label">必要なスキル<span class="req">*</span>（複数可）</label>
+        <div class="skill-grid" id="j-skills">
+          <div class="skill-tag" data-v="手元・雑工" onclick="toggle(this,'jSkills')">🔨 手元・雑工</div>
+          <div class="skill-tag" data-v="内装解体" onclick="toggle(this,'jSkills')">🏠 内装解体</div>
+          <div class="skill-tag" data-v="木造解体" onclick="toggle(this,'jSkills')">🌲 木造解体</div>
+          <div class="skill-tag" data-v="RC解体" onclick="toggle(this,'jSkills')">🧱 RC解体</div>
+          <div class="skill-tag" data-v="鉄骨解体" onclick="toggle(this,'jSkills')">⚙️ 鉄骨解体</div>
+          <div class="skill-tag" data-v="外壁解体" onclick="toggle(this,'jSkills')">🏗️ 外壁解体</div>
+          <div class="skill-tag" data-v="基礎解体" onclick="toggle(this,'jSkills')">⛏️ 基礎解体</div>
+          <div class="skill-tag" data-v="重機(ユンボ)" onclick="toggle(this,'jSkills')">🚜 重機(ユンボ)</div>
+          <div class="skill-tag" data-v="重機(クレーン)" onclick="toggle(this,'jSkills')">🏗️ 重機(クレーン)</div>
+          <div class="skill-tag" data-v="アスベスト除去" onclick="toggle(this,'jSkills')">🦺 アスベスト除去</div>
+          <div class="skill-tag" data-v="アスベスト主任" onclick="toggle(this,'jSkills')">📋 アスベスト主任</div>
+          <div class="skill-tag" data-v="大型運転" onclick="toggle(this,'jSkills')">🚛 大型運転</div>
+          <div class="skill-tag" data-v="産廃処理" onclick="toggle(this,'jSkills')">♻️ 産廃処理</div>
+          <div class="skill-tag" data-v="安全衛生責任者" onclick="toggle(this,'jSkills')">⛑️ 安全衛生</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">必要人数<span class="req">*</span></label>
+        <div class="counter-wrap">
+          <button class="counter-btn" onclick="cnt(-1)">−</button>
+          <div class="counter-val" id="j-cnt">1</div>
+          <button class="counter-btn" onclick="cnt(1)">＋</button>
+          <div class="counter-unit">人</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px">
+        <button class="btn-secondary" style="flex:1;margin:0;font-size:14px" onclick="jNext(1)">← 戻る</button>
+        <button class="btn-primary" style="flex:2" onclick="jNext(3)">次へ →</button>
+      </div>
+    </div>
+
+    <!-- ─ Step 3: 日当・備考・確認 ─ -->
+    <div id="js3" style="display:none">
+      <div class="form-group">
+        <label class="form-label">日当<span class="req">*</span></label>
+        <select class="form-select" id="j-wage" onchange="updateSummary()">
+          <option value="15000">¥15,000</option><option value="18000">¥18,000</option>
+          <option value="20000" selected>¥20,000</option><option value="22000">¥22,000</option>
+          <option value="25000">¥25,000</option><option value="28000">¥28,000</option>
+          <option value="30000">¥30,000</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">作業内容・備考（任意）</label>
+        <textarea class="form-textarea" id="j-notes" placeholder="例：内装撤去。道具は現場あり。8時集合。"></textarea>
+      </div>
+
+      <!-- 確認サマリー -->
+      <div class="card" style="background:#f9f9f9;margin-bottom:20px">
+        <div class="section-label" style="margin-bottom:12px">📋 登録内容の確認</div>
+        <div class="info-row"><span class="info-label">作業日</span><span class="info-value" id="sum-date">—</span></div>
+        <div class="info-row"><span class="info-label">エリア</span><span class="info-value" id="sum-area">—</span></div>
+        <div class="info-row"><span class="info-label">スキル</span><span class="info-value" id="sum-skills" style="font-size:12px">—</span></div>
+        <div class="info-row"><span class="info-label">人数</span><span class="info-value" id="sum-cnt">—</span></div>
+        <div class="info-row"><span class="info-label">日当</span><span class="info-value" id="sum-wage">—</span></div>
+      </div>
+
+      <div style="display:flex;gap:10px">
+        <button class="btn-secondary" style="flex:1;margin:0;font-size:14px" onclick="jNext(2)">← 戻る</button>
+        <button class="btn-primary" style="flex:2" id="btn-submit" onclick="submitJob()">🚨 マッチング開始</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     [6] マッチング成功画面
+════════════════════════════════════ -->
+<div id="s-match-ok" class="screen">
+  <div class="header"><div class="header-title">マッチング完了</div></div>
+  <div class="content">
+    <div class="success-icon">🎯</div>
+    <div class="success-title">通知を送りました！</div>
+    <div class="success-sub" id="match-msg">条件に合う職人にLINEを送信しました。<br>返答があり次第、LINEでお知らせします。</div>
+    <div class="stat-row">
+      <div class="stat-box"><div class="stat-num" id="match-cnt">—</div><div class="stat-lbl">通知人数</div></div>
+      <div class="stat-box"><div class="stat-num">〜5分</div><div class="stat-lbl">平均返答時間</div></div>
+    </div>
+    <div class="notice" style="margin-bottom:24px">
+      <strong>次のステップ</strong><br>
+      職人が承諾するとLINEに通知が届きます。承諾者の連絡先をお渡しします。
+    </div>
+    <button class="btn-primary" onclick="go('s-c-home')">ホームに戻る</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     [7] 職人ホーム
+════════════════════════════════════ -->
+<div id="s-w-home" class="screen">
+  <div class="header"><div class="header-title">KAITAI MATCH</div></div>
+  <div class="content" style="padding-bottom:80px">
+    <div class="home-hero" style="background:linear-gradient(135deg,#1565C0,#42A5F5)">
+      <div class="hero-badge">職人モード</div>
+      <div class="hero-title">やれる仕事を<br>受け取ろう</div>
+      <div class="hero-sub">条件に合う案件が来たらLINEで通知します。<br>待つだけでOK。</div>
+    </div>
+    <div class="section-label">現在の案件通知</div>
+    <div id="w-job-list">
+      <div class="empty"><div class="empty-icon">📭</div>現在、あなたへの通知はありません</div>
+    </div>
+    <div class="tab-spacer"></div>
+  </div>
+  <div class="tab-bar">
+    <div class="tab-item on"><div class="tab-icon">🏠</div><span>ホーム</span></div>
+    <div class="tab-item" onclick="go('s-w-profile')"><div class="tab-icon">👤</div><span>プロフィール</span></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     [8] 案件詳細（職人→承諾/辞退）
+════════════════════════════════════ -->
+<div id="s-job-detail" class="screen">
+  <div class="header">
+    <span class="header-back" onclick="go('s-w-home')">←</span>
+    <div class="header-title">案件詳細</div>
+  </div>
+  <div class="content">
+    <div class="card" style="border:2px solid #FF5722;margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <span class="badge badge-open">募集中</span>
+        <span style="font-size:12px;color:#888" id="det-posted">登録直後</span>
+      </div>
+      <div class="info-row"><span class="info-label">📅 作業日</span><span class="info-value" id="det-date" style="font-size:17px">—</span></div>
+      <div class="info-row"><span class="info-label">📍 エリア</span><span class="info-value" id="det-area">—</span></div>
+      <div class="info-row"><span class="info-label">💴 日当</span><span class="info-value" id="det-wage" style="font-size:20px;color:#FF5722">—</span></div>
+      <div class="info-row"><span class="info-label">🔧 スキル</span><span class="info-value" id="det-skills" style="font-size:13px">—</span></div>
+      <div id="det-notes-wrap" style="display:none">
+        <div class="divider"></div>
+        <div style="font-size:13px;color:#555;line-height:1.7" id="det-notes"></div>
+      </div>
+    </div>
+    <div class="notice" style="margin-bottom:24px">
+      <strong>⚠️ ご注意</strong><br>
+      承諾後のキャンセルはご遠慮ください。<br>無断欠勤・直前キャンセルはアカウント停止になります。
+    </div>
+    <button class="btn-accept" id="btn-accept" onclick="respond('accept')">✅ この案件を承諾する</button>
+    <button class="btn-decline" id="btn-decline" onclick="respond('decline')">辞退する</button>
+    <div class="safe-bottom"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     [9] 業者プロフィール
+════════════════════════════════════ -->
+<div id="s-c-profile" class="screen">
+  <div class="header">
+    <span class="header-back" onclick="go('s-c-home')">←</span>
+    <div class="header-title">プロフィール</div>
+  </div>
+  <div class="content">
+    <div class="card">
+      <div style="font-size:48px;text-align:center;margin-bottom:12px">🏗️</div>
+      <div style="text-align:center;font-size:20px;font-weight:800;margin-bottom:4px" id="cp-company">—</div>
+      <div style="text-align:center;font-size:13px;color:#888;margin-bottom:20px" id="cp-name">—</div>
+      <div class="divider"></div>
+      <div class="info-row"><span class="info-label">活動エリア</span><span class="info-value" id="cp-area">—</span></div>
+      <div class="info-row"><span class="info-label">ご利用状況</span><span class="info-value" style="color:#FF5722">無料期間中</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     [10] 職人プロフィール
+════════════════════════════════════ -->
+<div id="s-w-profile" class="screen">
+  <div class="header">
+    <span class="header-back" onclick="go('s-w-home')">←</span>
+    <div class="header-title">プロフィール</div>
+  </div>
+  <div class="content">
+    <div class="card">
+      <div style="font-size:48px;text-align:center;margin-bottom:12px">👷</div>
+      <div style="text-align:center;font-size:20px;font-weight:800;margin-bottom:4px" id="wp-name">—</div>
+      <div style="text-align:center;font-size:13px;color:#888;margin-bottom:20px" id="wp-areas">—</div>
+      <div class="divider"></div>
+      <div class="info-row"><span class="info-label">希望日当</span><span class="info-value" id="wp-wage">—</span></div>
+      <div class="info-row" style="flex-direction:column;align-items:flex-start;gap:10px">
+        <span class="info-label">登録スキル</span>
+        <div class="job-skills" id="wp-skills"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════ -->
+<script>
+/* ─────────────────────────────────────
+   CONFIG  ← 本番時に書き換え
+───────────────────────────────────── */
+const CFG = {
+  LIFF_ID : 'YOUR_LIFF_ID',       // LINE Developers Console から取得
+  GAS_URL : 'YOUR_GAS_WEBAPP_URL', // GAS デプロイ後のURL
+  DEBUG   : true                    // 本番は false
+};
+
+/* ─────────────────────────────────────
+   STATE
+───────────────────────────────────── */
+const S = {
+  line    : null,   // LINE プロフィール { userId, displayName }
+  user    : null,   // DBから取得したユーザーデータ
+  uType   : null,   // 'contractor' | 'worker'
+  pickedType: null, // 登録画面の選択
+  job     : null,   // 詳細表示中の案件
+  jCnt    : 1,
+  jSkills : [],
+  wSkills : [],
+  areas   : []
+};
+
+/* ─────────────────────────────────────
+   INIT
+───────────────────────────────────── */
+window.addEventListener('DOMContentLoaded', async () => {
+  if (CFG.DEBUG) {
+    // デバッグ: LIFF なしで UI を確認できる
+    S.line = { userId: 'debug_' + Date.now(), displayName: 'テストユーザー' };
+    await sleep(600);
+    hide('loading');
+    // デバッグ用：↓ 確認したい画面 ID に変える
+    go('s-type');
+    return;
+  }
+  try {
+    await liff.init({ liffId: CFG.LIFF_ID });
+    if (!liff.isLoggedIn()) { liff.login(); return; }
+    S.line = await liff.getProfile();
+
+    // URLパラメータで案件通知からの流入を判別
+    const p = new URLSearchParams(window.location.search);
+    if (p.get('jobId') && p.get('matchId')) {
+      await loadJobDetail(p.get('jobId'), p.get('matchId'));
+      return;
+    }
+    await loadUser();
+  } catch(e) {
+    console.error(e);
+    document.getElementById('loading').innerHTML =
+      '<div style="text-align:center;padding:40px;color:#fff"><div style="font-size:40px;margin-bottom:16px">⚠️</div><div>起動に失敗しました。<br>LINEアプリから開き直してください。</div></div>';
+  }
+});
+
+async function loadUser() {
+  try {
+    const r = await get(`action=getUser&lineUid=${S.line.userId}`);
+    hide('loading');
+    if (r.user) {
+      S.user  = r.user;
+      S.uType = r.user.type;
+      r.user.type === 'contractor' ? bootContractor() : bootWorker();
+    } else {
+      go('s-type');
+    }
+  } catch(e) {
+    hide('loading');
+    go('s-type');
+  }
+}
+
+/* ─────────────────────────────────────
+   SCREEN NAV
+───────────────────────────────────── */
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+  window.scrollTo(0,0);
+
+  // 案件登録画面: 初期化
+  if (id === 's-post-job') {
+    const d = new Date(); d.setDate(d.getDate()+1);
+    const el = document.getElementById('j-date');
+    el.value = d.toISOString().split('T')[0];
+    el.min   = new Date().toISOString().split('T')[0];
+    resetJob();
+  }
+}
+
+function hide(id) { const el=document.getElementById(id); if(el) el.style.display='none'; }
+
+/* ─────────────────────────────────────
+   TOGGLE (skill / area chips)
+───────────────────────────────────── */
+function toggle(el, key) {
+  el.classList.toggle('on');
+  const v = el.dataset.v;
+  S[key] = el.classList.contains('on')
+    ? [...new Set([...S[key], v])]
+    : S[key].filter(x => x !== v);
+}
+
+/* ─────────────────────────────────────
+   TYPE SELECTION
+───────────────────────────────────── */
+function pickType(t) {
+  S.pickedType = t;
+  document.getElementById('tc-contractor').classList.toggle('on', t === 'contractor');
+  document.getElementById('tc-worker').classList.toggle('on', t === 'worker');
+  const btn = document.getElementById('btn-type-next');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+}
+
+function goReg() {
+  if (!S.pickedType) return;
+  go(S.pickedType === 'contractor' ? 's-reg-c' : 's-reg-w');
+}
+
+/* ─────────────────────────────────────
+   CONTRACTOR REGISTRATION
+───────────────────────────────────── */
+async function regContractor() {
+  const company = v('c-company'), name = v('c-name'),
+        phone = v('c-phone'), area = v('c-area');
+  if (!company || !name || !phone || !area) { alert('必須項目を入力してください'); return; }
+
+  const btn = document.getElementById('btn-reg-c');
+  btn.textContent = '登録中...'; btn.disabled = true;
+
+  const payload = {
+    action: 'registerContractor',
+    lineUid: S.line.userId, displayName: S.line.displayName,
+    company, name, phone, area, scale: v('c-scale'),
+    registeredAt: new Date().toISOString()
+  };
+
+  if (CFG.DEBUG) {
+    await sleep(700);
+    S.user = { ...payload, type: 'contractor' }; S.uType = 'contractor';
+    bootContractor(); btn.textContent = '登録する'; btn.disabled = false; return;
+  }
+
+  const r = await post(payload);
+  btn.textContent = '登録する'; btn.disabled = false;
+  if (r.success) { S.user = r.user; S.uType = 'contractor'; bootContractor(); }
+  else alert('登録に失敗しました: ' + r.message);
+}
+
+/* ─────────────────────────────────────
+   WORKER REGISTRATION
+───────────────────────────────────── */
+async function regWorker() {
+  const name = v('w-name'), phone = v('w-phone');
+  if (!name || !phone)        { alert('氏名と電話番号を入力してください'); return; }
+  if (!S.areas.length)        { alert('稼働可能エリアを選択してください'); return; }
+  if (!S.wSkills.length)      { alert('スキルを1つ以上選択してください'); return; }
+
+  const btn = document.getElementById('btn-reg-w');
+  btn.textContent = '登録中...'; btn.disabled = true;
+
+  const payload = {
+    action: 'registerWorker',
+    lineUid: S.line.userId, displayName: S.line.displayName,
+    name, phone, wage: v('w-wage'),
+    areas : S.areas.join(','),
+    skills: S.wSkills.join(','),
+    registeredAt: new Date().toISOString()
+  };
+
+  if (CFG.DEBUG) {
+    await sleep(700);
+    S.user = { ...payload, type: 'worker' }; S.uType = 'worker';
+    bootWorker(); btn.textContent = '登録する'; btn.disabled = false; return;
+  }
+
+  const r = await post(payload);
+  btn.textContent = '登録する'; btn.disabled = false;
+  if (r.success) { S.user = r.user; S.uType = 'worker'; bootWorker(); }
+  else alert('登録に失敗しました: ' + r.message);
+}
+
+/* ─────────────────────────────────────
+   JOB POSTING (3 steps)
+───────────────────────────────────── */
+function cnt(d) {
+  S.jCnt = Math.max(1, Math.min(20, S.jCnt + d));
+  document.getElementById('j-cnt').textContent = S.jCnt;
+}
+
+function jNext(step) {
+  if (step === 2) {
+    if (!v('j-date') || !v('j-area')) { alert('日付とエリアを選択してください'); return; }
+  }
+  if (step === 3) {
+    if (!S.jSkills.length) { alert('スキルを1つ以上選択してください'); return; }
+    fillSummary();
+  }
+  ['js1','js2','js3'].forEach((id,i) => document.getElementById(id).style.display = i+1===step ? 'block' : 'none');
+  setStepUI(step);
+  window.scrollTo(0,0);
+}
+
+function setStepUI(step) {
+  [1,2,3].forEach(i => {
+    const dot = document.getElementById('sd'+i);
+    dot.className = 'step-dot ' + (i <= step ? 'done' : 'todo');
+    if (i < 3) document.getElementById('sl'+i).className = 'step-line ' + (i < step ? 'done' : '');
+  });
+}
+
+function fillSummary() {
+  const dateVal = v('j-date');
+  document.getElementById('sum-date').textContent   = fmtDate(dateVal);
+  document.getElementById('sum-area').textContent   = v('j-area');
+  document.getElementById('sum-skills').textContent = S.jSkills.join('、') || '—';
+  document.getElementById('sum-cnt').textContent    = S.jCnt + '人';
+  updateSummary();
+}
+
+function updateSummary() {
+  const w = Number(v('j-wage') || 0);
+  document.getElementById('sum-wage').textContent = '¥' + w.toLocaleString();
+}
+
+function resetJob() {
+  S.jSkills = []; S.jCnt = 1;
+  document.getElementById('j-cnt').textContent = '1';
+  document.querySelectorAll('#j-skills .skill-tag').forEach(t => t.classList.remove('on'));
+  ['js1','js2','js3'].forEach((id,i) => document.getElementById(id).style.display = i===0?'block':'none');
+  setStepUI(1);
+}
+
+async function submitJob() {
+  const btn = document.getElementById('btn-submit');
+  btn.textContent = '送信中...'; btn.disabled = true;
+
+  const payload = {
+    action: 'registerJob',
+    contractorLineUid: S.line.userId,
+    contractorId     : S.user?.id || 'debug',
+    date     : v('j-date'),
+    area     : v('j-area'),
+    location : v('j-location'),
+    skills   : S.jSkills.join(','),
+    count    : S.jCnt,
+    wage     : v('j-wage'),
+    notes    : v('j-notes'),
+    registeredAt: new Date().toISOString()
+  };
+
+  if (CFG.DEBUG) {
+    await sleep(1200);
+    const n = 3 + Math.floor(Math.random() * 5);
+    showMatchOk(n);
+    btn.textContent = '🚨 マッチング開始'; btn.disabled = false;
+    return;
+  }
+
+  const r = await post(payload);
+  btn.textContent = '🚨 マッチング開始'; btn.disabled = false;
+  if (r.success) showMatchOk(r.matchCount);
+  else alert('登録に失敗しました: ' + r.message);
+}
+
+function showMatchOk(n) {
+  document.getElementById('match-cnt').textContent = n;
+  document.getElementById('match-msg').textContent =
+    `条件に合う職人${n}人にLINEで通知しました。返答があり次第、LINEでお知らせします。`;
+  go('s-match-ok');
+}
+
+/* ─────────────────────────────────────
+   JOB DETAIL (Worker flow)
+───────────────────────────────────── */
+async function loadJobDetail(jobId, matchId) {
+  try {
+    let job;
+    if (CFG.DEBUG) {
+      job = { jobId, matchId, date:'2026-03-15', area:'足立区', wage:'20000',
+              skills:'手元・雑工,内装解体', notes:'内装撤去。道具現場あり。8時集合。', postedAt:'3分前' };
+    } else {
+      const r = await get(`action=getJob&jobId=${jobId}&matchId=${matchId}`);
+      if (!r.success) throw new Error(r.message);
+      job = r.job;
+    }
+    S.job = job;
+    document.getElementById('det-date').textContent  = fmtDate(job.date);
+    document.getElementById('det-area').textContent  = job.area;
+    document.getElementById('det-wage').textContent  = '¥' + Number(job.wage).toLocaleString();
+    document.getElementById('det-skills').textContent = (job.skills||'').replace(/,/g,'、');
+    document.getElementById('det-posted').textContent = job.postedAt || '';
+    if (job.notes) {
+      document.getElementById('det-notes').textContent = job.notes;
+      document.getElementById('det-notes-wrap').style.display = 'block';
+    }
+    hide('loading');
+    go('s-job-detail');
+  } catch(e) {
+    console.error(e);
+    hide('loading');
+    go('s-w-home');
+  }
+}
+
+async function respond(ans) {
+  if (!S.job) return;
+  const btnA = document.getElementById('btn-accept'), btnD = document.getElementById('btn-decline');
+  btnA.disabled = btnD.disabled = true;
+  const active = ans === 'accept' ? btnA : btnD;
+  active.textContent = '送信中...';
+
+  const payload = {
+    action: 'respondToMatch',
+    matchId: S.job.matchId, jobId: S.job.jobId,
+    workerLineUid: S.line?.userId || 'debug',
+    response: ans, respondedAt: new Date().toISOString()
+  };
+
+  if (!CFG.DEBUG) await post(payload);
+  else await sleep(700);
+
+  alert(ans === 'accept'
+    ? '✅ 承諾しました！\n業者から直接連絡が来ます。'
+    : '辞退しました。次の案件をお待ちください。');
+  go('s-w-home');
+}
+
+/* ─────────────────────────────────────
+   BOOT (after login / register)
+───────────────────────────────────── */
+function bootContractor() {
+  if (S.user) {
+    document.getElementById('cp-company').textContent = S.user.company || '—';
+    document.getElementById('cp-name').textContent    = S.user.name    || '—';
+    document.getElementById('cp-area').textContent    = S.user.area    || '—';
+  }
+  go('s-c-home');
+}
+
+function bootWorker() {
+  if (S.user) {
+    document.getElementById('wp-name').textContent  = S.user.name  || '—';
+    document.getElementById('wp-areas').textContent = (S.user.areas||'').replace(/,/g,'、');
+    document.getElementById('wp-wage').textContent  = '¥' + Number(S.user.wage||20000).toLocaleString() + '〜';
+    const skills = (S.user.skills||'').split(',').filter(Boolean);
+    document.getElementById('wp-skills').innerHTML  = skills.map(s=>`<span class="skill-badge">${s}</span>`).join('');
+  }
+  go('s-w-home');
+}
+
+/* ─────────────────────────────────────
+   UTILITIES
+───────────────────────────────────── */
+function v(id) { return (document.getElementById(id)?.value || '').trim(); }
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function fmtDate(ds) {
+  if (!ds) return '—';
+  const d = new Date(ds), days=['日','月','火','水','木','金','土'];
+  const today = new Date(); today.setHours(0,0,0,0);
+  const tgt   = new Date(d); tgt.setHours(0,0,0,0);
+  const diff  = Math.round((tgt-today)/86400000);
+  const label = diff===0?'【今日】':diff===1?'【明日】':diff===2?'【明後日】':'';
+  return `${label}${d.getMonth()+1}/${d.getDate()}（${days[d.getDay()]}）`;
+}
+
+async function get(qs) {
+  const r = await fetch(`${CFG.GAS_URL}?${qs}`);
+  return r.json();
+}
+
+async function post(body) {
+  const r = await fetch(CFG.GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  return r.json();
+}
+</script>
+</body>
+</html>
