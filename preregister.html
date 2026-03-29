@@ -570,7 +570,7 @@
         <option value="">選択してください</option>
         <option>足立区</option><option>荒川区</option><option>葛飾区</option>
         <option>墨田区</option><option>江東区</option><option>江戸川区</option>
-        <option>台東区</option><option>北区</option><option>その他23区</option>
+        <option>台東区</option><option>北区</option><option>その他</option>
       </select>
     </div>
     <div class="form-group">
@@ -582,18 +582,18 @@
       </select>
     </div>
     <div class="form-group">
-      <label class="form-label">助太刀・他サービスの利用</label>
+      <label class="form-label">類似サービスの利用</label>
       <select class="form-select" id="c-existing">
         <option value="">—</option>
-        <option>使っている（満足）</option>
-        <option>使っている（不満あり）</option>
-        <option>使ったことがない</option>
+        <option>ある（現在利用している）</option>
+        <option>ある（過去に利用していた）</option>
+        <option>ない</option>
         <option>知らなかった</option>
       </select>
     </div>
     <div class="form-group">
-      <label class="form-label">一言（困っていること・期待すること）</label>
-      <textarea class="form-textarea" id="c-comment" placeholder="例：翌日に急に1人足りなくなることが月3〜4回ある"></textarea>
+      <label class="form-label">ご質問・ご要望</label>
+      <textarea class="form-textarea" id="c-comment" placeholder="例：こんな職人を紹介してほしい、こういう機能があると助かる 等"></textarea>
     </div>
     <div class="consent-block">
       <label class="consent-label">
@@ -639,7 +639,7 @@
         <div class="chip" data-v="江戸川区" onclick="toggleChip(this,'wAreas')">江戸川区</div>
         <div class="chip" data-v="台東区" onclick="toggleChip(this,'wAreas')">台東区</div>
         <div class="chip" data-v="北区" onclick="toggleChip(this,'wAreas')">北区</div>
-        <div class="chip" data-v="その他" onclick="toggleChip(this,'wAreas')">その他23区</div>
+        <div class="chip" data-v="その他" onclick="toggleChip(this,'wAreas')">その他</div>
       </div>
     </div>
     <div class="form-group">
@@ -660,8 +660,8 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label">一言（期待すること）</label>
-      <textarea class="form-textarea" id="w-comment" placeholder="例：急な案件でも対応できるので連絡が来やすくなると助かる"></textarea>
+      <label class="form-label">ご質問・ご要望</label>
+      <textarea class="form-textarea" id="w-comment" placeholder="例：こんな案件に対応できます、こういう機能があると助かる 等"></textarea>
     </div>
     <div class="consent-block">
       <label class="consent-label">
