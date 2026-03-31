@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>KAITAI MATCH — 事前登録</title>
-<!-- v202603311411 -->
+<!-- v202603311437 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
@@ -698,7 +698,7 @@
 /* ─────────────────────────────────────
    CONFIG
 ───────────────────────────────────── */
-/* build: 202603311411 */
+/* build: 202603311437 */
 const FORM = {
   CONTRACTOR_URL    : 'https://docs.google.com/forms/d/e/1FAIpQLSen5-oCaqVXXNQcBUAq6D4mdggYQdAOvxw3tC0r3g7apsGX9g/formResponse',
   C_EMAIL        : 'entry.241303334',
@@ -797,17 +797,18 @@ async function submitContractor() {
   btn.classList.add('sending'); btn.disabled = true;
 
   if (!FORM.DEMO_MODE) {
-    const fd = new FormData();
-    fd.append(FORM.C_EMAIL,    val('c-email'));
-    fd.append(FORM.C_COMPANY, company);
-    fd.append(FORM.C_NAME,    name);
-    fd.append(FORM.C_PHONE,   phone);
-    fd.append(FORM.C_AREA,    area);
-    fd.append(FORM.C_VOLUME,  val('c-volume'));
-    fd.append(FORM.C_EXISTING,val('c-existing'));
-    fd.append(FORM.C_COMMENT, val('c-comment'));
+    const params = new URLSearchParams();
+    const addParam = (key, v) => { if (v) params.append(key, v); };
+    addParam(FORM.C_EMAIL,    val('c-email'));
+    addParam(FORM.C_COMPANY,  company);
+    addParam(FORM.C_NAME,     name);
+    addParam(FORM.C_PHONE,    phone);
+    addParam(FORM.C_AREA,     area);
+    addParam(FORM.C_VOLUME,   val('c-volume'));
+    addParam(FORM.C_EXISTING, val('c-existing'));
+    addParam(FORM.C_COMMENT,  val('c-comment'));
     try {
-      await fetch(FORM.CONTRACTOR_URL, { method: 'POST', body: fd, mode: 'no-cors' });
+      await fetch(FORM.CONTRACTOR_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' });
     } catch(e) {}
   } else {
     await sleep(900);
@@ -837,15 +838,16 @@ async function submitWorker() {
   btn.classList.add('sending'); btn.disabled = true;
 
   if (!FORM.DEMO_MODE) {
-    const fd = new FormData();
-    fd.append(FORM.W_NAME,    name);
-    fd.append(FORM.W_PHONE,   phone);
-    fd.append(FORM.W_WAGE,    wage);
-    fd.append(FORM.W_AREAS,   S.wAreas.join(', '));
-    fd.append(FORM.W_SKILLS,  S.wSkills.join(', '));
-    fd.append(FORM.W_COMMENT, val('w-comment'));
+    const params = new URLSearchParams();
+    const addParam = (key, v) => { if (v) params.append(key, v); };
+    addParam(FORM.W_NAME,    name);
+    addParam(FORM.W_PHONE,   phone);
+    addParam(FORM.W_WAGE,    wage);
+    addParam(FORM.W_AREAS,   S.wAreas.join(', '));
+    addParam(FORM.W_SKILLS,  S.wSkills.join(', '));
+    addParam(FORM.W_COMMENT, val('w-comment'));
     try {
-      await fetch(FORM.WORKER_URL, { method: 'POST', body: fd, mode: 'no-cors' });
+      await fetch(FORM.WORKER_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' });
     } catch(e) {}
   } else {
     await sleep(900);
