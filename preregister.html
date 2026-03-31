@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>KAITAI MATCH — 事前登録</title>
-<!-- v202603311403 -->
+<!-- v202603311411 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
@@ -569,6 +569,10 @@
       <input class="form-input" id="c-phone" type="tel" placeholder="090-1234-5678">
     </div>
     <div class="form-group">
+      <label class="form-label">メールアドレス</label>
+      <input class="form-input" id="c-email" type="email" placeholder="example@gmail.com">
+    </div>
+    <div class="form-group">
       <label class="form-label">主な活動エリア<span class="req">*</span></label>
       <select class="form-select" id="c-area">
         <option value="">選択してください</option>
@@ -694,9 +698,10 @@
 /* ─────────────────────────────────────
    CONFIG
 ───────────────────────────────────── */
-/* build: 202603311403 */
+/* build: 202603311411 */
 const FORM = {
   CONTRACTOR_URL    : 'https://docs.google.com/forms/d/e/1FAIpQLSen5-oCaqVXXNQcBUAq6D4mdggYQdAOvxw3tC0r3g7apsGX9g/formResponse',
+  C_EMAIL        : 'entry.241303334',
   C_COMPANY      : 'entry.1560923856',
   C_NAME         : 'entry.1099596329',
   C_PHONE        : 'entry.958239017',
@@ -761,7 +766,7 @@ function resetForm() {
   document.getElementById('form-worker').style.display     = '';
   document.querySelector('.type-toggle').style.display     = '';
   document.getElementById('success').classList.remove('show');
-  ['c-company','c-name','c-phone','c-area','c-volume','c-existing','c-comment',
+  ['c-company','c-name','c-phone','c-email','c-area','c-volume','c-existing','c-comment',
    'w-name','w-phone','w-wage','w-comment'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -793,6 +798,7 @@ async function submitContractor() {
 
   if (!FORM.DEMO_MODE) {
     const fd = new FormData();
+    fd.append(FORM.C_EMAIL,    val('c-email'));
     fd.append(FORM.C_COMPANY, company);
     fd.append(FORM.C_NAME,    name);
     fd.append(FORM.C_PHONE,   phone);
