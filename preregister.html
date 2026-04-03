@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>KAITAI MATCH — 事前登録</title>
-<!-- v202604031704 -->
+<!-- v202604031716 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700;900&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -573,6 +573,26 @@ footer a:hover { color: var(--orange); }
   .section-label { padding: 0 20px 40px; }
   .hero-cta-row { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
+
+  /* ── VALIDATION ── */
+  .form-input.error,
+  .form-select.error {
+    border-bottom-color: #E05252;
+    background: rgba(224,82,82,.05);
+  }
+  .error-msg {
+    display: none;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: #E05252;
+    letter-spacing: 1px;
+    margin-top: 6px;
+  }
+  .error-msg.show { display: block; }
+  .chip-grid.error {
+    outline: 1px solid #E05252;
+    outline-offset: 4px;
+  }
 </style>
 </head>
 <body>
@@ -700,14 +720,17 @@ footer a:hover { color: var(--orange); }
     <div class="form-group">
       <label class="form-label">会社名<span class="req">*</span></label>
       <input class="form-input" id="c-company" type="text" placeholder="○○解体工業">
+      <div class="error-msg" id="err-c-company">会社名を入力してください</div>
     </div>
     <div class="form-group">
       <label class="form-label">担当者名<span class="req">*</span></label>
       <input class="form-input" id="c-name" type="text" placeholder="山田 太郎">
+      <div class="error-msg" id="err-c-name">担当者名を入力してください</div>
     </div>
     <div class="form-group">
       <label class="form-label">電話番号<span class="req">*</span></label>
       <input class="form-input" id="c-phone" type="tel" placeholder="090-1234-5678">
+      <div class="error-msg" id="err-c-phone">電話番号を入力してください</div>
     </div>
     <div class="form-group">
       <label class="form-label">メールアドレス</label>
@@ -721,6 +744,7 @@ footer a:hover { color: var(--orange); }
         <option>墨田区</option><option>江東区</option><option>江戸川区</option>
         <option>台東区</option><option>北区</option><option>その他</option>
       </select>
+      <div class="error-msg" id="err-c-area">活動エリアを選択してください</div>
     </div>
     <div class="form-group">
       <label class="form-label">月の外部手配件数（目安）</label>
@@ -750,6 +774,7 @@ footer a:hover { color: var(--orange); }
         <span><a href="#" onclick="openModal('terms'); return false;">利用規約</a>および
         <a href="#" onclick="openModal('privacy'); return false;">プライバシーポリシー</a>に同意する</span>
       </label>
+      <div class="error-msg" id="err-consent-c">利用規約・プライバシーポリシーへの同意が必要です</div>
     </div>
     <button class="btn-submit" id="btn-c" onclick="submitContractor()">
       <span class="btn-text">業者として事前登録する →</span>
@@ -762,10 +787,12 @@ footer a:hover { color: var(--orange); }
     <div class="form-group">
       <label class="form-label">氏名<span class="req">*</span></label>
       <input class="form-input" id="w-name" type="text" placeholder="田中 一郎">
+      <div class="error-msg" id="err-w-name">氏名を入力してください</div>
     </div>
     <div class="form-group">
       <label class="form-label">電話番号<span class="req">*</span></label>
       <input class="form-input" id="w-phone" type="tel" placeholder="090-1234-5678">
+      <div class="error-msg" id="err-w-phone">電話番号を入力してください</div>
     </div>
     <div class="form-group">
       <label class="form-label">希望日当（目安）<span class="req">*</span></label>
@@ -776,10 +803,12 @@ footer a:hover { color: var(--orange); }
         <option>¥22,000〜</option><option>¥25,000〜</option>
         <option>¥28,000〜</option><option>¥30,000〜</option>
       </select>
+      <div class="error-msg" id="err-w-wage">希望日当を選択してください</div>
     </div>
     <div class="form-group">
       <label class="form-label">稼働可能エリア<span class="req">*</span>（複数可）</label>
       <div class="chip-grid" id="w-areas">
+      <div class="error-msg" id="err-w-areas" style="width:100%;margin-top:8px;">エリアを1つ以上選択してください</div>
         <div class="chip" data-v="足立区" onclick="toggleChip(this,'wAreas')">足立区</div>
         <div class="chip" data-v="荒川区" onclick="toggleChip(this,'wAreas')">荒川区</div>
         <div class="chip" data-v="葛飾区" onclick="toggleChip(this,'wAreas')">葛飾区</div>
@@ -794,6 +823,7 @@ footer a:hover { color: var(--orange); }
     <div class="form-group">
       <label class="form-label">スキル・資格<span class="req">*</span>（複数可）</label>
       <div class="chip-grid" id="w-skills">
+
         <div class="chip" data-v="手元・雑工" onclick="toggleChip(this,'wSkills')">🔨 手元・雑工</div>
         <div class="chip" data-v="内装解体" onclick="toggleChip(this,'wSkills')">🏠 内装解体</div>
         <div class="chip" data-v="木造解体" onclick="toggleChip(this,'wSkills')">🌲 木造解体</div>
@@ -805,6 +835,7 @@ footer a:hover { color: var(--orange); }
         <div class="chip" data-v="アスベスト主任" onclick="toggleChip(this,'wSkills')">📋 アスベスト主任</div>
         <div class="chip" data-v="産廃処理" onclick="toggleChip(this,'wSkills')">♻️ 産廃処理</div>
       </div>
+      <div class="error-msg" id="err-w-skills">スキルを1つ以上選択してください</div>
     </div>
     <div class="form-group">
       <label class="form-label">ご質問・ご要望</label>
@@ -816,6 +847,7 @@ footer a:hover { color: var(--orange); }
         <span><a href="#" onclick="openModal('terms'); return false;">利用規約</a>および
         <a href="#" onclick="openModal('privacy'); return false;">プライバシーポリシー</a>に同意する</span>
       </label>
+      <div class="error-msg" id="err-consent-w">利用規約・プライバシーポリシーへの同意が必要です</div>
     </div>
     <button class="btn-submit" id="btn-w" onclick="submitWorker()">
       <span class="btn-text">職人として事前登録する →</span>
@@ -835,7 +867,7 @@ footer a:hover { color: var(--orange); }
 
 <script>
 /* ─── CONFIG ─── */
-/* build: 202604031704 */
+/* build: 202604031716 */
 const FORM = {
   CONTRACTOR_URL : 'https://docs.google.com/forms/d/e/1FAIpQLSen5-oCaqVXXNQcBUAq6D4mdggYQdAOvxw3tC0r3g7apsGX9g/formResponse',
   C_EMAIL        : 'entry.241303334',
@@ -910,14 +942,22 @@ function resetForm() {
 async function submitContractor() {
   const company = val('c-company'), name = val('c-name'),
         phone   = val('c-phone'),   area = val('c-area');
-  if (!company || !name || !phone || !area) {
-    alert('必須項目（会社名・担当者名・電話番号・エリア）を入力してください');
-    return;
-  }
+  let hasError = false;
+  const setErr = (id, errId, cond) => {
+    document.getElementById(id).classList.toggle('error', cond);
+    document.getElementById(errId).classList.toggle('show', cond);
+    if (cond) hasError = true;
+  };
+  setErr('c-company', 'err-c-company', !company);
+  setErr('c-name',    'err-c-name',    !name);
+  setErr('c-phone',   'err-c-phone',   !phone);
+  setErr('c-area',    'err-c-area',    !area);
+  if (hasError) return;
   if (!document.getElementById('consent-c').checked) {
-    alert('利用規約およびプライバシーポリシーへの同意が必要です');
+    document.getElementById('err-consent-c').classList.add('show');
     return;
   }
+  document.getElementById('err-consent-c').classList.remove('show');
   const btn = document.getElementById('btn-c');
   btn.classList.add('sending'); btn.disabled = true;
   if (!FORM.DEMO_MODE) {
@@ -943,16 +983,27 @@ async function submitContractor() {
 
 async function submitWorker() {
   const name = val('w-name'), phone = val('w-phone'), wage = val('w-wage');
-  if (!name || !phone || !wage) {
-    alert('必須項目（氏名・電話番号・希望日当）を入力してください');
-    return;
-  }
-  if (!S.wAreas.length)  { alert('稼働可能エリアを選択してください');  return; }
-  if (!S.wSkills.length) { alert('スキルを1つ以上選択してください'); return; }
+  let hasErrorW = false;
+  const setErrW = (id, errId, cond) => {
+    document.getElementById(id).classList.toggle('error', cond);
+    document.getElementById(errId).classList.toggle('show', cond);
+    if (cond) hasErrorW = true;
+  };
+  setErrW('w-name',  'err-w-name',  !name);
+  setErrW('w-phone', 'err-w-phone', !phone);
+  setErrW('w-wage',  'err-w-wage',  !wage);
+  const areaErr = document.getElementById('err-w-areas');
+  const skillErr = document.getElementById('err-w-skills');
+  if (!S.wAreas.length)  { areaErr.classList.add('show');  hasErrorW = true; }
+  else                   { areaErr.classList.remove('show'); }
+  if (!S.wSkills.length) { skillErr.classList.add('show'); hasErrorW = true; }
+  else                   { skillErr.classList.remove('show'); }
+  if (hasErrorW) return;
   if (!document.getElementById('consent-w').checked) {
-    alert('利用規約およびプライバシーポリシーへの同意が必要です');
+    document.getElementById('err-consent-w').classList.add('show');
     return;
   }
+  document.getElementById('err-consent-w').classList.remove('show');
   const btn = document.getElementById('btn-w');
   btn.classList.add('sending'); btn.disabled = true;
   if (!FORM.DEMO_MODE) {
