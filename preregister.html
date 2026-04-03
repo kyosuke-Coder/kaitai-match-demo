@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>KAITAI MATCH — 事前登録</title>
-<!-- v202604031716 -->
+<!-- v202604031722 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700;900&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -729,7 +729,7 @@ footer a:hover { color: var(--orange); }
     </div>
     <div class="form-group">
       <label class="form-label">電話番号<span class="req">*</span></label>
-      <input class="form-input" id="c-phone" type="tel" placeholder="090-1234-5678">
+      <input class="form-input" id="c-phone" type="tel" placeholder="090-1234-5678" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9-]/g,'')">
       <div class="error-msg" id="err-c-phone">電話番号を入力してください</div>
     </div>
     <div class="form-group">
@@ -791,7 +791,7 @@ footer a:hover { color: var(--orange); }
     </div>
     <div class="form-group">
       <label class="form-label">電話番号<span class="req">*</span></label>
-      <input class="form-input" id="w-phone" type="tel" placeholder="090-1234-5678">
+      <input class="form-input" id="w-phone" type="tel" placeholder="090-1234-5678" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9-]/g,'')">
       <div class="error-msg" id="err-w-phone">電話番号を入力してください</div>
     </div>
     <div class="form-group">
@@ -867,7 +867,7 @@ footer a:hover { color: var(--orange); }
 
 <script>
 /* ─── CONFIG ─── */
-/* build: 202604031716 */
+/* build: 202604031722 */
 const FORM = {
   CONTRACTOR_URL : 'https://docs.google.com/forms/d/e/1FAIpQLSen5-oCaqVXXNQcBUAq6D4mdggYQdAOvxw3tC0r3g7apsGX9g/formResponse',
   C_EMAIL        : 'entry.241303334',
