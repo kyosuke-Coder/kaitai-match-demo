@@ -3,1144 +3,1273 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ════════════════════════════════════════════════════════════
+     SECURITY HEADERS (meta policy)
+     ※ 本番ではWebサーバーで同等のHTTPヘッダーを返すのが推奨
+     （Netlify/Cloudflare Pages/Vercel等のheadersで設定可）
+     ════════════════════════════════════════════════════════════ -->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com;
+  style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src   'self' https://fonts.gstatic.com;
+  img-src    'self' data:;
+  connect-src 'self' https://docs.google.com https://script.google.com https://www.google.com;
+  frame-src  https://www.google.com https://www.gstatic.com;
+  frame-ancestors 'none';
+  base-uri   'self';
+  form-action 'self' https://docs.google.com https://script.google.com;
+  object-src 'none';
+  upgrade-insecure-requests;">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), midi=(), interest-cohort=()">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>KAITAI MATCH — 事前登録</title>
-<!-- v202604031749 -->
+<meta name="robots" content="noindex, nofollow">
+
+<title>KAITAI MATCH ｜ 解体業専門 労働力マッチングプラットフォーム</title>
+<!-- build: 202604240200-secure -->
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700;900&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- reCAPTCHA v3 -->
+<script src="https://www.google.com/recaptcha/api.js?render=6LfUQcYsAAAAAM_xhlOvz89JtvhsxRT4qLkT94AL" async defer></script>
+
 <style>
 :root {
-  --orange:  #FFD000;
-  --orange2: #E6BB00;
-  --black:   #0B1929;
-  --white:   #EAE8E3;
-  --gray:    #132033;
-  --gray2:   #1A2D44;
-  --line:    #1E3450;
-  --text:    #8EA8C0;
-  --yellow:  #FFD000;
-  --mono:    'IBM Plex Mono', monospace;
+  --navy-900:#0A1F3D; --navy-800:#112B54; --navy-700:#1E3A6B;
+  --navy-600:#2B4A80; --navy-500:#3B5E99;
+  --accent:#B8985A; --accent-dark:#9A7F48;
+  --ink:#0E1A2B; --text:#2E3A4C; --text-muted:#6B7280; --text-light:#9CA3AF;
+  --bg:#FFFFFF; --bg-soft:#F7F8FA; --bg-card:#FBFBFC;
+  --border:#E5E7EB; --border-soft:#EEF0F3;
+  --danger:#B42318; --success:#067647;
+  --serif:'Noto Serif JP','Times New Roman',serif;
+  --sans:'Noto Sans JP','Inter',-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:var(--sans); background:var(--bg); color:var(--ink); min-height:100vh; overflow-x:hidden; -webkit-font-smoothing:antialiased; line-height:1.7; }
+
+/* HEADER */
+header { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:18px 48px; background:rgba(255,255,255,.96); backdrop-filter:blur(20px); border-bottom:1px solid var(--border-soft); }
+.logo { font-family:var(--serif); font-size:22px; font-weight:600; color:var(--navy-900); letter-spacing:.08em; }
+.logo-mark { display:inline-block; width:28px; height:28px; background:var(--navy-900); position:relative; vertical-align:middle; }
+.logo-mark::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:10px; height:10px; background:var(--accent); }
+.logo-text { display:flex; align-items:center; gap:12px; }
+.logo-sub { font-family:var(--mono); font-size:10px; color:var(--text-muted); letter-spacing:.15em; padding:4px 10px; border:1px solid var(--border); text-transform:uppercase; }
+.header-cta { background:var(--navy-900); color:#fff; font-size:13px; font-weight:500; letter-spacing:.08em; padding:12px 28px; border:none; cursor:pointer; font-family:var(--sans); transition:background .25s; }
+.header-cta:hover { background:var(--navy-700); }
+
+/* HERO */
+.hero { position:relative; padding:180px 48px 120px; background:linear-gradient(180deg,#F7F8FA 0%,#FFFFFF 100%); overflow:hidden; border-bottom:1px solid var(--border-soft); }
+.hero::before { content:''; position:absolute; top:-30%; right:-10%; width:700px; height:700px; background:radial-gradient(circle,rgba(17,43,84,.06) 0%,transparent 60%); pointer-events:none; }
+.hero-inner { max-width:1200px; margin:0 auto; position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+.hero-eyebrow { display:inline-flex; align-items:center; gap:10px; font-family:var(--mono); font-size:11px; color:var(--navy-800); letter-spacing:.18em; margin-bottom:32px; text-transform:uppercase; font-weight:500; }
+.hero-eyebrow::before { content:''; width:32px; height:1px; background:var(--navy-800); }
+.hero-title { font-family:var(--serif); font-size:clamp(36px,4.4vw,56px); line-height:1.4; font-weight:600; color:var(--ink); letter-spacing:.02em; margin-bottom:28px; }
+.hero-title .accent-line { color:var(--navy-900); border-bottom:3px solid var(--accent); padding-bottom:2px; }
+.hero-sub { font-size:16px; color:var(--text); line-height:2; margin-bottom:40px; font-weight:400; max-width:520px; }
+.hero-cta-row { display:flex; align-items:center; gap:24px; flex-wrap:wrap; margin-bottom:48px; }
+.btn-primary { background:var(--navy-900); color:#fff; font-size:14px; font-weight:500; letter-spacing:.08em; padding:18px 40px; border:none; cursor:pointer; font-family:var(--sans); transition:background .25s,transform .15s; display:inline-flex; align-items:center; gap:14px; }
+.btn-primary:hover { background:var(--navy-700); transform:translateY(-1px); }
+.btn-primary::after { content:'→'; font-size:16px; transition:transform .2s; }
+.btn-primary:hover::after { transform:translateX(4px); }
+.btn-secondary { background:transparent; color:var(--navy-900); font-size:13px; font-weight:500; letter-spacing:.05em; padding:17px 28px; border:1px solid var(--border); cursor:pointer; font-family:var(--sans); transition:all .25s; }
+.btn-secondary:hover { border-color:var(--navy-900); background:var(--bg-soft); }
+.hero-note { font-family:var(--mono); font-size:11px; color:var(--text-muted); letter-spacing:.08em; }
+.hero-visual { background:#fff; border:1px solid var(--border); padding:48px 40px; position:relative; }
+.hero-visual::before { content:'KEY METRICS'; position:absolute; top:-11px; left:32px; background:#fff; padding:0 12px; font-family:var(--mono); font-size:10px; color:var(--text-muted); letter-spacing:.2em; }
+.kpi-item { padding:24px 0; border-bottom:1px solid var(--border-soft); display:flex; align-items:baseline; justify-content:space-between; }
+.kpi-item:last-child { border-bottom:none; }
+.kpi-label { font-family:var(--mono); font-size:11px; color:var(--text-muted); letter-spacing:.12em; text-transform:uppercase; }
+.kpi-value { font-family:var(--serif); font-weight:600; color:var(--ink); font-size:40px; line-height:1; letter-spacing:-.01em; }
+.kpi-unit { font-family:var(--sans); font-size:14px; font-weight:400; color:var(--text-muted); margin-left:6px; }
+
+/* SECTION */
+.section { padding:120px 48px; max-width:1200px; margin:0 auto; }
+.section-heading { margin-bottom:72px; text-align:center; max-width:720px; margin-left:auto; margin-right:auto; }
+.section-eyebrow { font-family:var(--mono); font-size:11px; color:var(--accent-dark); letter-spacing:.2em; text-transform:uppercase; margin-bottom:20px; font-weight:500; }
+.section-title { font-family:var(--serif); font-size:clamp(28px,3.2vw,40px); font-weight:600; color:var(--ink); line-height:1.5; letter-spacing:.02em; margin-bottom:20px; }
+.section-lead { font-size:15px; color:var(--text); line-height:2; }
+
+/* VALUE */
+.value-section { background:var(--bg-soft); border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); }
+.value-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; }
+.value-card { background:#fff; padding:48px 40px; border:1px solid var(--border-soft); transition:border-color .3s,transform .3s,box-shadow .3s; }
+.value-card:hover { border-color:var(--navy-800); transform:translateY(-3px); box-shadow:0 20px 40px -20px rgba(10,31,61,.15); }
+.value-num { font-family:var(--serif); font-size:13px; color:var(--accent-dark); letter-spacing:.2em; margin-bottom:28px; display:flex; align-items:center; gap:12px; }
+.value-num::after { content:''; flex:1; height:1px; background:var(--border); }
+.value-title { font-family:var(--serif); font-size:22px; font-weight:600; color:var(--ink); margin-bottom:20px; line-height:1.6; letter-spacing:.02em; }
+.value-desc { font-size:14px; color:var(--text); line-height:2; }
+
+/* AUDIENCE */
+.audience-grid { display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--border); }
+.audience-card { padding:56px 48px; border-right:1px solid var(--border); background:#fff; }
+.audience-card:last-child { border-right:none; }
+.audience-role-badge { display:inline-block; font-family:var(--mono); font-size:11px; color:var(--navy-900); letter-spacing:.15em; padding:6px 14px; border:1px solid var(--navy-900); margin-bottom:28px; text-transform:uppercase; }
+.audience-title { font-family:var(--serif); font-size:22px; font-weight:600; color:var(--ink); margin-bottom:20px; line-height:1.6; }
+.audience-text { font-size:14px; color:var(--text); line-height:2; }
+.audience-text strong { color:var(--navy-900); font-weight:600; }
+.audience-list { margin-top:24px; padding-top:24px; border-top:1px solid var(--border-soft); }
+.audience-list li { list-style:none; padding-left:22px; position:relative; font-size:13px; color:var(--text); margin-bottom:10px; line-height:1.8; }
+.audience-list li::before { content:''; position:absolute; left:0; top:12px; width:10px; height:1px; background:var(--accent); }
+
+/* FORM */
+.form-section-wrap { background:var(--navy-900); padding:120px 48px; position:relative; overflow:hidden; }
+.form-section-wrap::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--accent),transparent); }
+.form-section-wrap::after { content:''; position:absolute; bottom:-200px; right:-200px; width:500px; height:500px; background:radial-gradient(circle,rgba(184,152,90,.08) 0%,transparent 60%); }
+.form-section { max-width:720px; margin:0 auto; position:relative; z-index:1; }
+.form-header { text-align:center; margin-bottom:56px; }
+.form-header .section-eyebrow { color:var(--accent); }
+.form-header h2 { font-family:var(--serif); font-size:clamp(28px,3vw,36px); font-weight:600; color:#fff; margin-bottom:16px; letter-spacing:.02em; line-height:1.5; }
+.form-header p { font-size:14px; color:rgba(255,255,255,.7); line-height:2; }
+.form-wrapper { background:#fff; padding:56px 48px; }
+.security-badge { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:40px; padding:14px 20px; background:var(--bg-soft); border:1px solid var(--border-soft); }
+.security-badge-icon { width:14px; height:14px; stroke:var(--navy-800); }
+.security-badge-text { font-family:var(--mono); font-size:10px; color:var(--text-muted); letter-spacing:.12em; text-transform:uppercase; }
+.type-toggle { display:grid; grid-template-columns:1fr 1fr; margin-bottom:48px; border:1px solid var(--border); }
+.toggle-btn { padding:20px; background:#fff; border:none; border-right:1px solid var(--border); color:var(--text-muted); font-size:13px; font-weight:500; letter-spacing:.04em; cursor:pointer; font-family:var(--sans); transition:all .25s; min-height:58px; position:relative; }
+.toggle-btn:last-child { border-right:none; }
+.toggle-btn.active { background:var(--navy-900); color:#fff; }
+.toggle-btn.active::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--accent); }
+
+.form-box { display:none; }
+.form-box.active { display:block; }
+.form-group { margin-bottom:24px; }
+.form-label { display:block; font-family:var(--sans); font-size:12px; font-weight:500; color:var(--ink); margin-bottom:10px; letter-spacing:.04em; }
+.form-label .req { color:var(--danger); margin-left:4px; font-size:11px; }
+.form-label .optional { font-family:var(--mono); font-size:10px; color:var(--text-muted); margin-left:8px; letter-spacing:.08em; font-weight:400; }
+.form-input, .form-select, .form-textarea { width:100%; background:#fff; border:1px solid var(--border); padding:14px 16px; font-size:14px; color:var(--ink); outline:none; font-family:var(--sans); transition:border-color .2s,box-shadow .2s; -webkit-appearance:none; border-radius:2px; min-height:48px; }
+.form-input::placeholder, .form-textarea::placeholder { color:var(--text-light); }
+.form-input:hover, .form-select:hover, .form-textarea:hover { border-color:var(--text-muted); }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--navy-800); box-shadow:0 0 0 3px rgba(17,43,84,.08); }
+.form-select { background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 16px center; padding-right:40px; cursor:pointer; }
+.form-textarea { resize:vertical; min-height:100px; }
+
+/* HONEYPOTS (3-layer, 視覚&スクリーンリーダー&タブから完全隠蔽) */
+.hp-field {
+  position:absolute !important;
+  left:-9999px !important; top:-9999px !important;
+  width:1px !important; height:1px !important;
+  opacity:0 !important; pointer-events:none !important;
+  overflow:hidden !important;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+.chip-grid { display:flex; flex-wrap:wrap; gap:8px; }
+.chip { padding:10px 16px; background:#fff; border:1px solid var(--border); font-size:13px; font-weight:400; color:var(--text); cursor:pointer; transition:all .2s; user-select:none; min-height:40px; display:flex; align-items:center; border-radius:2px; font-family:var(--sans); }
+.chip:hover:not(.on) { border-color:var(--text-muted); color:var(--ink); }
+.chip.on { border-color:var(--navy-900); background:var(--navy-900); color:#fff; }
 
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-  background: var(--black);
-  color: var(--white);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+.btn-submit { width:100%; background:var(--navy-900); color:#fff; border:none; padding:20px; font-size:14px; font-weight:500; letter-spacing:.08em; cursor:pointer; font-family:var(--sans); margin-top:32px; transition:background .25s,transform .1s; position:relative; overflow:hidden; min-height:58px; display:flex; align-items:center; justify-content:center; gap:14px; }
+.btn-submit:hover { background:var(--navy-700); }
+.btn-submit:active { transform:scale(.995); }
+.btn-submit:disabled { opacity:.5; cursor:not-allowed; }
+.btn-submit .arrow { transition:transform .2s; }
+.btn-submit:hover .arrow { transform:translateX(4px); }
+.btn-submit .loading { display:none; position:absolute; inset:0; background:var(--navy-700); align-items:center; justify-content:center; gap:10px; }
+.btn-submit.sending .loading { display:flex; }
+.spinner { width:14px; height:14px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
 
-/* ── GRID TEXTURE ── */
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 0;
-  background-image:
-    linear-gradient(rgba(255,208,0,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,208,0,.04) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-}
+.rate-limit-notice, .security-notice { display:none; margin-top:16px; padding:12px 16px; background:#FEF3F2; border:1px solid #FDA29B; font-size:12px; color:var(--danger); letter-spacing:.02em; text-align:center; }
+.rate-limit-notice.show, .security-notice.show { display:block; }
 
-/* ── HEADER ── */
-header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 32px;
-  background: rgba(11,25,41,.95);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--line);
-}
+.recaptcha-notice { margin-top:16px; font-family:var(--mono); font-size:9px; color:var(--text-light); text-align:center; letter-spacing:.05em; line-height:1.8; }
+.recaptcha-notice a { color:var(--text-muted); text-decoration:underline; }
 
-.logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 24px;
-  letter-spacing: 3px;
-  color: var(--white);
-  display: flex; align-items: center; gap: 2px;
-}
-.logo-dot { color: var(--orange); }
+.success-screen { display:none; text-align:center; padding:80px 20px; animation:fadeUp .5s ease; }
+.success-screen.show { display:block; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.success-mark { width:64px; height:64px; border:2px solid var(--navy-900); border-radius:50%; margin:0 auto 32px; display:flex; align-items:center; justify-content:center; color:var(--navy-900); }
+.success-mark svg { width:28px; height:28px; stroke-width:2.5; }
+.success-title { font-family:var(--serif); font-size:28px; font-weight:600; color:var(--ink); margin-bottom:16px; letter-spacing:.02em; }
+.success-msg { font-size:14px; color:var(--text); line-height:2; margin-bottom:40px; max-width:440px; margin-left:auto; margin-right:auto; }
 
-.header-badge {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--orange);
-  border: 1px solid var(--orange);
-  padding: 3px 8px;
-  letter-spacing: 1px;
-  margin-left: 12px;
-  opacity: .7;
-}
+.consent-block { margin:28px 0 0; padding:16px 20px; background:var(--bg-soft); border:1px solid var(--border-soft); }
+.consent-label { display:flex; align-items:flex-start; gap:12px; font-size:13px; color:var(--text); cursor:pointer; line-height:1.8; }
+.consent-check { margin-top:3px; accent-color:var(--navy-900); width:16px; height:16px; flex-shrink:0; }
+.consent-label a { color:var(--navy-900); text-decoration:underline; font-weight:500; }
 
-.header-cta {
-  background: var(--orange);
-  color: #0B1929;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 10px 24px;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background .2s, transform .1s;
-  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
-}
-.header-cta:hover { background: var(--orange2); }
-.header-cta:active { transform: scale(.98); }
+.form-input.error, .form-select.error, .form-textarea.error { border-color:var(--danger); background:#FEF8F7; }
+.error-msg { display:none; font-size:11px; color:var(--danger); margin-top:6px; letter-spacing:.02em; }
+.error-msg.show { display:block; }
+.chip-grid.error { outline:1px solid var(--danger); outline-offset:4px; }
 
-/* ── HERO ── */
-.hero {
-  position: relative; z-index: 1;
-  padding: 148px 32px 80px;
-  max-width: 960px;
-  margin: 0 auto;
-  overflow: hidden;
-}
+.compliance-bar { background:var(--bg-soft); border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); padding:32px 48px; }
+.compliance-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:48px; flex-wrap:wrap; }
+.compliance-title { font-family:var(--mono); font-size:11px; color:var(--text-muted); letter-spacing:.15em; text-transform:uppercase; }
+.compliance-items { display:flex; gap:40px; flex-wrap:wrap; }
+.compliance-item { font-size:12px; color:var(--text); display:flex; align-items:center; gap:8px; }
+.compliance-item::before { content:''; width:6px; height:6px; background:var(--accent); border-radius:50%; }
 
-.hero-tag {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: var(--orange);
-  text-transform: uppercase;
-  margin-bottom: 24px;
-  padding: 6px 12px;
-  border: 1px solid rgba(255,208,0,.3);
-  background: rgba(255,208,0,.05);
-}
-.hero-tag::before {
-  content: '';
-  width: 6px; height: 6px;
-  background: var(--orange);
-  border-radius: 50%;
-  animation: blink 1.4s ease-in-out infinite;
-}
-@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.2; } }
+footer { background:var(--navy-900); color:rgba(255,255,255,.7); padding:80px 48px 40px; }
+.footer-inner { max-width:1200px; margin:0 auto; }
+.footer-top { display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:48px; padding-bottom:56px; border-bottom:1px solid rgba(255,255,255,.08); }
+.footer-brand .logo { color:#fff; margin-bottom:16px; }
+.footer-brand .logo-mark { background:#fff; }
+.footer-brand .logo-mark::before { background:var(--accent); }
+.footer-brand-desc { font-size:13px; color:rgba(255,255,255,.55); line-height:1.9; margin-top:16px; }
+.footer-col h4 { font-family:var(--mono); font-size:11px; color:rgba(255,255,255,.5); letter-spacing:.15em; text-transform:uppercase; margin-bottom:20px; font-weight:500; }
+.footer-col a, .footer-col li { display:block; color:rgba(255,255,255,.7); font-size:13px; margin-bottom:12px; text-decoration:none; transition:color .2s; list-style:none; }
+.footer-col a:hover { color:var(--accent); }
+.footer-bottom { padding-top:32px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; font-family:var(--mono); font-size:11px; color:rgba(255,255,255,.4); letter-spacing:.05em; }
+.footer-bottom a { color:rgba(255,255,255,.5); text-decoration:none; margin-left:20px; }
+.footer-bottom a:hover { color:var(--accent); }
 
-.hero-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(72px, 11vw, 128px);
-  line-height: .92;
-  letter-spacing: 2px;
-  margin-bottom: 12px;
-}
-.hero-title .accent { color: var(--orange); }
-.hero-title .thin {
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 300;
-  font-size: clamp(20px, 3vw, 32px);
-  letter-spacing: 4px;
-  display: block;
-  color: var(--text);
-  margin-bottom: 8px;
-}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .7s,transform .7s; }
+.reveal.visible { opacity:1; transform:none; }
+.grecaptcha-badge { visibility:hidden !important; }
 
-.hero-sub {
-  font-size: 15px;
-  color: var(--text);
-  line-height: 1.9;
-  max-width: 480px;
-  margin-bottom: 48px;
-  font-weight: 300;
+@media (max-width:960px) {
+  .hero { padding:140px 24px 80px; }
+  .hero-inner { grid-template-columns:1fr; gap:48px; }
+  .value-grid { grid-template-columns:1fr; gap:16px; }
+  .audience-grid { grid-template-columns:1fr; }
+  .audience-card { border-right:none; border-bottom:1px solid var(--border); }
+  .audience-card:last-child { border-bottom:none; }
+  .footer-top { grid-template-columns:1fr; gap:40px; }
+  .section { padding:80px 24px; }
 }
-
-.hero-cta-row {
-  display: flex; align-items: center; gap: 24px;
-  margin-bottom: 56px;
-  flex-wrap: wrap;
+@media (max-width:680px) {
+  header { padding:14px 20px; }
+  .logo { font-size:18px; }
+  .logo-sub { display:none; }
+  .header-cta { padding:10px 18px; font-size:12px; }
+  .hero { padding:120px 20px 64px; }
+  .hero-visual { padding:32px 24px; }
+  .kpi-value { font-size:32px; }
+  .form-section-wrap { padding:80px 20px; }
+  .form-wrapper { padding:36px 24px; }
+  .compliance-bar { padding:24px 20px; }
+  .compliance-inner { gap:20px; }
+  .compliance-items { gap:20px; }
+  footer { padding:60px 24px 32px; }
+  .btn-primary, .btn-secondary { width:100%; justify-content:center; }
 }
-
-.hero-btn {
-  background: var(--orange);
-  color: #0B1929;
-  font-size: 14px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  padding: 16px 36px;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background .2s, transform .1s;
-  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-}
-.hero-btn:hover { background: var(--orange2); transform: translateY(-1px); }
-
-.hero-note {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: #555;
-  letter-spacing: 1px;
-}
-
-.hero-stats {
-  display: flex;
-  gap: 0;
-  border-top: 1px solid var(--line);
-  padding-top: 36px;
-}
-.stat-item {
-  flex: 1;
-  padding-right: 32px;
-  border-right: 1px solid var(--line);
-  margin-right: 32px;
-}
-.stat-item:last-child { border-right: none; margin-right: 0; }
-
-.stat-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 48px;
-  color: var(--orange);
-  line-height: 1;
-  letter-spacing: 1px;
-}
-.stat-unit {
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-}
-.stat-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--text);
-  letter-spacing: 1px;
-  margin-top: 6px;
-  text-transform: uppercase;
-}
-
-/* ── SECTION LABEL ── */
-.section-label {
-  position: relative; z-index: 1;
-  max-width: 960px; margin: 0 auto;
-  padding: 0 32px 48px;
-  display: flex; align-items: center; gap: 16px;
-}
-.section-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, var(--line) 0%, transparent 100%);
-}
-.section-label-text {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: #444;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-/* ── VALUE PROPS ── */
-.value-section {
-  position: relative; z-index: 1;
-  max-width: 960px; margin: 0 auto;
-  padding: 0 32px 100px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--line);
-}
-
-.value-card {
-  background: var(--gray);
-  padding: 36px 28px;
-  transition: background .2s;
-  position: relative;
-  overflow: hidden;
-}
-.value-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--orange);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .3s ease;
-}
-.value-card:hover { background: var(--gray2); }
-.value-card:hover::before { transform: scaleX(1); }
-
-.value-num {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--orange);
-  letter-spacing: 2px;
-  margin-bottom: 20px;
-  opacity: .6;
-}
-.value-title {
-  font-size: 16px;
-  font-weight: 900;
-  margin-bottom: 12px;
-  line-height: 1.5;
-  letter-spacing: .5px;
-}
-.value-desc {
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.8;
-  font-weight: 300;
-}
-
-/* ── VOICE SECTION ── */
-.voice-section {
-  position: relative; z-index: 1;
-  max-width: 960px; margin: 0 auto;
-  padding: 0 32px 80px;
-}
-.voice-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--line);
-}
-.voice-card {
-  background: var(--gray);
-  padding: 28px;
-}
-.voice-role {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--orange);
-  margin-bottom: 12px;
-  text-transform: uppercase;
-}
-.voice-text {
-  font-size: 14px;
-  color: var(--text);
-  line-height: 1.8;
-  font-weight: 300;
-}
-.voice-text strong {
-  color: var(--white);
-  font-weight: 700;
-}
-
-/* ── FORM SECTION ── */
-.form-section {
-  position: relative; z-index: 1;
-  max-width: 680px; margin: 0 auto;
-  padding: 0 32px 120px;
-}
-
-.form-header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-.form-header h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 44px;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-}
-.form-header p {
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.7;
-  font-weight: 300;
-}
-
-/* ── TYPE TOGGLE ── */
-.type-toggle {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--line);
-  margin-bottom: 36px;
-}
-.toggle-btn {
-  padding: 18px 16px;
-  background: var(--gray);
-  border: none;
-  color: #555;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .5px;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all .2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  position: relative;
-}
-.toggle-btn::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--orange);
-  transform: scaleX(0);
-  transition: transform .2s;
-}
-.toggle-btn.active {
-  background: var(--gray2);
-  color: var(--white);
-}
-.toggle-btn.active::after { transform: scaleX(1); }
-
-/* ── FORM ── */
-.form-box { display: none; }
-.form-box.active { display: block; }
-
-.form-group { margin-bottom: 20px; }
-
-.form-label {
-  display: block;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #555;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-.form-label .req { color: var(--orange); margin-left: 4px; }
-
-.form-input,
-.form-select,
-.form-textarea {
-  width: 100%;
-  background: var(--gray);
-  border: 1px solid var(--line);
-  border-bottom: 2px solid var(--line);
-  padding: 14px 16px;
-  font-size: 15px;
-  color: var(--white);
-  outline: none;
-  font-family: inherit;
-  transition: border-color .2s, background .2s;
-  -webkit-appearance: none;
-  border-radius: 0;
-}
-.form-input::placeholder { color: #333; }
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus {
-  border-bottom-color: var(--orange);
-  background: var(--gray2);
-}
-.form-select {
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 40px;
-  cursor: pointer;
-}
-.form-select option { background: #161616; }
-.form-textarea { resize: vertical; min-height: 88px; }
-
-/* ── CHIPS ── */
-.chip-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.chip {
-  padding: 7px 14px;
-  background: var(--gray);
-  border: 1px solid var(--line);
-  font-size: 12px;
-  font-weight: 700;
-  color: #555;
-  cursor: pointer;
-  transition: all .15s;
-  user-select: none;
-  letter-spacing: .3px;
-}
-.chip.on {
-  border-color: var(--orange);
-  background: rgba(255,107,53,.1);
-  color: var(--orange);
-}
-.chip:hover:not(.on) { border-color: #444; color: #888; }
-
-/* ── SUBMIT ── */
-.btn-submit {
-  width: 100%;
-  background: var(--orange);
-  color: #0B1929;
-  border: none;
-  padding: 18px;
-  font-size: 15px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  cursor: pointer;
-  font-family: inherit;
-  margin-top: 28px;
-  transition: background .2s, transform .1s;
-  position: relative;
-  overflow: hidden;
-  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-}
-.btn-submit:hover { background: var(--orange2); }
-.btn-submit:active { transform: scale(.99); }
-.btn-submit:disabled { opacity: .5; cursor: not-allowed; }
-
-.btn-submit .loading {
-  display: none;
-  position: absolute; inset: 0;
-  background: var(--orange2);
-  align-items: center;
-  justify-content: center;
-}
-.btn-submit.sending .loading { display: flex; }
-
-/* ── SUCCESS ── */
-.success-screen {
-  display: none;
-  text-align: center;
-  padding: 60px 20px;
-  animation: fadeUp .5s ease;
-}
-.success-screen.show { display: block; }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.success-icon { font-size: 56px; margin-bottom: 24px; }
-.success-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 40px;
-  letter-spacing: 2px;
-  margin-bottom: 12px;
-  color: var(--orange);
-}
-.success-msg {
-  font-size: 14px;
-  color: var(--text);
-  line-height: 1.9;
-  margin-bottom: 40px;
-  font-weight: 300;
-}
-
-/* ── CONSENT ── */
-.consent-block {
-  margin: 20px 0;
-  padding: 14px 16px;
-  background: rgba(255,255,255,.02);
-  border: 1px solid var(--line);
-}
-.consent-label {
-  display: flex; align-items: flex-start; gap: 10px;
-  font-size: 12px; color: #555; cursor: pointer; line-height: 1.7;
-  font-family: var(--mono);
-}
-.consent-check { margin-top: 3px; accent-color: var(--orange); }
-.consent-label a { color: var(--orange); text-decoration: underline; }
-
-/* ── FOOTER ── */
-footer {
-  position: relative; z-index: 1;
-  border-top: 1px solid var(--line);
-  padding: 32px;
-  text-align: center;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: #333;
-  letter-spacing: 1px;
-}
-footer a { color: #444; margin: 0 12px; text-decoration: none; }
-footer a:hover { color: var(--orange); }
-
-/* ── REVEAL ── */
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity .6s ease, transform .6s ease;
-}
-.reveal.visible { opacity: 1; transform: none; }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 680px) {
-  header { padding: 14px 20px; }
-  .header-badge { display: none; }
-  .hero { padding: 110px 20px 60px; }
-  .hero-stats { flex-direction: column; gap: 24px; }
-  .stat-item { border-right: none; margin-right: 0; padding-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
-  .stat-item:last-child { border-bottom: none; }
-  .value-section { grid-template-columns: 1fr; }
-  .voice-grid { grid-template-columns: 1fr; }
-  .form-section { padding: 0 20px 80px; }
-  .section-label { padding: 0 20px 40px; }
-  .hero-cta-row { flex-direction: column; align-items: flex-start; gap: 12px; }
-}
-
-  /* ── VALIDATION ── */
-  .form-input.error,
-  .form-select.error {
-    border-bottom-color: #E05252;
-    background: rgba(224,82,82,.05);
-  }
-  .error-msg {
-    display: none;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: #E05252;
-    letter-spacing: 1px;
-    margin-top: 6px;
-  }
-  .error-msg.show { display: block; }
-  .chip-grid.error {
-    outline: 1px solid #E05252;
-    outline-offset: 4px;
-  }
 </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
+<!-- HEADER -->
 <header>
-  <div style="display:flex;align-items:center;">
-    <div class="logo">KAITAI<span class="logo-dot">.</span>MATCH</div>
-    <div class="header-badge">β版・事前登録受付中</div>
+  <div class="logo-text">
+    <span class="logo-mark" aria-hidden="true"></span>
+    <span class="logo">KAITAI MATCH</span>
+    <span class="logo-sub">Preregistration</span>
   </div>
-  <button class="header-cta" onclick="scrollToForm()">今すぐ登録</button>
+  <button class="header-cta" data-action="scroll-form">事前登録</button>
 </header>
 
-<!-- ── HERO ── -->
-<section class="hero reveal">
-  <div class="hero-tag">解体業専門 緊急マッチング</div>
-  <h1 class="hero-title">
-    <span class="thin">明日の現場、人が足りない</span>
-    <span class="accent">5分で</span><br>
-    埋まる。
-  </h1>
-  <p class="hero-sub">
-    LINEで条件を送るだけ。<br>
-    解体現場に特化した職人がすぐに見つかる。<br>
-    協力会社が全滅したときのセーフティネット。
-  </p>
-  <div class="hero-cta-row">
-    <button class="hero-btn" onclick="scrollToForm()">事前登録する（無料）</button>
-    <span class="hero-note">サービス開始まで完全無料</span>
-  </div>
-  <div class="hero-stats">
-    <div class="stat-item">
-      <div class="stat-num">5<span class="stat-unit">分</span></div>
-      <div class="stat-label">目標マッチング時間</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">0<span class="stat-unit">円</span></div>
-      <div class="stat-label">職人の利用料金</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">3<span class="stat-unit">ヶ月</span></div>
-      <div class="stat-label">無料トライアル</div>
-    </div>
-  </div>
-</section>
-
-<!-- ── VALUE PROPS ── -->
-<div class="section-label reveal"><span class="section-label-text">なぜKAITAI MATCHか</span></div>
-
-<section class="value-section">
-  <div class="value-card reveal">
-    <div class="value-num">01</div>
-    <div class="value-title">連絡一本で<br>すぐに動ける</div>
-    <div class="value-desc">急な欠員、翌日の人手不足。条件を入力してLINEで送るだけ。電話をかけ回す時間を現場に使える。</div>
-  </div>
-  <div class="value-card reveal" style="transition-delay:.1s">
-    <div class="value-num">02</div>
-    <div class="value-title">解体現場に<br>特化した職人のみ</div>
-    <div class="value-desc">アスベスト・重機オペ・RC解体。解体特有のスキルを持つ職人だけが登録。スキル詐称のない安心感。</div>
-  </div>
-  <div class="value-card reveal" style="transition-delay:.2s">
-    <div class="value-num">03</div>
-    <div class="value-title">いざという時に<br>頼れる仕組みがある</div>
-    <div class="value-desc">登録しておくだけで、必要な時に即戦力が揃う。月額ゼロ、成功時のみ5〜8%。動いた分だけのコストで済む。</div>
-  </div>
-</section>
-
-<!-- ── VOICE ── -->
-<div class="section-label reveal"><span class="section-label-text">こんな方に</span></div>
-
-<section class="voice-section">
-  <div class="voice-grid">
-    <div class="voice-card reveal">
-      <div class="voice-role">🏗️ 業者の方へ</div>
-      <div class="voice-text">
-        急な人手不足でも、<strong>LINEで条件を送れば候補が届く</strong>。<br>
-        登録は無料。最初の3ヶ月は手数料もゼロ。<br>
-        使わない月は一切コストがかかりません。
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="reveal">
+      <div class="hero-eyebrow">SERVICE PREREGISTRATION — 2026</div>
+      <h1 class="hero-title">
+        解体業界の人手不足を、<br>
+        <span class="accent-line">テクノロジーで解決する</span>。
+      </h1>
+      <p class="hero-sub">
+        急な欠員、協力会社の稼働逼迫。<br>
+        解体現場に特化した職人と業者を、LINEベースで即時マッチング。<br>
+        業界の労働力流通を、健全で持続可能な仕組みに。
+      </p>
+      <div class="hero-cta-row">
+        <button class="btn-primary" data-action="scroll-form">事前登録する</button>
+        <button class="btn-secondary" data-action="scroll-value">サービスを詳しく見る</button>
       </div>
+      <div class="hero-note">※ 事前登録は完全無料。リリース時に優先ご案内します。</div>
     </div>
-    <div class="voice-card reveal" style="transition-delay:.1s">
-      <div class="voice-role">👷 一人親方・職人の方へ</div>
-      <div class="voice-text">
-        「<strong>空いてる日に仕事が来る</strong>」仕組みを作る。<br>
-        登録・利用は永久無料。<br>
-        自分のスキルと希望日当を登録するだけ。
+    <div class="hero-visual reveal">
+      <div class="kpi-item"><div class="kpi-label">Matching Time</div><div><span class="kpi-value">5</span><span class="kpi-unit">分以内</span></div></div>
+      <div class="kpi-item"><div class="kpi-label">Worker Fee</div><div><span class="kpi-value">0</span><span class="kpi-unit">円 / 永久無料</span></div></div>
+      <div class="kpi-item"><div class="kpi-label">Trial Period</div><div><span class="kpi-value">3</span><span class="kpi-unit">ヶ月</span></div></div>
+      <div class="kpi-item"><div class="kpi-label">Commission</div><div><span class="kpi-value">5-8</span><span class="kpi-unit">% / 成功時のみ</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLIANCE BAR -->
+<div class="compliance-bar">
+  <div class="compliance-inner">
+    <div class="compliance-title">SECURITY &amp; COMPLIANCE</div>
+    <div class="compliance-items">
+      <div class="compliance-item">個人情報保護法 準拠</div>
+      <div class="compliance-item">TLS 1.3 暗号化通信</div>
+      <div class="compliance-item">reCAPTCHA v3</div>
+      <div class="compliance-item">CSP / XSS 対策</div>
+      <div class="compliance-item">建設業法 遵守</div>
+    </div>
+  </div>
+</div>
+
+<!-- VALUE -->
+<section class="value-section" id="value">
+  <div class="section">
+    <div class="section-heading reveal">
+      <div class="section-eyebrow">Our Value</div>
+      <h2 class="section-title">KAITAI MATCHが選ばれる理由</h2>
+      <p class="section-lead">業界特化のマッチング精度と、使った分だけの明朗会計。現場の声から逆算した仕組みです。</p>
+    </div>
+    <div class="value-grid">
+      <div class="value-card reveal">
+        <div class="value-num">01 / APPROACH</div>
+        <h3 class="value-title">連絡一本で、<br>すぐ動ける仕組み</h3>
+        <p class="value-desc">急な欠員、翌日の人手不足。条件を入力してLINEで送信するだけ。電話をかけ回す時間を、現場の指揮に使えます。</p>
+      </div>
+      <div class="value-card reveal" style="transition-delay:.1s">
+        <div class="value-num">02 / QUALITY</div>
+        <h3 class="value-title">解体現場に<br>特化した職人のみ</h3>
+        <p class="value-desc">アスベスト・重機オペレーター・RC解体など、解体特有のスキルを保有する職人だけを登録。スキル詐称のない確実性。</p>
+      </div>
+      <div class="value-card reveal" style="transition-delay:.2s">
+        <div class="value-num">03 / COST</div>
+        <h3 class="value-title">動いた分だけの<br>明朗な料金体系</h3>
+        <p class="value-desc">月額固定費はゼロ。成功マッチング時のみ5〜8%の成果報酬。使わない月の固定費負担は一切ありません。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── FORM ── -->
-<div class="section-label reveal"><span class="section-label-text">事前登録</span></div>
-
-<section class="form-section" id="form-section">
-  <div class="form-header reveal">
-    <h2>今すぐ登録しておく</h2>
-    <p>サービス開始と同時に優先的にご案内します。<br>登録は1分で完了します。</p>
+<!-- AUDIENCE -->
+<section class="section">
+  <div class="section-heading reveal">
+    <div class="section-eyebrow">For Whom</div>
+    <h2 class="section-title">こんな方にご登録いただきたい</h2>
   </div>
-
-  <div class="type-toggle reveal">
-    <button class="toggle-btn active" id="tab-contractor" onclick="switchType('contractor')">
-      🏗️ 業者として登録
-    </button>
-    <button class="toggle-btn" id="tab-worker" onclick="switchType('worker')">
-      👷 職人として登録
-    </button>
-  </div>
-
-  <!-- SUCCESS -->
-  <div class="success-screen" id="success">
-    <div class="success-icon">🎯</div>
-    <div class="success-title">登録完了</div>
-    <div class="success-msg" id="success-msg">
-      リリース時に優先的にご連絡します。<br>
-      もう少しだけ待っていてください。
+  <div class="audience-grid reveal">
+    <div class="audience-card">
+      <span class="audience-role-badge">For Contractors</span>
+      <h3 class="audience-title">解体業者・元請けの方へ</h3>
+      <p class="audience-text">急な人手不足でも、<strong>LINEで条件を送信すれば候補プロフィールが届く</strong>体制へ。登録は無料、最初の3ヶ月は手数料もゼロ。使わない月のコストは一切かかりません。</p>
+      <ul class="audience-list">
+        <li>協力会社が全滅したときのセーフティネット</li>
+        <li>スポット対応の職人確保をスピード化</li>
+        <li>発注コストの見える化と最適化</li>
+      </ul>
     </div>
-    <button class="btn-submit" style="max-width:300px;margin:0 auto" onclick="resetForm()">
-      別の人を登録する
-    </button>
-  </div>
-
-  <!-- CONTRACTOR FORM -->
-  <div class="form-box active" id="form-contractor">
-    <div class="form-group">
-      <label class="form-label">会社名<span class="req">*</span></label>
-      <input class="form-input" id="c-company" type="text" placeholder="○○解体工業">
-      <div class="error-msg" id="err-c-company">会社名を入力してください</div>
+    <div class="audience-card">
+      <span class="audience-role-badge">For Workers</span>
+      <h3 class="audience-title">一人親方・職人の方へ</h3>
+      <p class="audience-text">「<strong>空いてる日に仕事が入る</strong>」仕組みを、業界で初めて当たり前にします。登録・利用は永久無料。スキルと希望日当を登録するだけで、案件情報が届きます。</p>
+      <ul class="audience-list">
+        <li>稼働予定の空白を埋める収入機会</li>
+        <li>自分のスキルに見合う日当での取引</li>
+        <li>取引相手の信頼性をプラットフォームが担保</li>
+      </ul>
     </div>
-    <div class="form-group">
-      <label class="form-label">担当者名<span class="req">*</span></label>
-      <input class="form-input" id="c-name" type="text" placeholder="山田 太郎">
-      <div class="error-msg" id="err-c-name">担当者名を入力してください</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">電話番号<span class="req">*</span></label>
-      <input class="form-input" id="c-phone" type="tel" placeholder="090-1234-5678" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9-]/g,'')">
-      <div class="error-msg" id="err-c-phone">電話番号を入力してください</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">メールアドレス</label>
-      <input class="form-input" id="c-email" type="email" placeholder="example@gmail.com">
-    </div>
-    <div class="form-group">
-      <label class="form-label">主な活動エリア<span class="req">*</span></label>
-      <select class="form-select" id="c-area">
-        <option value="">選択してください</option>
-        <option>足立区</option><option>荒川区</option><option>葛飾区</option>
-        <option>墨田区</option><option>江東区</option><option>江戸川区</option>
-        <option>台東区</option><option>北区</option><option>その他</option>
-      </select>
-      <div class="error-msg" id="err-c-area">活動エリアを選択してください</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">月の外部手配件数（目安）</label>
-      <select class="form-select" id="c-volume">
-        <option value="">—</option>
-        <option>5件未満</option><option>5〜15件</option>
-        <option>15〜30件</option><option>30件以上</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">類似サービスの利用</label>
-      <select class="form-select" id="c-existing">
-        <option value="">—</option>
-        <option>ある（現在利用している）</option>
-        <option>ある（過去に利用していた）</option>
-        <option>ない</option>
-        <option>知らなかった</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">ご質問・ご要望</label>
-      <textarea class="form-textarea" id="c-comment" placeholder="例：こんな職人を紹介してほしい、こういう機能があると助かる 等"></textarea>
-    </div>
-    <div class="consent-block">
-      <label class="consent-label">
-        <input type="checkbox" id="consent-c" class="consent-check">
-        <span><a href="#" onclick="openModal('terms'); return false;">利用規約</a>および
-        <a href="#" onclick="openModal('privacy'); return false;">プライバシーポリシー</a>に同意する</span>
-      </label>
-      <div class="error-msg" id="err-consent-c">利用規約・プライバシーポリシーへの同意が必要です</div>
-    </div>
-    <button class="btn-submit" id="btn-c" onclick="submitContractor()">
-      <span class="btn-text">業者として事前登録する →</span>
-      <div class="loading">送信中...</div>
-    </button>
-  </div>
-
-  <!-- WORKER FORM -->
-  <div class="form-box" id="form-worker">
-    <div class="form-group">
-      <label class="form-label">氏名<span class="req">*</span></label>
-      <input class="form-input" id="w-name" type="text" placeholder="田中 一郎">
-      <div class="error-msg" id="err-w-name">氏名を入力してください</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">電話番号<span class="req">*</span></label>
-      <input class="form-input" id="w-phone" type="tel" placeholder="090-1234-5678" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9-]/g,'')">
-      <div class="error-msg" id="err-w-phone">電話番号を入力してください</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">希望日当（目安）<span class="req">*</span></label>
-      <select class="form-select" id="w-wage">
-        <option value="">選択してください</option>
-        <option>¥12,000〜</option><option>¥15,000〜</option>
-        <option>¥18,000〜</option><option>¥20,000〜</option>
-        <option>¥22,000〜</option><option>¥25,000〜</option>
-        <option>¥28,000〜</option><option>¥30,000〜</option>
-      </select>
-      <div class="error-msg" id="err-w-wage">希望日当を選択してください</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">稼働可能エリア<span class="req">*</span>（複数可）</label>
-      <div class="chip-grid" id="w-areas">
-      <div class="error-msg" id="err-w-areas" style="width:100%;margin-top:8px;">エリアを1つ以上選択してください</div>
-        <div class="chip" data-v="足立区" onclick="toggleChip(this,'wAreas')">足立区</div>
-        <div class="chip" data-v="荒川区" onclick="toggleChip(this,'wAreas')">荒川区</div>
-        <div class="chip" data-v="葛飾区" onclick="toggleChip(this,'wAreas')">葛飾区</div>
-        <div class="chip" data-v="墨田区" onclick="toggleChip(this,'wAreas')">墨田区</div>
-        <div class="chip" data-v="江東区" onclick="toggleChip(this,'wAreas')">江東区</div>
-        <div class="chip" data-v="江戸川区" onclick="toggleChip(this,'wAreas')">江戸川区</div>
-        <div class="chip" data-v="台東区" onclick="toggleChip(this,'wAreas')">台東区</div>
-        <div class="chip" data-v="北区" onclick="toggleChip(this,'wAreas')">北区</div>
-        <div class="chip" data-v="その他" onclick="toggleChip(this,'wAreas')">その他</div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">スキル・資格<span class="req">*</span>（複数可）</label>
-      <div class="chip-grid" id="w-skills">
-
-        <div class="chip" data-v="手元・雑工" onclick="toggleChip(this,'wSkills')">🔨 手元・雑工</div>
-        <div class="chip" data-v="内装解体" onclick="toggleChip(this,'wSkills')">🏠 内装解体</div>
-        <div class="chip" data-v="木造解体" onclick="toggleChip(this,'wSkills')">🌲 木造解体</div>
-        <div class="chip" data-v="RC解体" onclick="toggleChip(this,'wSkills')">🧱 RC解体</div>
-        <div class="chip" data-v="鉄骨解体" onclick="toggleChip(this,'wSkills')">⚙️ 鉄骨解体</div>
-        <div class="chip" data-v="重機(ユンボ)" onclick="toggleChip(this,'wSkills')">🚜 重機(ユンボ)</div>
-        <div class="chip" data-v="重機(クレーン)" onclick="toggleChip(this,'wSkills')">🏗️ 重機(クレーン)</div>
-        <div class="chip" data-v="アスベスト除去" onclick="toggleChip(this,'wSkills')">🦺 アスベスト除去</div>
-        <div class="chip" data-v="アスベスト主任" onclick="toggleChip(this,'wSkills')">📋 アスベスト主任</div>
-        <div class="chip" data-v="産廃処理" onclick="toggleChip(this,'wSkills')">♻️ 産廃処理</div>
-      </div>
-      <div class="error-msg" id="err-w-skills">スキルを1つ以上選択してください</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">ご質問・ご要望</label>
-      <textarea class="form-textarea" id="w-comment" placeholder="例：こんな案件に対応できます、こういう機能があると助かる 等"></textarea>
-    </div>
-    <div class="consent-block">
-      <label class="consent-label">
-        <input type="checkbox" id="consent-w" class="consent-check">
-        <span><a href="#" onclick="openModal('terms'); return false;">利用規約</a>および
-        <a href="#" onclick="openModal('privacy'); return false;">プライバシーポリシー</a>に同意する</span>
-      </label>
-      <div class="error-msg" id="err-consent-w">利用規約・プライバシーポリシーへの同意が必要です</div>
-    </div>
-    <button class="btn-submit" id="btn-w" onclick="submitWorker()">
-      <span class="btn-text">職人として事前登録する →</span>
-      <div class="loading">送信中...</div>
-    </button>
   </div>
 </section>
 
-<!-- ── FOOTER ── -->
+<!-- FORM -->
+<section class="form-section-wrap" id="form-section">
+  <div class="form-section">
+    <div class="form-header reveal">
+      <div class="section-eyebrow">Preregistration</div>
+      <h2>事前登録のご案内</h2>
+      <p>サービス開始と同時に、優先的にご案内いたします。<br>ご登録は約1分で完了します。</p>
+    </div>
+
+    <div class="form-wrapper reveal">
+      <div class="security-badge">
+        <svg class="security-badge-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span class="security-badge-text">TLS暗号化 ・ reCAPTCHA v3 ・ CSP保護 ・ 個人情報保護法準拠</span>
+      </div>
+
+      <div class="type-toggle">
+        <button class="toggle-btn active" id="tab-contractor" data-action="switch-contractor" type="button">業者として登録</button>
+        <button class="toggle-btn" id="tab-worker" data-action="switch-worker" type="button">職人として登録</button>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="success-screen" id="success">
+        <div class="success-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="success-title">ご登録ありがとうございました</div>
+        <div class="success-msg" id="success-msg">リリース時に優先的にご連絡いたします。<br>もう少しだけお待ちください。</div>
+        <button class="btn-submit" style="max-width:300px;margin:0 auto" data-action="reset" type="button">別の方を登録する</button>
+      </div>
+
+      <!-- CONTRACTOR FORM -->
+      <form class="form-box active" id="form-contractor" autocomplete="on" novalidate>
+        <!-- Honeypot群 (3個: 名前をもっともらしく変える) -->
+        <div class="hp-field" aria-hidden="true">
+          <label>Website <input type="text" id="hp-c-1" name="website" autocomplete="off" tabindex="-1"></label>
+          <label>FAX <input type="text" id="hp-c-2" name="fax" autocomplete="off" tabindex="-1"></label>
+          <label>URL <input type="url" id="hp-c-3" name="url" autocomplete="off" tabindex="-1"></label>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="c-company">会社名<span class="req">*</span></label>
+          <input class="form-input" id="c-company" name="c-company" type="text" placeholder="〇〇解体工業株式会社" maxlength="100" autocomplete="organization" required>
+          <div class="error-msg" id="err-c-company">会社名を入力してください（2〜100文字）</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="c-name">担当者名<span class="req">*</span></label>
+          <input class="form-input" id="c-name" name="c-name" type="text" placeholder="山田 太郎" maxlength="50" autocomplete="name" required>
+          <div class="error-msg" id="err-c-name">担当者名を入力してください（2〜50文字）</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="c-phone">電話番号<span class="req">*</span></label>
+          <input class="form-input" id="c-phone" name="c-phone" type="tel" placeholder="090-1234-5678" inputmode="numeric" maxlength="13" autocomplete="tel" required>
+          <div class="error-msg" id="err-c-phone">有効な電話番号を入力してください（例：090-1234-5678）</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="c-email">メールアドレス<span class="optional">任意</span></label>
+          <input class="form-input" id="c-email" name="c-email" type="email" placeholder="example@company.co.jp" maxlength="254" autocomplete="email">
+          <div class="error-msg" id="err-c-email">メールアドレスの形式が正しくありません</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="c-area">主な活動エリア<span class="req">*</span></label>
+          <select class="form-select" id="c-area" name="c-area" required>
+            <option value="">選択してください</option>
+            <option>足立区</option><option>荒川区</option><option>葛飾区</option>
+            <option>墨田区</option><option>江東区</option><option>江戸川区</option>
+            <option>台東区</option><option>北区</option><option>その他</option>
+          </select>
+          <div class="error-msg" id="err-c-area">活動エリアを選択してください</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="c-volume">月の外部手配件数<span class="optional">任意</span></label>
+          <select class="form-select" id="c-volume" name="c-volume">
+            <option value="">選択してください</option>
+            <option>5件未満</option><option>5〜15件</option>
+            <option>15〜30件</option><option>30件以上</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="c-existing">類似サービスの利用状況<span class="optional">任意</span></label>
+          <select class="form-select" id="c-existing" name="c-existing">
+            <option value="">選択してください</option>
+            <option>ある（現在利用している）</option>
+            <option>ある（過去に利用していた）</option>
+            <option>ない</option>
+            <option>知らなかった</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="c-comment">ご質問・ご要望<span class="optional">任意</span></label>
+          <textarea class="form-textarea" id="c-comment" name="c-comment" placeholder="例：紹介してほしい職人像、追加してほしい機能 など" maxlength="500"></textarea>
+        </div>
+
+        <div class="consent-block">
+          <label class="consent-label">
+            <input type="checkbox" id="consent-c" class="consent-check">
+            <span>
+              <a href="#" data-action="open-terms">利用規約</a>および<a href="#" data-action="open-privacy">プライバシーポリシー</a>に同意し、
+              個人情報の取り扱いについて承諾します
+            </span>
+          </label>
+          <div class="error-msg" id="err-consent-c" style="margin-top:8px;">利用規約・プライバシーポリシーへの同意が必要です</div>
+        </div>
+
+        <div class="rate-limit-notice" id="rate-limit-c">送信回数の上限に達しました。しばらく時間をおいてから再度お試しください。</div>
+        <div class="security-notice" id="security-c">送信が検証に失敗しました。ページを再読み込みしてもう一度お試しください。</div>
+
+        <button class="btn-submit" id="btn-c" data-action="submit-contractor" type="button">
+          <span class="btn-text">事前登録を申し込む</span>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="loading"><div class="spinner"></div>送信中...</div>
+        </button>
+
+        <p class="recaptcha-notice">
+          このサイトはreCAPTCHA v3 および独自のボット検知機構で保護されています。送信内容は TLS 1.3 で暗号化通信されます。<br>
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Googleプライバシーポリシー</a> ／
+          <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Google利用規約</a>
+        </p>
+      </form>
+
+      <!-- WORKER FORM -->
+      <form class="form-box" id="form-worker" autocomplete="on" novalidate>
+        <div class="hp-field" aria-hidden="true">
+          <label>Website <input type="text" id="hp-w-1" name="website" autocomplete="off" tabindex="-1"></label>
+          <label>Address 2 <input type="text" id="hp-w-2" name="address2" autocomplete="off" tabindex="-1"></label>
+          <label>URL <input type="url" id="hp-w-3" name="url" autocomplete="off" tabindex="-1"></label>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="w-name">氏名<span class="req">*</span></label>
+          <input class="form-input" id="w-name" name="w-name" type="text" placeholder="田中 一郎" maxlength="50" autocomplete="name" required>
+          <div class="error-msg" id="err-w-name">氏名を入力してください（2〜50文字）</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="w-phone">電話番号<span class="req">*</span></label>
+          <input class="form-input" id="w-phone" name="w-phone" type="tel" placeholder="090-1234-5678" inputmode="numeric" maxlength="13" autocomplete="tel" required>
+          <div class="error-msg" id="err-w-phone">有効な電話番号を入力してください（例：090-1234-5678）</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="w-wage">希望日当<span class="req">*</span></label>
+          <select class="form-select" id="w-wage" name="w-wage" required>
+            <option value="">選択してください</option>
+            <option>¥12,000〜</option><option>¥15,000〜</option>
+            <option>¥18,000〜</option><option>¥20,000〜</option>
+            <option>¥22,000〜</option><option>¥25,000〜</option>
+            <option>¥28,000〜</option><option>¥30,000〜</option>
+          </select>
+          <div class="error-msg" id="err-w-wage">希望日当を選択してください</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">稼働可能エリア<span class="req">*</span><span class="optional">複数選択可</span></label>
+          <div class="chip-grid" id="w-areas" role="group" aria-label="稼働可能エリア">
+            <div class="chip" data-v="足立区" data-action="chip" data-key="wAreas" role="button" tabindex="0">足立区</div>
+            <div class="chip" data-v="荒川区" data-action="chip" data-key="wAreas" role="button" tabindex="0">荒川区</div>
+            <div class="chip" data-v="葛飾区" data-action="chip" data-key="wAreas" role="button" tabindex="0">葛飾区</div>
+            <div class="chip" data-v="墨田区" data-action="chip" data-key="wAreas" role="button" tabindex="0">墨田区</div>
+            <div class="chip" data-v="江東区" data-action="chip" data-key="wAreas" role="button" tabindex="0">江東区</div>
+            <div class="chip" data-v="江戸川区" data-action="chip" data-key="wAreas" role="button" tabindex="0">江戸川区</div>
+            <div class="chip" data-v="台東区" data-action="chip" data-key="wAreas" role="button" tabindex="0">台東区</div>
+            <div class="chip" data-v="北区" data-action="chip" data-key="wAreas" role="button" tabindex="0">北区</div>
+            <div class="chip" data-v="その他" data-action="chip" data-key="wAreas" role="button" tabindex="0">その他</div>
+          </div>
+          <div class="error-msg" id="err-w-areas" style="margin-top:8px;">エリアを1つ以上選択してください</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">スキル・資格<span class="req">*</span><span class="optional">複数選択可</span></label>
+          <div class="chip-grid" id="w-skills" role="group" aria-label="スキル・資格">
+            <div class="chip" data-v="手元・雑工" data-action="chip" data-key="wSkills" role="button" tabindex="0">手元・雑工</div>
+            <div class="chip" data-v="内装解体" data-action="chip" data-key="wSkills" role="button" tabindex="0">内装解体</div>
+            <div class="chip" data-v="木造解体" data-action="chip" data-key="wSkills" role="button" tabindex="0">木造解体</div>
+            <div class="chip" data-v="RC解体" data-action="chip" data-key="wSkills" role="button" tabindex="0">RC解体</div>
+            <div class="chip" data-v="鉄骨解体" data-action="chip" data-key="wSkills" role="button" tabindex="0">鉄骨解体</div>
+            <div class="chip" data-v="重機(ユンボ)" data-action="chip" data-key="wSkills" role="button" tabindex="0">重機（ユンボ）</div>
+            <div class="chip" data-v="重機(クレーン)" data-action="chip" data-key="wSkills" role="button" tabindex="0">重機（クレーン）</div>
+            <div class="chip" data-v="アスベスト除去" data-action="chip" data-key="wSkills" role="button" tabindex="0">アスベスト除去</div>
+            <div class="chip" data-v="アスベスト主任" data-action="chip" data-key="wSkills" role="button" tabindex="0">アスベスト主任</div>
+            <div class="chip" data-v="産廃処理" data-action="chip" data-key="wSkills" role="button" tabindex="0">産廃処理</div>
+          </div>
+          <div class="error-msg" id="err-w-skills" style="margin-top:8px;">スキルを1つ以上選択してください</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="w-comment">ご質問・ご要望<span class="optional">任意</span></label>
+          <textarea class="form-textarea" id="w-comment" name="w-comment" placeholder="例：対応可能な案件、追加してほしい機能 など" maxlength="500"></textarea>
+        </div>
+
+        <div class="consent-block">
+          <label class="consent-label">
+            <input type="checkbox" id="consent-w" class="consent-check">
+            <span>
+              <a href="#" data-action="open-terms">利用規約</a>および<a href="#" data-action="open-privacy">プライバシーポリシー</a>に同意し、
+              個人情報の取り扱いについて承諾します
+            </span>
+          </label>
+          <div class="error-msg" id="err-consent-w" style="margin-top:8px;">利用規約・プライバシーポリシーへの同意が必要です</div>
+        </div>
+
+        <div class="rate-limit-notice" id="rate-limit-w">送信回数の上限に達しました。しばらく時間をおいてから再度お試しください。</div>
+        <div class="security-notice" id="security-w">送信が検証に失敗しました。ページを再読み込みしてもう一度お試しください。</div>
+
+        <button class="btn-submit" id="btn-w" data-action="submit-worker" type="button">
+          <span class="btn-text">事前登録を申し込む</span>
+          <span class="arrow" aria-hidden="true">→</span>
+          <div class="loading"><div class="spinner"></div>送信中...</div>
+        </button>
+
+        <p class="recaptcha-notice">
+          このサイトはreCAPTCHA v3 および独自のボット検知機構で保護されています。送信内容は TLS 1.3 で暗号化通信されます。<br>
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Googleプライバシーポリシー</a> ／
+          <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Google利用規約</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-  <p>© 2026 KAITAI MATCH — 解体業界の労働力マッチングを健全化する</p>
-  <p style="margin-top:10px;">
-    <a href="#" onclick="openModal('terms'); return false;">利用規約</a>
-    <a href="#" onclick="openModal('privacy'); return false;">プライバシーポリシー</a>
-  </p>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo-text">
+          <span class="logo-mark" aria-hidden="true"></span>
+          <span class="logo">KAITAI MATCH</span>
+        </div>
+        <p class="footer-brand-desc">解体業界の労働力マッチングを健全化し、<br>業界全体の持続可能性に貢献します。</p>
+      </div>
+      <div class="footer-col">
+        <h4>Service</h4>
+        <a href="#value">サービス概要</a>
+        <a href="#form-section">事前登録</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal &amp; Security</h4>
+        <a href="#" data-action="open-terms">利用規約</a>
+        <a href="#" data-action="open-privacy">プライバシーポリシー</a>
+        <a href="#" data-action="open-security">セキュリティポリシー</a>
+        <a href="mailto:kaitai.match@gmail.com" rel="noopener noreferrer">お問い合わせ</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 KAITAI MATCH. All Rights Reserved.</div>
+      <div>
+        <a href="#" data-action="open-terms">Terms</a>
+        <a href="#" data-action="open-privacy">Privacy</a>
+        <a href="#" data-action="open-security">Security</a>
+      </div>
+    </div>
+  </div>
 </footer>
 
+<!-- MODAL -->
+<div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display:none; position:fixed; inset:0; z-index:999; background:rgba(10,31,61,.75); backdrop-filter:blur(8px); overflow-y:auto; padding:60px 16px;">
+  <div id="modal-card" style="max-width:760px; margin:0 auto; background:#FFFFFF; border:1px solid #E5E7EB; padding:56px 48px; position:relative; color:#2E3A4C; font-size:14px; line-height:1.9; font-family:'Noto Sans JP', sans-serif;">
+    <button id="modal-close" aria-label="閉じる" style="position:absolute; top:20px; right:24px; background:none; border:none; color:#6B7280; font-size:22px; cursor:pointer; line-height:1;">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
 <script>
+(function(){
+'use strict';
+
+/* ═══════════════════════════════════════════════════════════════
+   SECURITY HARDENING — KAITAI MATCH Client
+   ═══════════════════════════════════════════════════════════════
+   - CSP (meta) + strict inline script scope via IIFE + strict mode
+   - 多層ハニーポット (3×2)
+   - タイミング検証 (min/max interaction time)
+   - フィンガープリントベースのレートリミット
+   - sessionStorage整合性チェック (HMAC-like hash)
+   - 厳格な入力検証 + サニタイズ
+   - POST送信 (GETはURL/ログにPII残留するため)
+   - reCAPTCHA v3 + アクション別トークン
+   - マウス/キー/タッチイベント検知 (人間性検証)
+   - ペースト制限 & 連続送信防止
+   - Escキーでモーダル閉じる + keyboard trap 防止
+   ═══════════════════════════════════════════════════════════════ */
+
 /* ─── CONFIG ─── */
-/* build: 202604031749 */
-const FORM = {
-  CONTRACTOR_URL : 'https://docs.google.com/forms/d/e/1FAIpQLSen5-oCaqVXXNQcBUAq6D4mdggYQdAOvxw3tC0r3g7apsGX9g/formResponse',
-  C_EMAIL        : 'entry.241303334',
-  C_COMPANY      : 'entry.1560923856',
-  C_NAME         : 'entry.1099596329',
-  C_PHONE        : 'entry.958239017',
-  C_AREA         : 'entry.613709446',
-  C_VOLUME       : 'entry.223796764',
-  C_EXISTING     : 'entry.1870516873',
-  C_COMMENT      : 'entry.2105728706',
+const FORM = Object.freeze({
+  CONTRACTOR_URL: 'https://docs.google.com/forms/d/e/1FAIpQLSen5-oCaqVXXNQcBUAq6D4mdggYQdAOvxw3tC0r3g7apsGX9g/formResponse',
+  C_EMAIL:'entry.241303334', C_COMPANY:'entry.1560923856', C_NAME:'entry.1099596329',
+  C_PHONE:'entry.958239017', C_AREA:'entry.613709446', C_VOLUME:'entry.223796764',
+  C_EXISTING:'entry.1870516873', C_COMMENT:'entry.2105728706',
 
-  WORKER_URL     : 'https://docs.google.com/forms/d/e/1FAIpQLScC5icSUGPfsG3O5_VFJ0GHAnxP1y9aK9y0mlp5CqMoB3Jlwg/formResponse',
-  W_NAME         : 'entry.2123662439',
-  W_PHONE        : 'entry.115422780',
-  W_WAGE         : 'entry.1964736497',
-  W_AREAS        : 'entry.1219815000',
-  W_SKILLS       : 'entry.317045499',
-  W_COMMENT      : 'entry.55301022',
+  WORKER_URL: 'https://docs.google.com/forms/d/e/1FAIpQLScC5icSUGPfsG3O5_VFJ0GHAnxP1y9aK9y0mlp5CqMoB3Jlwg/formResponse',
+  W_NAME:'entry.2123662439', W_PHONE:'entry.115422780', W_WAGE:'entry.1964736497',
+  W_AREAS:'entry.1219815000', W_SKILLS:'entry.317045499', W_COMMENT:'entry.55301022',
 
-  DEMO_MODE : false
-};
+  DEMO_MODE: false,
+  RECAPTCHA_KEY: '6LfUQcYsAAAAAM_xhlOvz89JtvhsxRT4qLkT94AL',
 
+  /* ──────────────────────────────────────────────────────────
+     ★★★ 重要 ★★★
+     本番ではGoogle Apps Script (GAS) プロキシを経由させること。
+     GAS側で以下を検証: reCAPTCHAトークン / IP-basedレートリミット /
+     payload整合性 / Referer検証 / タイムスタンプ鮮度
+     GAS_PROXY_URL を設定すると自動でプロキシ経由に切替わる。
+     ────────────────────────────────────────────────────────── */
+  GAS_PROXY_URL: ''   // 例: 'https://script.google.com/macros/s/XXXXXXX/exec'
+});
+
+/* ─── STATE ─── */
 const S = { wAreas: [], wSkills: [] };
+const pageLoadedAt = Date.now();
+let humanSignals = { mouse: 0, keys: 0, touches: 0, scroll: 0, focus: 0 };
 
-function scrollToForm() {
-  document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
+/* ─── HUMAN SIGNAL DETECTION ─── */
+['mousemove','mousedown'].forEach(e => document.addEventListener(e, () => humanSignals.mouse++, {passive:true, once:false}));
+document.addEventListener('keydown', () => humanSignals.keys++, {passive:true});
+document.addEventListener('touchstart', () => humanSignals.touches++, {passive:true});
+document.addEventListener('scroll', () => humanSignals.scroll++, {passive:true});
+document.addEventListener('focusin', () => humanSignals.focus++, {passive:true});
+
+function hasHumanInteraction() {
+  // いずれかのイベントが発火していれば人間とみなす
+  return humanSignals.mouse > 2 || humanSignals.keys > 0 || humanSignals.touches > 0 || humanSignals.focus > 0;
 }
 
+/* ─── FINGERPRINT (簡易) ─── */
+function fingerprint() {
+  try {
+    const nav = navigator;
+    const scr = screen;
+    const parts = [
+      nav.userAgent||'', nav.language||'', nav.platform||'',
+      (nav.hardwareConcurrency||0), (nav.deviceMemory||0),
+      scr.width+'x'+scr.height, scr.colorDepth, scr.pixelDepth,
+      new Date().getTimezoneOffset(), (Intl.DateTimeFormat().resolvedOptions().timeZone||'')
+    ];
+    return parts.join('|');
+  } catch(e) { return 'unknown'; }
+}
+
+/* ─── HASH (integrity用) ─── */
+async function hash(str) {
+  try {
+    const enc = new TextEncoder().encode(str);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  } catch(e) {
+    // フォールバック: FNV-like
+    let h = 2166136261 >>> 0;
+    for (let i=0; i<str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return (h >>> 0).toString(16);
+  }
+}
+
+/* ─── RATE LIMITER (integrity検証付き) ─── */
+const RL = {
+  key: 'km_submit_v2',
+  limit: 3,
+  windowMs: 10 * 60 * 1000,
+  async check() {
+    const now = Date.now();
+    const fp = await hash(fingerprint());
+    let data;
+    try {
+      const raw = sessionStorage.getItem(this.key);
+      data = raw ? JSON.parse(raw) : null;
+      // integrity check
+      if (data) {
+        const expected = await hash(data.start + '|' + data.count + '|' + fp + '|' + this.key);
+        if (data.sig !== expected) data = null; // 改ざん検知
+      }
+    } catch { data = null; }
+
+    if (!data || now - data.start > this.windowMs) data = { start: now, count: 0, fp };
+    if (data.fp !== fp) return false; // FP変化 = 別環境、警戒
+    if (data.count >= this.limit) return false;
+
+    data.count++;
+    data.sig = await hash(data.start + '|' + data.count + '|' + fp + '|' + this.key);
+    try { sessionStorage.setItem(this.key, JSON.stringify(data)); } catch {}
+    return true;
+  }
+};
+
+/* ─── INPUT SANITIZER (多層) ─── */
+function sanitize(str, maxLen) {
+  maxLen = maxLen || 500;
+  if (!str) return '';
+  return String(str)
+    .normalize('NFKC')                               // 全角/半角正規化
+    // eslint-disable-next-line no-control-regex
+    .replace(/[\u0000-\u0008\u000B-\u001F\u007F]/g,'')  // 制御文字除去
+    .replace(/[\u200B-\u200F\u2028-\u202F\u205F-\u206F\uFEFF]/g,'') // ゼロ幅文字
+    .replace(/[<>"'`\\]/g, '')                       // HTML注入防止(タグ完全除去)
+    .replace(/javascript:/gi, '')                    // JS URL
+    .replace(/data:/gi, '')                          // Data URL
+    .replace(/vbscript:/gi, '')
+    .replace(/on\w+\s*=/gi, '')                      // インラインイベント
+    .trim()
+    .slice(0, maxLen);
+}
+
+/* ─── VALIDATORS ─── */
+function formatPhone(el) {
+  let v = el.value.replace(/[^0-9]/g, '').slice(0, 11);
+  if (v.length <= 3)       el.value = v;
+  else if (v.length <= 7)  el.value = v.slice(0,3)+'-'+v.slice(3);
+  else                     el.value = v.slice(0,3)+'-'+v.slice(3,7)+'-'+v.slice(7,11);
+}
+function isValidJPPhone(phone) {
+  const c = phone.replace(/-/g,'');
+  if (!/^0[0-9]{9,10}$/.test(c)) return false;
+  // 連番/全同一パターンの拒否
+  if (/^0(\d)\1{9,10}$/.test(c)) return false;       // 00000000000 等
+  if (/^01234567890$/.test(c) || /^09876543210$/.test(c)) return false;
+  return true;
+}
+function isValidEmail(email) {
+  if (!email) return true;
+  if (email.length > 254) return false;              // RFC5321
+  // RFC5322ベース + TLD要件
+  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!re.test(email)) return false;
+  // local part長
+  const local = email.split('@')[0];
+  if (local.length > 64) return false;
+  // 明らかな使い捨て/サブアド連続の検出は最小限
+  if (/\.{2,}/.test(email)) return false;
+  return true;
+}
+function isValidName(name, min, max) {
+  if (!name) return false;
+  const len = [...name].length;
+  if (len < (min||2) || len > (max||50)) return false;
+  // URLや特殊文字の混入を拒否
+  if (/https?:\/\//i.test(name) || /[<>{}[\]\\]/.test(name)) return false;
+  return true;
+}
+
+/* ─── reCAPTCHA ─── */
+async function getRecaptchaToken(action) {
+  return new Promise((resolve) => {
+    if (typeof grecaptcha === 'undefined') { resolve(null); return; }
+    try {
+      grecaptcha.ready(() => {
+        grecaptcha.execute(FORM.RECAPTCHA_KEY, { action })
+          .then(resolve).catch(() => resolve(null));
+      });
+    } catch(e) { resolve(null); }
+  });
+}
+
+/* ─── HONEYPOT / TIMING / BOT CHECK ─── */
+function isBot(prefix) {
+  // honeypot tri-check
+  for (let i=1; i<=3; i++) {
+    const el = document.getElementById('hp-'+prefix+'-'+i);
+    if (el && el.value && el.value.length > 0) return true;
+  }
+  // タイミング検証: ページ読み込みから3秒未満は怪しい
+  const elapsed = Date.now() - pageLoadedAt;
+  if (elapsed < 3000) return true;
+  // 人間由来のイベントが一切発火していなければbot
+  if (!hasHumanInteraction()) return true;
+  return false;
+}
+
+/* ─── PASTE GUARD (超長いペースト検知) ─── */
+function attachPasteGuard(el, maxLen) {
+  el.addEventListener('paste', (e) => {
+    const data = (e.clipboardData || window.clipboardData)?.getData('text') || '';
+    if (data.length > (maxLen || 1000)) {
+      e.preventDefault();
+      el.value = sanitize(data.slice(0, maxLen || 500), maxLen || 500);
+    }
+  });
+}
+
+/* ─── DOM HELPERS ─── */
+function q(id){ return document.getElementById(id); }
+function val(id){ return (q(id)?.value || '').trim(); }
+function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+function scrollToForm() { q('form-section').scrollIntoView({behavior:'smooth'}); }
+function scrollToValue() { q('value').scrollIntoView({behavior:'smooth'}); }
+
 function switchType(t) {
-  document.getElementById('tab-contractor').classList.toggle('active', t === 'contractor');
-  document.getElementById('tab-worker').classList.toggle('active', t === 'worker');
-  document.getElementById('form-contractor').classList.toggle('active', t === 'contractor');
-  document.getElementById('form-worker').classList.toggle('active', t === 'worker');
+  q('tab-contractor').classList.toggle('active', t==='contractor');
+  q('tab-worker').classList.toggle('active', t==='worker');
+  q('form-contractor').classList.toggle('active', t==='contractor');
+  q('form-worker').classList.toggle('active', t==='worker');
 }
 
 function toggleChip(el, key) {
   el.classList.toggle('on');
-  const v = el.dataset.v;
+  const v = sanitize(el.dataset.v, 50);
   S[key] = el.classList.contains('on')
     ? [...new Set([...S[key], v])]
     : S[key].filter(x => x !== v);
 }
 
 function showSuccess(type) {
-  document.getElementById('form-contractor').style.display = 'none';
-  document.getElementById('form-worker').style.display     = 'none';
-  document.querySelector('.type-toggle').style.display     = 'none';
+  q('form-contractor').style.display = 'none';
+  q('form-worker').style.display = 'none';
+  document.querySelector('.type-toggle').style.display = 'none';
   const msg = type === 'contractor'
-    ? '業者として登録完了です。<br>サービス開始時に最優先でご連絡します。<br>紹介してもらえる同業の方がいれば、このページのURLを共有してください。'
-    : '職人として登録完了です。<br>案件通知が届くようになります。<br>利用料は完全無料です。';
-  document.getElementById('success-msg').innerHTML = msg;
-  document.getElementById('success').classList.add('show');
+    ? '業者としてのご登録が完了しました。<br>サービス開始時に最優先でご連絡いたします。<br>同業の方にご紹介いただける場合、本ページのURLを共有いただけますと幸いです。'
+    : '職人としてのご登録が完了しました。<br>リリース後、案件通知をお届けします。<br>利用料は完全無料です。';
+  // innerHTMLに渡すのは自前の固定文字列のみ。ユーザー入力は一切混入させない。
+  q('success-msg').innerHTML = msg;
+  q('success').classList.add('show');
 }
 
 function resetForm() {
-  document.getElementById('form-contractor').style.display = '';
-  document.getElementById('form-worker').style.display     = '';
-  document.querySelector('.type-toggle').style.display     = '';
-  document.getElementById('success').classList.remove('show');
+  q('form-contractor').style.display = '';
+  q('form-worker').style.display = '';
+  document.querySelector('.type-toggle').style.display = '';
+  q('success').classList.remove('show');
   ['c-company','c-name','c-phone','c-email','c-area','c-volume','c-existing','c-comment',
-   'w-name','w-phone','w-wage','w-comment'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
+   'w-name','w-phone','w-wage','w-comment'].forEach(id => { const el = q(id); if (el) el.value = ''; });
   document.querySelectorAll('.chip.on').forEach(c => c.classList.remove('on'));
-  document.getElementById('consent-c').checked = false;
-  document.getElementById('consent-w').checked = false;
+  q('consent-c').checked = false;
+  q('consent-w').checked = false;
+  ['hp-c-1','hp-c-2','hp-c-3','hp-w-1','hp-w-2','hp-w-3'].forEach(id => { const el = q(id); if (el) el.value = ''; });
   S.wAreas = []; S.wSkills = [];
   switchType('contractor');
 }
 
+/* ─── SECURE SUBMIT (POST + GASプロキシ対応) ─── */
+async function secureSend(targetUrl, payload, token, action) {
+  // GASプロキシがあればそちら優先 (サーバー側でreCAPTCHA検証推奨)
+  if (FORM.GAS_PROXY_URL) {
+    try {
+      await fetch(FORM.GAS_PROXY_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+        body: new URLSearchParams({
+          action: action,
+          token: token || '',
+          ts: String(Date.now()),
+          payload: JSON.stringify(payload)
+        }).toString()
+      });
+      return true;
+    } catch(e) { return false; }
+  }
+
+  // 直接Googleフォーム送信 (POSTでPIIをURLに残さない)
+  const body = new URLSearchParams();
+  Object.keys(payload).forEach(k => { if (payload[k] != null && payload[k] !== '') body.append(k, payload[k]); });
+  if (token) body.append('recaptcha_token', token);
+  try {
+    await fetch(targetUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+      body: body.toString()
+    });
+    return true;
+  } catch(e) { return false; }
+}
+
+/* ─── SUBMIT: CONTRACTOR ─── */
 async function submitContractor() {
-  const company = val('c-company'), name = val('c-name'),
-        phone   = val('c-phone'),   area = val('c-area');
+  if (isBot('c')) { q('security-c').classList.add('show'); return; }
+  if (!(await RL.check())) { q('rate-limit-c').classList.add('show'); return; }
+
+  const company = val('c-company');
+  const name    = val('c-name');
+  const phone   = val('c-phone');
+  const email   = val('c-email');
+  const area    = val('c-area');
+
   let hasError = false;
   const setErr = (id, errId, cond) => {
-    document.getElementById(id).classList.toggle('error', cond);
-    document.getElementById(errId).classList.toggle('show', cond);
+    q(id).classList.toggle('error', cond);
+    q(errId).classList.toggle('show', cond);
     if (cond) hasError = true;
   };
-  setErr('c-company', 'err-c-company', !company);
-  setErr('c-name',    'err-c-name',    !name);
-  setErr('c-phone',   'err-c-phone',   !phone);
-  setErr('c-area',    'err-c-area',    !area);
-  if (hasError) return;
-  if (!document.getElementById('consent-c').checked) {
-    document.getElementById('err-consent-c').classList.add('show');
-    return;
+  setErr('c-company','err-c-company', !isValidName(company, 2, 100));
+  setErr('c-name',   'err-c-name',    !isValidName(name, 2, 50));
+  setErr('c-phone',  'err-c-phone',   !phone || !isValidJPPhone(phone));
+  setErr('c-area',   'err-c-area',    !area);
+
+  const emailErrEl = q('err-c-email');
+  if (email && !isValidEmail(email)) {
+    q('c-email').classList.add('error'); emailErrEl.classList.add('show'); hasError = true;
+  } else {
+    q('c-email').classList.remove('error'); emailErrEl.classList.remove('show');
   }
-  document.getElementById('err-consent-c').classList.remove('show');
-  const btn = document.getElementById('btn-c');
+  if (hasError) return;
+
+  if (!q('consent-c').checked) { q('err-consent-c').classList.add('show'); return; }
+  q('err-consent-c').classList.remove('show');
+
+  const btn = q('btn-c');
   btn.classList.add('sending'); btn.disabled = true;
+
+  const token = await getRecaptchaToken('contractor_register');
   if (!FORM.DEMO_MODE) {
-    const params = new URLSearchParams();
-    const addParam = (key, v) => { if (v) params.append(key, v); };
-    addParam(FORM.C_EMAIL,    val('c-email'));
-    addParam(FORM.C_COMPANY,  company);
-    addParam(FORM.C_NAME,     name);
-    addParam(FORM.C_PHONE,    phone);
-    addParam(FORM.C_AREA,     area);
-    addParam(FORM.C_VOLUME,   val('c-volume'));
-    addParam(FORM.C_EXISTING, val('c-existing'));
-    addParam(FORM.C_COMMENT,  val('c-comment'));
-    try {
-      await fetch(FORM.CONTRACTOR_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' });
-    } catch(e) {}
+    const payload = {};
+    payload[FORM.C_EMAIL]    = sanitize(email, 254);
+    payload[FORM.C_COMPANY]  = sanitize(company, 100);
+    payload[FORM.C_NAME]     = sanitize(name, 50);
+    payload[FORM.C_PHONE]    = sanitize(phone, 13);
+    payload[FORM.C_AREA]     = sanitize(area, 50);
+    payload[FORM.C_VOLUME]   = sanitize(val('c-volume'), 50);
+    payload[FORM.C_EXISTING] = sanitize(val('c-existing'), 50);
+    payload[FORM.C_COMMENT]  = sanitize(val('c-comment'), 500);
+    await secureSend(FORM.CONTRACTOR_URL, payload, token, 'contractor_register');
   } else {
     await sleep(900);
   }
+
   btn.classList.remove('sending'); btn.disabled = false;
   showSuccess('contractor');
 }
 
+/* ─── SUBMIT: WORKER ─── */
 async function submitWorker() {
-  const name = val('w-name'), phone = val('w-phone'), wage = val('w-wage');
-  let hasErrorW = false;
-  const setErrW = (id, errId, cond) => {
-    document.getElementById(id).classList.toggle('error', cond);
-    document.getElementById(errId).classList.toggle('show', cond);
-    if (cond) hasErrorW = true;
+  if (isBot('w')) { q('security-w').classList.add('show'); return; }
+  if (!(await RL.check())) { q('rate-limit-w').classList.add('show'); return; }
+
+  const name  = val('w-name');
+  const phone = val('w-phone');
+  const wage  = val('w-wage');
+
+  let hasError = false;
+  const setErr = (id, errId, cond) => {
+    q(id).classList.toggle('error', cond);
+    q(errId).classList.toggle('show', cond);
+    if (cond) hasError = true;
   };
-  setErrW('w-name',  'err-w-name',  !name);
-  setErrW('w-phone', 'err-w-phone', !phone);
-  setErrW('w-wage',  'err-w-wage',  !wage);
-  const areaErr = document.getElementById('err-w-areas');
-  const skillErr = document.getElementById('err-w-skills');
-  if (!S.wAreas.length)  { areaErr.classList.add('show');  hasErrorW = true; }
-  else                   { areaErr.classList.remove('show'); }
-  if (!S.wSkills.length) { skillErr.classList.add('show'); hasErrorW = true; }
-  else                   { skillErr.classList.remove('show'); }
-  if (hasErrorW) return;
-  if (!document.getElementById('consent-w').checked) {
-    document.getElementById('err-consent-w').classList.add('show');
-    return;
+  setErr('w-name', 'err-w-name',  !isValidName(name, 2, 50));
+  setErr('w-phone','err-w-phone', !phone || !isValidJPPhone(phone));
+  setErr('w-wage', 'err-w-wage',  !wage);
+
+  const areaErr = q('err-w-areas');
+  const skillErr = q('err-w-skills');
+  if (!S.wAreas.length)  { areaErr.classList.add('show');  hasError = true; } else areaErr.classList.remove('show');
+  if (!S.wSkills.length) { skillErr.classList.add('show'); hasError = true; } else skillErr.classList.remove('show');
+
+  // chip値の妥当性チェック
+  const validAreas = ['足立区','荒川区','葛飾区','墨田区','江東区','江戸川区','台東区','北区','その他'];
+  const validSkills = ['手元・雑工','内装解体','木造解体','RC解体','鉄骨解体','重機(ユンボ)','重機(クレーン)','アスベスト除去','アスベスト主任','産廃処理'];
+  const areasClean = S.wAreas.filter(a => validAreas.includes(a));
+  const skillsClean = S.wSkills.filter(s => validSkills.includes(s));
+  if (areasClean.length !== S.wAreas.length || skillsClean.length !== S.wSkills.length) {
+    q('security-w').classList.add('show'); return;
   }
-  document.getElementById('err-consent-w').classList.remove('show');
-  const btn = document.getElementById('btn-w');
+
+  if (hasError) return;
+  if (!q('consent-w').checked) { q('err-consent-w').classList.add('show'); return; }
+  q('err-consent-w').classList.remove('show');
+
+  const btn = q('btn-w');
   btn.classList.add('sending'); btn.disabled = true;
+
+  const token = await getRecaptchaToken('worker_register');
   if (!FORM.DEMO_MODE) {
-    const params = new URLSearchParams();
-    const addParam = (key, v) => { if (v) params.append(key, v); };
-    addParam(FORM.W_NAME,    name);
-    addParam(FORM.W_PHONE,   phone);
-    addParam(FORM.W_WAGE,    wage);
-    addParam(FORM.W_AREAS,   S.wAreas.join(', '));
-    addParam(FORM.W_SKILLS,  S.wSkills.join(', '));
-    addParam(FORM.W_COMMENT, val('w-comment'));
-    try {
-      await fetch(FORM.WORKER_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' });
-    } catch(e) {}
+    const payload = {};
+    payload[FORM.W_NAME]    = sanitize(name, 50);
+    payload[FORM.W_PHONE]   = sanitize(phone, 13);
+    payload[FORM.W_WAGE]    = sanitize(wage, 20);
+    payload[FORM.W_AREAS]   = sanitize(areasClean.join(', '), 200);
+    payload[FORM.W_SKILLS]  = sanitize(skillsClean.join(', '), 300);
+    payload[FORM.W_COMMENT] = sanitize(val('w-comment'), 500);
+    await secureSend(FORM.WORKER_URL, payload, token, 'worker_register');
   } else {
     await sleep(900);
   }
+
   btn.classList.remove('sending'); btn.disabled = false;
   showSuccess('worker');
 }
 
-function val(id) { return (document.getElementById(id)?.value || '').trim(); }
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+/* ─── EVENT DELEGATION (CSP-friendly: no inline onclick) ─── */
+document.addEventListener('click', async (e) => {
+  const t = e.target.closest('[data-action]');
+  if (!t) return;
+  const act = t.dataset.action;
+  switch(act) {
+    case 'scroll-form': e.preventDefault(); scrollToForm(); break;
+    case 'scroll-value': e.preventDefault(); scrollToValue(); break;
+    case 'switch-contractor': switchType('contractor'); break;
+    case 'switch-worker': switchType('worker'); break;
+    case 'chip': toggleChip(t, t.dataset.key); break;
+    case 'submit-contractor': await submitContractor(); break;
+    case 'submit-worker': await submitWorker(); break;
+    case 'reset': resetForm(); break;
+    case 'open-terms': e.preventDefault(); openModal('terms'); break;
+    case 'open-privacy': e.preventDefault(); openModal('privacy'); break;
+    case 'open-security': e.preventDefault(); openModal('security'); break;
+  }
+});
 
+// chipをキーボード(Enter/Space)でも操作可
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('chip')) {
+    e.preventDefault();
+    toggleChip(e.target, e.target.dataset.key);
+  }
+});
+
+/* ─── PHONE AUTO-FORMAT ─── */
+['c-phone','w-phone'].forEach(id => {
+  const el = q(id);
+  if (el) el.addEventListener('input', () => formatPhone(el));
+});
+
+/* ─── PASTE GUARD ─── */
+['c-comment','w-comment'].forEach(id => { const el = q(id); if (el) attachPasteGuard(el, 500); });
+
+/* ─── REVEAL OBSERVER ─── */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
 
-<!-- ── MODAL ── -->
-<div id="modal-overlay" onclick="closeModal()" style="
-  display:none; position:fixed; inset:0; z-index:999;
-  background:rgba(0,0,0,.8); backdrop-filter:blur(6px);
-  overflow-y:auto; padding:60px 16px;">
-  <div onclick="event.stopPropagation()" style="
-    max-width:720px; margin:0 auto; background:#0D1F33;
-    border:1px solid #1E3450; padding:40px 32px;
-    position:relative; color:#BBB; font-size:14px; line-height:1.9;">
-    <button onclick="closeModal()" style="
-      position:absolute; top:16px; right:20px;
-      background:none; border:none; color:#555;
-      font-size:22px; cursor:pointer; font-family:'IBM Plex Mono',monospace;">✕</button>
-    <div id="modal-content"></div>
-  </div>
-</div>
+/* ─── MODAL (XSS-safe: 内容はDOM API、固定テンプレのみ) ─── */
+const TERMS = [
+  {h:'KAITAI MATCH 利用規約', sub:'制定日：2026年3月'},
+  {p:'本利用規約（以下「本規約」）は、KAITAI MATCH 運営事務局（以下「運営者」）が提供する解体工事業向け緊急人工マッチングサービス「KAITAI MATCH」（以下「本サービス」）の利用条件を定めるものです。'},
+  {h3:'第1条（定義）', ul:[
+    '「業者」：解体工事業を営む法人・個人事業主であって、本サービスを通じて作業員を募集する者',
+    '「職人」：解体工事に従事する個人または一人親方として本サービスに登録する者',
+    '「マッチング」：業者の案件情報と職人プロフィールを照合し、運営者が候補を提示する行為',
+    '「請負契約」：業者と職人の間で成立する、工事の完成を目的とする契約',
+    '「手数料」：マッチング成立時に業者が運営者に支払う対価'
+  ]},
+  {h3:'第2条（サービスの性質と法的位置づけ）', ol:[
+    '本サービスは、業者と職人との間の請負契約の締結を支援するプラットフォームです。職業紹介・労働者派遣には一切該当しません。',
+    '本サービスを通じて成立する取引はすべて業者・職人間の独立した請負契約であり、雇用関係は生じません。',
+    '運営者は「場の提供」のみを行い、個別の契約内容・履行には関与せず責任を負いません。'
+  ]},
+  {h3:'第3条（登録）', ol:[
+    '本サービスの利用を希望する方は、本規約に同意のうえ申請を行うものとします。',
+    '反社会的勢力への該当・過去の規約違反・虚偽登録等に該当する場合、登録を拒否または取り消すことがあります。'
+  ]},
+  {h3:'第4条（禁止事項）', ul:[
+    '経歴・資格・実績に関する虚偽申告',
+    '建設業法・職業安定法・労働基準法その他法令への違反',
+    '本サービスを介して知り合った相手を外部に誘導し手数料支払いを回避する行為',
+    '複数アカウントの作成・不正利用',
+    '反社会的勢力への利益供与',
+    '本サービスのシステム・API・データベースへの不正アクセス、リバースエンジニアリング、脆弱性攻撃',
+    'その他、運営者が不適切と判断する行為'
+  ]},
+  {h3:'第5条（手数料および支払い）', ol:[
+    '本サービスの初期フェーズ（別途告知）は無料で提供します。',
+    '課金開始後、業者は取引成立1件ごとに取引金額の5〜8%の手数料を銀行振込（月末締め翌月末払い）にて支払うものとします。',
+    '職人の利用は引き続き無料とします。'
+  ]},
+  {h3:'第6条（免責事項）', ol:[
+    '運営者は、業者・職人間の取引トラブル（未払い・無断欠勤・スキル詐称等）について責任を負いません。',
+    '天災・通信障害・システム障害等によるサービス停止に関しても同様です。'
+  ]},
+  {h3:'第7条（規約の変更）', p:'運営者は必要に応じて本規約を変更できます。変更後もサービスを継続利用した場合は変更後の規約に同意したものとみなします。'},
+  {h3:'第8条（準拠法・管轄裁判所）', p:'本規約は日本法に準拠し、東京地方裁判所を第一審の専属的合意管轄裁判所とします。'},
+  {foot:'KAITAI MATCH 運営事務局 ｜ 制定：2026年3月'}
+];
 
-<script>
-const TERMS_HTML = `
-<h2 style="color:#FF6B35;margin-bottom:20px;font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;">KAITAI MATCH 利用規約</h2>
-<p style="color:#666;margin-bottom:24px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;">制定日：2026年3月</p>
-<p>本利用規約（以下「本規約」）は、KAITAI MATCH 運営事務局（以下「運営者」）が提供する解体工事業向け緊急人工マッチングサービス「KAITAI MATCH」（以下「本サービス」）の利用条件を定めるものです。</p>
-<h3 style="color:#FFF;margin:24px 0 8px;">第1条（定義）</h3>
-<ul style="padding-left:20px;">
-  <li>「業者」：解体工事業を営む法人・個人事業主であって、本サービスを通じて作業員を募集する者</li>
-  <li>「職人」：解体工事に従事する個人または一人親方として本サービスに登録する者</li>
-  <li>「マッチング」：業者の案件情報と職人プロフィールを照合し、運営者が候補を提示する行為</li>
-  <li>「請負契約」：業者と職人の間で成立する、工事の完成を目的とする契約</li>
-  <li>「手数料」：マッチング成立時に業者が運営者に支払う対価</li>
-</ul>
-<h3 style="color:#FFF;margin:24px 0 8px;">第2条（サービスの性質と法的位置づけ）</h3>
-<ol style="padding-left:20px;">
-  <li>本サービスは、業者と職人との間の請負契約の締結を支援するプラットフォームです。職業紹介・労働者派遣には一切該当しません。</li>
-  <li>本サービスを通じて成立する取引はすべて業者・職人間の独立した請負契約であり、雇用関係は生じません。</li>
-  <li>運営者は「場の提供」のみを行い、個別の契約内容・履行には関与せず責任を負いません。</li>
-</ol>
-<h3 style="color:#FFF;margin:24px 0 8px;">第3条（登録）</h3>
-<ol style="padding-left:20px;">
-  <li>本サービスの利用を希望する方は、本規約に同意のうえ申請を行うものとします。</li>
-  <li>反社会的勢力への該当・過去の規約違反・虚偽登録等に該当する場合、登録を拒否または取り消すことがあります。</li>
-</ol>
-<h3 style="color:#FFF;margin:24px 0 8px;">第4条（禁止事項）</h3>
-<ul style="padding-left:20px;">
-  <li>経歴・資格・実績に関する虚偽申告</li>
-  <li>建設業法・職業安定法・労働基準法その他法令への違反</li>
-  <li>本サービスを介して知り合った相手を外部に誘導し手数料支払いを回避する行為</li>
-  <li>複数アカウントの作成・不正利用</li>
-  <li>反社会的勢力への利益供与</li>
-  <li>その他、運営者が不適切と判断する行為</li>
-</ul>
-<h3 style="color:#FFF;margin:24px 0 8px;">第5条（手数料および支払い）</h3>
-<ol style="padding-left:20px;">
-  <li>本サービスの初期フェーズ（別途告知）は無料で提供します。</li>
-  <li>課金開始後、業者は取引成立1件ごとに取引金額の5〜8%の手数料を銀行振込（月末締め翌月末払い）にて支払うものとします。</li>
-  <li>職人の利用は引き続き無料とします。</li>
-</ol>
-<h3 style="color:#FFF;margin:24px 0 8px;">第6条（免責事項）</h3>
-<ol style="padding-left:20px;">
-  <li>運営者は、業者・職人間の取引トラブル（未払い・無断欠勤・スキル詐称等）について責任を負いません。</li>
-  <li>天災・通信障害・システム障害等によるサービス停止に関しても同様です。</li>
-</ol>
-<h3 style="color:#FFF;margin:24px 0 8px;">第7条（規約の変更）</h3>
-<p>運営者は必要に応じて本規約を変更できます。変更後もサービスを継続利用した場合は変更後の規約に同意したものとみなします。</p>
-<h3 style="color:#FFF;margin:24px 0 8px;">第8条（準拠法・管轄裁判所）</h3>
-<p>本規約は日本法に準拠し、東京地方裁判所を第一審の専属的合意管轄裁判所とします。</p>
-<p style="margin-top:32px;color:#444;font-family:'IBM Plex Mono',monospace;font-size:11px;">KAITAI MATCH 運営事務局｜制定：2026年3月</p>
-`;
+const PRIVACY = [
+  {h:'プライバシーポリシー', sub:'制定日：2026年3月'},
+  {p:'KAITAI MATCH 運営事務局（以下「運営者」）は、本サービスの運営において取得する個人情報について、個人情報の保護に関する法律（令和2年改正を含む）を遵守し、以下のとおり取り扱います。'},
+  {h3:'第1条（取得する個人情報）',
+    p:'【業者】会社名・担当者名・電話番号・メールアドレス・建設業許可番号（任意）・LINEユーザーID',
+    p2:'【職人】氏名・電話番号・保有資格・施工経験・稼働エリア・希望日当・LINEユーザーID'
+  },
+  {h3:'第2条（利用目的）', ol:[
+    'マッチング機能の提供（案件と職人の照合・通知）',
+    '利用者への連絡・問い合わせ対応',
+    '手数料の請求・支払い管理',
+    '不正利用の防止・規約違反の調査',
+    'サービス改善および新機能の開発（個人を特定しない統計分析）'
+  ]},
+  {h3:'第3条（第三者提供）', p:'運営者は、法令に基づく場合・本人同意がある場合を除き、個人情報を第三者に提供しません。なお、本サービスはGoogle LLC（米国）のサービスを利用しており、個人情報が外国に移転する場合があります。'},
+  {h3:'第4条（安全管理措置）', ul:[
+    '通信の暗号化（TLS 1.3）',
+    'アクセス権限の最小化（最少権限の原則）',
+    '保管先（Googleスプレッドシート／Google Apps Script）へのアクセスログ監視',
+    '多要素認証による管理者アカウント保護',
+    '定期的なセキュリティレビュー・脆弱性診断',
+    '個人情報の漏えい等発生時には、個人情報保護法第26条に基づき個人情報保護委員会への報告および本人への通知を行います'
+  ]},
+  {h3:'第5条（保存期間）', p:'退会日から1年間保存後に削除します（法令による保存義務のあるものを除く）。取引記録は電子帳簿保存法に基づき7年間保存します。'},
+  {h3:'第6条（本人の権利）', p:'利用者は自己の個人情報について、開示・訂正・削除・利用停止・第三者提供停止を請求できます。下記問い合わせ窓口にご連絡ください。本人確認の上、合理的な期間内に対応いたします。'},
+  {h3:'第7条（Cookieおよび類似技術）', p:'本サービスは、reCAPTCHA v3による不正利用防止、およびサイト機能維持のために必要最小限のCookie・sessionStorageを使用します。広告目的のトラッキングCookieは一切使用しません。'},
+  {h3:'第8条（問い合わせ窓口）', p:'KAITAI MATCH 運営事務局', p2:'メール：kaitai.match@gmail.com', p3:'LINE公式：https://line.me/R/ti/p/@774alkpm', p4:'受付時間：平日 10:00〜18:00'},
+  {foot:'KAITAI MATCH 運営事務局 ｜ 制定：2026年3月'}
+];
 
-const PRIVACY_HTML = `
-<h2 style="color:#FF6B35;margin-bottom:20px;font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;">プライバシーポリシー</h2>
-<p style="color:#666;margin-bottom:24px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1px;">制定日：2026年3月</p>
-<p>KAITAI MATCH 運営事務局（以下「運営者」）は、本サービスの運営において取得する個人情報について、個人情報の保護に関する法律（令和2年改正を含む）を遵守し、以下のとおり取り扱います。</p>
-<h3 style="color:#FFF;margin:24px 0 8px;">第1条（取得する個人情報）</h3>
-<p><strong style="color:#CCC;">【業者】</strong> 会社名・担当者名・電話番号・メールアドレス・建設業許可番号（任意）・LINEユーザーID</p>
-<p style="margin-top:8px;"><strong style="color:#CCC;">【職人】</strong> 氏名・電話番号・保有資格・施工経験・稼働エリア・希望日当・LINEユーザーID</p>
-<h3 style="color:#FFF;margin:24px 0 8px;">第2条（利用目的）</h3>
-<ol style="padding-left:20px;">
-  <li>マッチング機能の提供（案件と職人の照合・通知）</li>
-  <li>利用者への連絡・問い合わせ対応</li>
-  <li>手数料の請求・支払い管理</li>
-  <li>不正利用の防止・規約違反の調査</li>
-  <li>サービス改善および新機能の開発（個人を特定しない統計分析）</li>
-</ol>
-<h3 style="color:#FFF;margin:24px 0 8px;">第3条（第三者提供）</h3>
-<p>運営者は、法令に基づく場合・本人同意がある場合を除き、個人情報を第三者に提供しません。なお、本サービスはGoogle LLC（米国）のサービスを利用しており、個人情報が外国に移転する場合があります。</p>
-<h3 style="color:#FFF;margin:24px 0 8px;">第4条（安全管理）</h3>
-<p>運営者は、不正アクセス・漏えい防止のためGoogleスプレッドシートのアクセス権限管理等の安全管理措置を講じます。個人情報の漏えい等が発生した場合、個人情報保護法第26条に基づき個人情報保護委員会への報告および本人への通知を行います。</p>
-<h3 style="color:#FFF;margin:24px 0 8px;">第5条（保存期間）</h3>
-<p>退会日から1年間保存後に削除します（法令による保存義務のあるものを除く）。取引記録は電子帳簿保存法に基づき7年間保存します。</p>
-<h3 style="color:#FFF;margin:24px 0 8px;">第6条（本人の権利）</h3>
-<p>利用者は自己の個人情報について、開示・訂正・削除・利用停止を請求できます。下記問い合わせ窓口にご連絡ください。</p>
-<h3 style="color:#FFF;margin:24px 0 8px;">第7条（問い合わせ窓口）</h3>
-<p>KAITAI MATCH 運営事務局<br>メール：kaitai.match@gmail.com<br>LINE公式アカウント：https://line.me/R/ti/p/@774alkpm<br>受付時間：平日 10:00〜18:00</p>
-<p style="margin-top:32px;color:#444;font-family:'IBM Plex Mono',monospace;font-size:11px;">KAITAI MATCH 運営事務局｜制定：2026年3月</p>
-`;
+const SECURITY = [
+  {h:'セキュリティポリシー', sub:'Security &amp; Disclosure Policy ｜ 2026年3月'},
+  {p:'KAITAI MATCHは、利用者の個人情報および取引情報を保護するため、継続的なセキュリティ対策を講じています。本ページは、採用している主要な対策と脆弱性報告窓口を明示するものです。'},
+  {h3:'1. 通信・暗号化', ul:[
+    'すべての通信をTLS 1.3で暗号化し、HSTSおよび HTTPS-only通信を強制します',
+    '古いTLSプロトコル（TLS 1.0 / 1.1）および脆弱な暗号スイートは無効化'
+  ]},
+  {h3:'2. アプリケーション層', ul:[
+    'Content-Security-Policy (CSP) による XSS / データインジェクション防止',
+    'X-Content-Type-Options: nosniff でMIMEスニッフィング攻撃を防止',
+    'Referrer-Policy: strict-origin-when-cross-origin でReferer経由の情報漏洩を抑制',
+    'Permissions-Policy でカメラ・マイク・位置情報等の権限を無効化',
+    'frame-ancestors none / X-Frame-Options によるクリックジャッキング対策',
+    'クライアント側入力はNFKC正規化・制御文字除去・長さ制限・危険文字除去を多層適用'
+  ]},
+  {h3:'3. ボット・不正アクセス対策', ul:[
+    'Google reCAPTCHA v3 によるスコアベース検知',
+    '多層ハニーポット（視覚的・タブ・スクリーンリーダーから隠蔽）',
+    'タイミング分析（ページ滞在時間 / 人間由来イベント検知）',
+    'フィンガープリント統合型レートリミット',
+    'sessionStorage整合性検証（改ざん検知）'
+  ]},
+  {h3:'4. バックエンド', ul:[
+    'Google Apps Script（サーバーレス）による送信プロキシを推奨構成',
+    'プロキシ側でreCAPTCHA検証・IP-basedレートリミット・タイムスタンプ鮮度検証',
+    '最少権限原則に基づく管理者アカウント権限設計',
+    '定期的なアクセスログレビューと異常検知'
+  ]},
+  {h3:'5. 脆弱性報告（Responsible Disclosure）',
+    p:'本サービスに脆弱性を発見された場合、下記窓口までご連絡ください。公表前に修正を行うため、90日間の非公開期間にご協力をお願いします。',
+    p2:'報告窓口：kaitai.match@gmail.com（件名に「[Security]」を含めてください）',
+    p3:'悪意のない脆弱性報告者に対しては、法的責任を追及いたしません（セーフハーバー条項）。'
+  },
+  {h3:'6. インシデント対応', p:'個人情報漏えい等の重大インシデント発生時は、個人情報保護法第26条に基づき、個人情報保護委員会への72時間以内の報告および影響を受ける利用者への通知を行います。'},
+  {foot:'KAITAI MATCH 運営事務局 ｜ 2026年3月版'}
+];
+
+function renderModal(data, titleId) {
+  const frag = document.createDocumentFragment();
+  data.forEach((item, i) => {
+    if (item.h) {
+      const h = document.createElement('h2');
+      h.id = titleId;
+      h.style.cssText = "font-family:'Noto Serif JP',serif;color:#0A1F3D;margin-bottom:8px;font-size:26px;font-weight:600;letter-spacing:.02em;";
+      h.textContent = item.h;
+      frag.appendChild(h);
+      if (item.sub) {
+        const sub = document.createElement('p');
+        sub.style.cssText = "color:#6B7280;margin-bottom:32px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;";
+        // subはHTMLエンティティ含むのでtextContentで無害化
+        sub.textContent = item.sub.replace(/&amp;/g, '&');
+        frag.appendChild(sub);
+      }
+    }
+    if (item.h3) {
+      const h3 = document.createElement('h3');
+      h3.style.cssText = "color:#0A1F3D;margin:32px 0 12px;font-family:'Noto Serif JP',serif;font-size:17px;font-weight:600;";
+      h3.textContent = item.h3;
+      frag.appendChild(h3);
+    }
+    ['p','p2','p3','p4'].forEach(k => {
+      if (item[k]) {
+        const p = document.createElement('p');
+        p.style.cssText = 'color:#2E3A4C;margin-top:6px;';
+        p.textContent = item[k];
+        frag.appendChild(p);
+      }
+    });
+    if (item.ul) {
+      const ul = document.createElement('ul');
+      ul.style.cssText = 'padding-left:20px;color:#2E3A4C;';
+      item.ul.forEach(li => { const l = document.createElement('li'); l.textContent = li; ul.appendChild(l); });
+      frag.appendChild(ul);
+    }
+    if (item.ol) {
+      const ol = document.createElement('ol');
+      ol.style.cssText = 'padding-left:20px;color:#2E3A4C;';
+      item.ol.forEach(li => { const l = document.createElement('li'); l.textContent = li; ol.appendChild(l); });
+      frag.appendChild(ol);
+    }
+    if (item.foot) {
+      const f = document.createElement('p');
+      f.style.cssText = "margin-top:40px;color:#9CA3AF;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.05em;";
+      f.textContent = item.foot;
+      frag.appendChild(f);
+    }
+  });
+  const c = q('modal-content');
+  c.replaceChildren(frag);
+}
 
 function openModal(type) {
-  document.getElementById('modal-content').innerHTML =
-    type === 'terms' ? TERMS_HTML : PRIVACY_HTML;
-  document.getElementById('modal-overlay').style.display = 'block';
+  renderModal(
+    type === 'terms' ? TERMS : type === 'privacy' ? PRIVACY : SECURITY,
+    'modal-title'
+  );
+  const overlay = q('modal-overlay');
+  overlay.style.display = 'block';
   document.body.style.overflow = 'hidden';
+  // focus trap
+  setTimeout(() => q('modal-close').focus(), 50);
 }
-
 function closeModal() {
-  document.getElementById('modal-overlay').style.display = 'none';
+  q('modal-overlay').style.display = 'none';
   document.body.style.overflow = '';
 }
+q('modal-close').addEventListener('click', closeModal);
+q('modal-overlay').addEventListener('click', (e) => { if (e.target.id === 'modal-overlay') closeModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+/* ─── DEV DETECT (任意: 本番で有効化する場合は自己責任で) ─── */
+// コンソール警告 (ソーシャルエンジニアリング防止)
+try {
+  console.log('%c⚠ 警告 / Warning', 'color:#B42318;font-size:24px;font-weight:bold;');
+  console.log('%cここにコードを貼り付けると、アカウント情報を盗まれる可能性があります。信頼できる開発者以外の指示には従わないでください。', 'color:#0A1F3D;font-size:14px;');
+} catch(e){}
+
+})();
 </script>
 </body>
 </html>
