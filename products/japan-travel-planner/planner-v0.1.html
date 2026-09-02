@@ -13,49 +13,48 @@
     width: 210mm; height: 297mm; page-break-after: always; position: relative;
     padding: 18mm 16mm 16mm; overflow: hidden; background: #fff;
   }
-  .accent { color: #b93a32; }
-  h1, h2 { font-family: 'DejaVu Serif', Georgia, serif; font-weight: 700; color: #22303f; }
+  .accent { color: #bc002d; }
+  h1, h2 { font-family: 'DejaVu Serif', Georgia, serif; font-weight: 700; color: #1f2429; }
   h2 { font-size: 21px; letter-spacing: .5px; margin-bottom: 2mm; }
-  .kicker { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #b93a32; margin-bottom: 1.5mm; font-weight: bold; }
-  .rule { border: 0; border-top: 2px solid #22303f; margin: 4mm 0 6mm; }
+  .kicker { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #bc002d; margin-bottom: 1.5mm; font-weight: bold; }
+  .rule { border: 0; border-top: 2px solid #1f2429; margin: 4mm 0 6mm; }
   .sub { font-size: 10.5px; color: #6b7683; line-height: 1.55; }
   .footer { position: absolute; bottom: 9mm; left: 16mm; right: 16mm; display: flex; justify-content: space-between; font-size: 8px; letter-spacing: 1.5px; color: #9aa4ae; text-transform: uppercase; }
-  .footer .dot { color: #b93a32; }
+  .footer .dot { color: #bc002d; }
   table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; font-size: 8.5px; letter-spacing: 1.2px; text-transform: uppercase; color: #b93a32; padding: 2.2mm 2mm; border-bottom: 1.5px solid #22303f; }
+  th { text-align: left; font-size: 8.5px; letter-spacing: 1.2px; text-transform: uppercase; color: #bc002d; padding: 2.2mm 2mm; border-bottom: 1.5px solid #1f2429; }
   td { font-size: 10px; padding: 3.4mm 2mm; border-bottom: .4px solid #cdd4da; color: #2b3440; vertical-align: top; }
   .writein td { height: 9mm; }
-  .box { border: 1px solid #22303f; border-radius: 2mm; padding: 5mm; }
-  .tipbox { background: #faf3ec; border: none; border-left: 3px solid #b93a32; border-radius: 0 2mm 2mm 0; padding: 4mm 5mm; font-size: 9.5px; line-height: 1.6; color: #5a4632; }
-  .tipbox b { color: #b93a32; }
-  .check { display: inline-block; width: 3.6mm; height: 3.6mm; border: 1.2px solid #22303f; border-radius: .8mm; margin-right: 2.6mm; vertical-align: -0.7mm; }
+  .box { border: 1px solid #1f2429; border-radius: 2mm; padding: 5mm; }
+  .tipbox { background: #fdf1f2; border: none; border-left: 3px solid #bc002d; border-radius: 0 2mm 2mm 0; padding: 4mm 5mm; font-size: 9.5px; line-height: 1.6; color: #4d3a3d; }
+  .tipbox b { color: #bc002d; }
+  .check { display: inline-block; width: 3.6mm; height: 3.6mm; border: 1.2px solid #1f2429; border-radius: .8mm; margin-right: 2.6mm; vertical-align: -0.7mm; }
   .cl li { list-style: none; font-size: 10px; padding: 2.1mm 0; border-bottom: .4px dotted #cdd4da; }
   .cols2 { display: flex; gap: 8mm; }
   .cols2 > div { flex: 1; }
   .lined { border-bottom: .5px solid #b9c2ca; height: 8.5mm; }
 
-  /* cover */
-  .cover { background: #22303f; color: #f5f1e8; display: flex; flex-direction: column; padding: 0; }
-  .cover-inner { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 20mm; border-left: 6mm solid #b93a32; margin: 14mm; }
-  .cover .kicker { color: #d9a441; margin-bottom: 6mm; }
-  .cover h1 { color: #f5f1e8; font-size: 46px; line-height: 1.12; letter-spacing: 1px; }
-  .cover .jp-big { font-size: 15px; color: #d9a441; margin-top: 5mm; letter-spacing: 6px; }
-  .cover .byline { margin-top: 16mm; font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase; color: #aab6c2; line-height: 2; }
-  .cover .stripe { display: flex; gap: 3mm; margin-top: 10mm; }
-  .cover .stripe span { display: block; width: 14mm; height: 2mm; background: #b93a32; }
-  .cover .stripe span:nth-child(2) { background: #d9a441; }
-  .cover .stripe span:nth-child(3) { background: #f5f1e8; }
+  /* cover — hinomaru: white ground, one red sun */
+  .cover { background: #fff; color: #1f2429; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0; border: 4mm solid #fff; }
+  .cover-frame { flex: 1; align-self: stretch; margin: 10mm; border: .6mm solid #1f2429; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 18mm; }
+  .cover .sun { width: 64mm; height: 64mm; border-radius: 50%; background: #bc002d; margin-bottom: 14mm; }
+  .cover .kicker { color: #bc002d; margin-bottom: 5mm; }
+  .cover h1 { color: #1f2429; font-size: 42px; line-height: 1.15; letter-spacing: 2px; }
+  .cover .jp-big { font-size: 13px; color: #bc002d; margin-top: 5mm; letter-spacing: 7px; }
+  .cover .rule-s { width: 24mm; border-top: 1mm solid #bc002d; margin: 10mm auto 0; }
+  .cover .byline { margin-top: 8mm; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #6b7683; line-height: 2; }
 </style>
 </head>
 <body>
 
 <!-- 1. COVER -->
 <div class="page cover">
-  <div class="cover-inner">
+  <div class="cover-frame">
+    <div class="sun"></div>
     <div class="kicker">The Tokyo-Based Guide Series</div>
-    <h1>JAPAN<br>TRAVEL<br>PLANNER</h1>
+    <h1>JAPAN TRAVEL<br>PLANNER</h1>
     <div class="jp-big jp">日本旅行プランナー</div>
-    <div class="stripe"><span></span><span></span><span></span></div>
+    <div class="rule-s"></div>
     <div class="byline">Itinerary · Budget · Checklists · Local Tokyo Tips<br>Made in Shinjuku, Tokyo — updated for 2026</div>
   </div>
 </div>
@@ -374,7 +373,7 @@
   <div class="lined"></div><div class="lined"></div><div class="lined"></div><div class="lined"></div>
   <div class="lined"></div><div class="lined"></div><div class="lined"></div><div class="lined"></div>
   <div style="height:8mm"></div>
-  <div class="box" style="border-color:#b93a32;">
+  <div class="box" style="border-color:#bc002d;">
     <div class="kicker" style="margin-bottom:2mm">Arigatou!</div>
     <p class="sub">This planner was made in Shinjuku, Tokyo, and is updated as the city changes. Questions, corrections, or a tip of your own? We’d love to hear how your trip went. <span class="jp">よい旅を！</span> — have a wonderful journey.</p>
   </div>

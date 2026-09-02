@@ -1,5 +1,5 @@
 :root {
-  --ink: #22303f; --paper: #faf8f4; --accent: #b93a32; --gold: #d9a441;
+  --ink: #1f2429; --paper: #fdfdfc; --accent: #bc002d; --gold: #bc002d;
   --muted: #6b7683; --line: #e2ddd4;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,7 +22,7 @@ h3 { font-size: 16px; margin: 24px 0 8px; }
 .card .kicker { margin-bottom: 6px; }
 .btn { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 6px; font-weight: 700; font-size: 14px; margin-top: 12px; }
 .btn.ghost { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
-.tip { background: #fdf3e7; border-left: 3px solid var(--accent); padding: 14px 18px; border-radius: 0 8px 8px 0; font-size: 14px; margin: 20px 0; }
+.tip { background: #fdf1f2; border-left: 3px solid var(--accent); padding: 14px 18px; border-radius: 0 8px 8px 0; font-size: 14px; margin: 20px 0; }
 .tip b { color: var(--accent); }
 table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
 th { text-align: left; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); border-bottom: 2px solid var(--ink); padding: 8px 6px; }
