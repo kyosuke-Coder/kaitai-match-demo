@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Japan Travel Planner</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; }
+  body { font-family: 'DejaVu Sans', 'Helvetica Neue', Arial, sans-serif; color: #2b3440; }
+  .jp { font-family: 'IPAGothic', sans-serif; }
+  .page {
+    width: 210mm; height: 297mm; page-break-after: always; position: relative;
+    padding: 18mm 16mm 16mm; overflow: hidden; background: #fff;
+  }
+  .accent { color: #b93a32; }
+  h1, h2 { font-family: 'DejaVu Serif', Georgia, serif; font-weight: 700; color: #22303f; }
+  h2 { font-size: 21px; letter-spacing: .5px; margin-bottom: 2mm; }
+  .kicker { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #b93a32; margin-bottom: 1.5mm; font-weight: bold; }
+  .rule { border: 0; border-top: 2px solid #22303f; margin: 4mm 0 6mm; }
+  .sub { font-size: 10.5px; color: #6b7683; line-height: 1.55; }
+  .footer { position: absolute; bottom: 9mm; left: 16mm; right: 16mm; display: flex; justify-content: space-between; font-size: 8px; letter-spacing: 1.5px; color: #9aa4ae; text-transform: uppercase; }
+  .footer .dot { color: #b93a32; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 8.5px; letter-spacing: 1.2px; text-transform: uppercase; color: #b93a32; padding: 2.2mm 2mm; border-bottom: 1.5px solid #22303f; }
+  td { font-size: 10px; padding: 3.4mm 2mm; border-bottom: .4px solid #cdd4da; color: #2b3440; vertical-align: top; }
+  .writein td { height: 9mm; }
+  .box { border: 1px solid #22303f; border-radius: 2mm; padding: 5mm; }
+  .tipbox { background: #faf3ec; border: none; border-left: 3px solid #b93a32; border-radius: 0 2mm 2mm 0; padding: 4mm 5mm; font-size: 9.5px; line-height: 1.6; color: #5a4632; }
+  .tipbox b { color: #b93a32; }
+  .check { display: inline-block; width: 3.6mm; height: 3.6mm; border: 1.2px solid #22303f; border-radius: .8mm; margin-right: 2.6mm; vertical-align: -0.7mm; }
+  .cl li { list-style: none; font-size: 10px; padding: 2.1mm 0; border-bottom: .4px dotted #cdd4da; }
+  .cols2 { display: flex; gap: 8mm; }
+  .cols2 > div { flex: 1; }
+  .lined { border-bottom: .5px solid #b9c2ca; height: 8.5mm; }
+
+  /* cover */
+  .cover { background: #22303f; color: #f5f1e8; display: flex; flex-direction: column; padding: 0; }
+  .cover-inner { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 20mm; border-left: 6mm solid #b93a32; margin: 14mm; }
+  .cover .kicker { color: #d9a441; margin-bottom: 6mm; }
+  .cover h1 { color: #f5f1e8; font-size: 46px; line-height: 1.12; letter-spacing: 1px; }
+  .cover .jp-big { font-size: 15px; color: #d9a441; margin-top: 5mm; letter-spacing: 6px; }
+  .cover .byline { margin-top: 16mm; font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase; color: #aab6c2; line-height: 2; }
+  .cover .stripe { display: flex; gap: 3mm; margin-top: 10mm; }
+  .cover .stripe span { display: block; width: 14mm; height: 2mm; background: #b93a32; }
+  .cover .stripe span:nth-child(2) { background: #d9a441; }
+  .cover .stripe span:nth-child(3) { background: #f5f1e8; }
+</style>
+</head>
+<body>
+
+<!-- 1. COVER -->
+<div class="page cover">
+  <div class="cover-inner">
+    <div class="kicker">The Tokyo-Based Guide Series</div>
+    <h1>JAPAN<br>TRAVEL<br>PLANNER</h1>
+    <div class="jp-big jp">日本旅行プランナー</div>
+    <div class="stripe"><span></span><span></span><span></span></div>
+    <div class="byline">Itinerary · Budget · Checklists · Local Tokyo Tips<br>Made in Shinjuku, Tokyo — updated for 2026</div>
+  </div>
+</div>
+
+<!-- 2. TRIP OVERVIEW -->
+<div class="page">
+  <div class="kicker">01 — Overview</div>
+  <h2>Trip Overview <span class="jp sub">旅の概要</span></h2>
+  <hr class="rule">
+  <div class="cols2">
+    <div>
+      <table class="writein">
+        <tr><th colspan="2">The Basics</th></tr>
+        <tr><td style="width:34%; color:#6b7683;">Travelers</td><td></td></tr>
+        <tr><td style="color:#6b7683;">Dates</td><td></td></tr>
+        <tr><td style="color:#6b7683;">Cities</td><td></td></tr>
+        <tr><td style="color:#6b7683;">Trip budget</td><td></td></tr>
+        <tr><td style="color:#6b7683;">Countdown</td><td></td></tr>
+      </table>
+      <div style="height:6mm"></div>
+      <table class="writein">
+        <tr><th colspan="2">Flights</th></tr>
+        <tr><td style="width:34%; color:#6b7683;">Outbound</td><td></td></tr>
+        <tr><td style="color:#6b7683;">Return</td><td></td></tr>
+        <tr><td style="color:#6b7683;">Airport → hotel</td><td></td></tr>
+        <tr><td style="color:#6b7683;">Booking refs</td><td></td></tr>
+      </table>
+    </div>
+    <div>
+      <table class="writein">
+        <tr><th colspan="2">Accommodation</th></tr>
+        <tr><td style="width:34%; color:#6b7683;">Stay 1</td><td></td></tr>
+        <tr><td style="color:#6b7683;">Stay 2</td><td></td></tr>
+        <tr><td style="color:#6b7683;">Stay 3</td><td></td></tr>
+        <tr><td style="color:#6b7683;">Check-in notes</td><td></td></tr>
+      </table>
+      <div style="height:6mm"></div>
+      <div class="tipbox">
+        <b>Local tip:</b> Tokyo hotels rarely allow check-in before 15:00, but nearly all hold luggage for free from the morning — drop your bags and start exploring. Airport limousine buses and “takkyubin” luggage forwarding (about ¥2,000–2,600 per bag) can also send suitcases ahead to your next city.
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 01</span></div>
+</div>
+
+<!-- 3. PRE-TRIP CHECKLIST -->
+<div class="page">
+  <div class="kicker">02 — Before You Fly</div>
+  <h2>Pre-Trip Checklist <span class="jp sub">出発前の準備</span></h2>
+  <hr class="rule">
+  <div class="cols2">
+    <div>
+      <table><tr><th>8–4 Weeks Out</th></tr></table>
+      <ul class="cl">
+        <li><span class="check"></span>Passport valid for entire stay</li>
+        <li><span class="check"></span>Book flights &amp; first hotels</li>
+        <li><span class="check"></span>Check visa / visa-waiver rules for your country</li>
+        <li><span class="check"></span>Reserve big-ticket sights (Ghibli Museum, teamLab, Shibuya Sky sell out weeks ahead)</li>
+        <li><span class="check"></span>Compare a JR Pass vs. single tickets — it only pays off with 2+ long shinkansen legs</li>
+      </ul>
+      <div style="height:5mm"></div>
+      <table><tr><th>2–1 Weeks Out</th></tr></table>
+      <ul class="cl">
+        <li><span class="check"></span>Fill in Visit Japan Web (immigration &amp; customs QR)</li>
+        <li><span class="check"></span>Buy an eSIM or pocket Wi-Fi</li>
+        <li><span class="check"></span>Travel insurance</li>
+        <li><span class="check"></span>Notify your bank / enable overseas card use</li>
+      </ul>
+    </div>
+    <div>
+      <table><tr><th>Money &amp; Apps</th></tr></table>
+      <ul class="cl">
+        <li><span class="check"></span>Add Suica/PASMO to Apple&nbsp;Pay or plan a Welcome Suica card</li>
+        <li><span class="check"></span>Plan cash: Japan is card-friendly now, but small restaurants, shrines and markets still want yen</li>
+        <li><span class="check"></span>Download: Google Maps, Google Translate (offline JP), Japan Travel by Navitime</li>
+        <li><span class="check"></span>Note your country’s embassy address</li>
+      </ul>
+      <div style="height:5mm"></div>
+      <div class="tipbox">
+        <b>Local tip:</b> 7-Eleven ATMs accept nearly every foreign card, are everywhere, and have English menus — there is no need to exchange large amounts at the airport. Convenience stores are also where you’ll buy transit-friendly breakfasts for ¥300–500.
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 02</span></div>
+</div>
+
+<!-- 4. BUDGET -->
+<div class="page">
+  <div class="kicker">03 — Money</div>
+  <h2>Budget Planner <span class="jp sub">予算管理</span></h2>
+  <hr class="rule">
+  <table class="writein">
+    <tr><th style="width:30%">Category</th><th style="width:23%">Planned (¥)</th><th style="width:23%">Actual (¥)</th><th>Notes</th></tr>
+    <tr><td>Flights</td><td></td><td></td><td></td></tr>
+    <tr><td>Accommodation</td><td></td><td></td><td></td></tr>
+    <tr><td>Transport (IC card, trains, shinkansen)</td><td></td><td></td><td></td></tr>
+    <tr><td>Food &amp; drink</td><td></td><td></td><td></td></tr>
+    <tr><td>Sights &amp; experiences</td><td></td><td></td><td></td></tr>
+    <tr><td>Shopping &amp; souvenirs</td><td></td><td></td><td></td></tr>
+    <tr><td>Connectivity (eSIM / Wi-Fi)</td><td></td><td></td><td></td></tr>
+    <tr><td>Buffer (10–15%)</td><td></td><td></td><td></td></tr>
+    <tr><td style="font-weight:bold">Total</td><td></td><td></td><td></td></tr>
+  </table>
+  <div style="height:6mm"></div>
+  <div class="cols2">
+    <div class="box">
+      <table>
+        <tr><th colspan="2">Realistic Daily Costs (per person, Tokyo)</th></tr>
+        <tr><td>Budget day (conbini + ramen + free sights)</td><td style="text-align:right">¥6,000–9,000</td></tr>
+        <tr><td>Mid-range day (restaurants + paid sights)</td><td style="text-align:right">¥12,000–20,000</td></tr>
+        <tr><td>Splurge day (sushi counter, Shibuya Sky…)</td><td style="text-align:right">¥25,000+</td></tr>
+        <tr><td>Metro day of hopping around Tokyo</td><td style="text-align:right">≈ ¥800–1,200</td></tr>
+      </table>
+    </div>
+    <div class="tipbox" style="display:flex; align-items:center;">
+      <div><b>Local tip:</b> Lunch is Tokyo’s best deal — the same restaurant that charges ¥6,000 at dinner often serves a ¥1,200–1,800 lunch set (<span class="jp">定食</span>). Plan your “nice meals” at noon and eat casual at night to cut food costs almost in half.</div>
+    </div>
+  </div>
+  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 03</span></div>
+</div>
+
+<!-- 5-6. DAILY ITINERARY x2 -->
+<div class="page">
+  <div class="kicker">04 — Day by Day</div>
+  <h2>Daily Itinerary <span class="jp sub">1日の計画</span></h2>
+  <hr class="rule">
+  <table class="writein">
+    <tr><td style="width:15%; color:#6b7683;">Day / Date</td><td style="width:45%;"></td><td style="width:14%; color:#6b7683;">Weather</td><td></td></tr>
+  </table>
+  <div style="height:4mm"></div>
+  <table class="writein">
+    <tr><th style="width:18%">Time</th><th style="width:52%">Plan</th><th>Transit / Notes</th></tr>
+    <tr><td>Morning</td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td></tr>
+    <tr><td>Lunch</td><td></td><td></td></tr>
+    <tr><td>Afternoon</td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td></tr>
+    <tr><td>Dinner</td><td></td><td></td></tr>
+    <tr><td>Evening</td><td></td><td></td></tr>
+  </table>
+  <div style="height:5mm"></div>
+  <div class="cols2">
+    <div>
+      <table><tr><th>Spent Today</th></tr></table>
+      <div class="lined"></div><div class="lined"></div><div class="lined"></div>
+    </div>
+    <div>
+      <table><tr><th>Best Moment of the Day</th></tr></table>
+      <div class="lined"></div><div class="lined"></div><div class="lined"></div>
+    </div>
+  </div>
+  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 04 · print one per day</span></div>
+</div>
+
+<!-- 7. TOKYO 3-DAY -->
+<div class="page">
+  <div class="kicker">05 — Local Knowledge</div>
+  <h2>Tokyo: A First-Timer’s 3 Days <span class="jp sub">東京3日間モデルコース</span></h2>
+  <hr class="rule">
+  <p class="sub" style="margin-bottom:4mm">A realistic pace — two neighborhoods per day, not seven. Written and walk-tested by a Tokyo local based in Shinjuku.</p>
+  <table>
+    <tr><th style="width:12%">Day 1</th><th>West Tokyo — Shinjuku &amp; Shibuya</th></tr>
+    <tr><td class="accent" style="font-weight:bold">AM</td><td>Shinjuku Gyoen at 09:00 opening (¥500, calm before crowds) → walk to the Tokyo Metropolitan Government Building free observatory (202&nbsp;m, no ticket needed)</td></tr>
+    <tr><td class="accent" style="font-weight:bold">PM</td><td>Meiji Shrine &amp; Harajuku → Shibuya: the Scramble from street level first, then Hachiko. Book Shibuya Sky for sunset weeks ahead — or skip it and keep your yen</td></tr>
+    <tr><td class="accent" style="font-weight:bold">Night</td><td>Back to Shinjuku: Omoide Yokocho’s lantern alleys for yakitori, then a stroll through neon Kabukicho (look, don’t follow touts)</td></tr>
+  </table>
+  <div style="height:4mm"></div>
+  <table>
+    <tr><th style="width:12%">Day 2</th><th>East Tokyo — Asakusa, Ueno &amp; Akihabara</th></tr>
+    <tr><td class="accent" style="font-weight:bold">AM</td><td>Senso-ji before 09:00 (the difference in crowds is night and day) → Nakamise snacks → Sumida River terrace views of Tokyo Skytree</td></tr>
+    <tr><td class="accent" style="font-weight:bold">PM</td><td>Ueno Park &amp; one museum (Tokyo National Museum if you pick just one) → Ameyoko market street → Akihabara arcades and retro-game floors</td></tr>
+    <tr><td class="accent" style="font-weight:bold">Night</td><td>Izakaya dinner under the Yurakucho railway arches — order by pointing, everyone does</td></tr>
+  </table>
+  <div style="height:4mm"></div>
+  <table>
+    <tr><th style="width:12%">Day 3</th><th>Bay Side — Tsukiji, Ginza &amp; teamLab</th></tr>
+    <tr><td class="accent" style="font-weight:bold">AM</td><td>Tsukiji Outer Market breakfast (go hungry: tamagoyaki, tuna bowls, oysters) → Hamarikyu Gardens tea house</td></tr>
+    <tr><td class="accent" style="font-weight:bold">PM</td><td>Ginza — depachika food halls in the basements are free to wander and unforgettable → teamLab Planets (buy tickets online, timed entry)</td></tr>
+    <tr><td class="accent" style="font-weight:bold">Night</td><td>Tokyo Station’s Ramen Street, then the Marunouchi red-brick station facade lit up — a quiet, perfect last photo</td></tr>
+  </table>
+  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 05</span></div>
+</div>
+
+<!-- 8. DAY TRIPS -->
+<div class="page">
+  <div class="kicker">06 — Local Knowledge</div>
+  <h2>Day Trips from Tokyo <span class="jp sub">東京発・日帰り旅</span></h2>
+  <hr class="rule">
+  <p class="sub" style="margin-bottom:4mm">All reachable from Shinjuku or Tokyo Station without a JR Pass. Times are one-way.</p>
+  <table>
+    <tr><th style="width:16%">Where</th><th style="width:17%">From / Time</th><th style="width:17%">Approx. Cost</th><th>Why Go / Local Notes</th></tr>
+    <tr><td style="font-weight:bold">Hakone</td><td>Shinjuku · 85 min</td><td>¥6,100 Free-pass</td><td>Onsen, ropeway over volcanic steam, Lake Ashi. The Hakone Freepass covers the whole loop — do it counter-clockwise to beat tour groups</td></tr>
+    <tr><td style="font-weight:bold">Kamakura</td><td>Tokyo Stn · 60 min</td><td>≈ ¥1,900 return</td><td>Great Buddha, hydrangea temples, Enoden seaside tram. Go on a weekday; weekends are packed by 11:00</td></tr>
+    <tr><td style="font-weight:bold">Nikko</td><td>Asakusa · 110 min</td><td>≈ ¥5,700 pass</td><td>Toshogu Shrine’s carved gates and cedar forests. Autumn color peaks late Oct–early Nov</td></tr>
+    <tr><td style="font-weight:bold">Kawagoe</td><td>Shinjuku · 55 min</td><td>≈ ¥1,000 return</td><td>“Little Edo” clay-walled merchant street, sweet-potato everything, kimono rental town</td></tr>
+    <tr><td style="font-weight:bold">Mt. Takao</td><td>Shinjuku · 50 min</td><td>≈ ¥800 return</td><td>Tokyo’s easiest mountain — cable car, monkey park, Fuji views on clear winter mornings</td></tr>
+    <tr><td style="font-weight:bold">Yokohama</td><td>Shibuya · 30 min</td><td>≈ ¥600 return</td><td>Ramen Museum, Chinatown, harbor night views from the Cosmo Clock ferris wheel</td></tr>
+  </table>
+  <div style="height:5mm"></div>
+  <div class="tipbox">
+    <b>Local tip:</b> For Hakone and Kawagoe, buy the private-railway “free pass” at Shinjuku’s Odakyu or Seibu counters — they bundle the round trip with unlimited local buses and small discounts, and staff speak English. Check typhoon forecasts in September; mountain ropeways stop in high wind.
+  </div>
+  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 06</span></div>
+</div>
+
+<!-- 9. PHRASES -->
+<div class="page">
+  <div class="kicker">07 — Language</div>
+  <h2>Essential Phrases <span class="jp sub">基本フレーズ</span></h2>
+  <hr class="rule">
+  <table>
+    <tr><th style="width:34%">English</th><th style="width:33%">Say It (romaji)</th><th>Japanese</th></tr>
+    <tr><td>Hello</td><td>kon-nichiwa</td><td class="jp">こんにちは</td></tr>
+    <tr><td>Thank you</td><td>arigatou gozaimasu</td><td class="jp">ありがとうございます</td></tr>
+    <tr><td>Excuse me / sorry</td><td>sumimasen</td><td class="jp">すみません</td></tr>
+    <tr><td>Yes / No</td><td>hai / iie</td><td class="jp">はい / いいえ</td></tr>
+    <tr><td>How much is it?</td><td>ikura desu ka?</td><td class="jp">いくらですか？</td></tr>
+    <tr><td>This one, please</td><td>kore o kudasai</td><td class="jp">これをください</td></tr>
+    <tr><td>Where is …?</td><td>… wa doko desu ka?</td><td class="jp">〜はどこですか？</td></tr>
+    <tr><td>The check, please</td><td>o-kaikei onegaishimasu</td><td class="jp">お会計お願いします</td></tr>
+    <tr><td>Do you speak English?</td><td>eigo o hanasemasu ka?</td><td class="jp">英語を話せますか？</td></tr>
+    <tr><td>It’s delicious!</td><td>oishii!</td><td class="jp">おいしい！</td></tr>
+    <tr><td>Cheers!</td><td>kanpai!</td><td class="jp">乾杯！</td></tr>
+    <tr><td>I’d like to go to ~ (taxi)</td><td>~ made onegaishimasu</td><td class="jp">〜までお願いします</td></tr>
+  </table>
+  <div style="height:5mm"></div>
+  <div class="tipbox">
+    <b>Local tip:</b> “Sumimasen” is the single most useful word in Japan — it opens conversations, calls waiters (say it clearly, waving is fine), and apologizes for bumping someone, all at once. Nobody expects perfect Japanese; the attempt is what’s appreciated.
+  </div>
+  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 07</span></div>
+</div>
+
+<!-- 10. FOOD BUCKET LIST -->
+<div class="page">
+  <div class="kicker">08 — Eat</div>
+  <h2>Japan Food Bucket List <span class="jp sub">食べたいものリスト</span></h2>
+  <hr class="rule">
+  <div class="cols2">
+    <div>
+      <table><tr><th>The Classics</th></tr></table>
+      <ul class="cl">
+        <li><span class="check"></span>Counter sushi (lunch sets are the smart splurge)</li>
+        <li><span class="check"></span>Ramen — try two styles: shoyu &amp; tonkotsu</li>
+        <li><span class="check"></span>Tempura over rice (tendon)</li>
+        <li><span class="check"></span>Wagyu — yakiniku or a steak lunch</li>
+        <li><span class="check"></span>Izakaya night: yakitori + a lemon sour</li>
+        <li><span class="check"></span>Okonomiyaki or monjayaki (Tokyo’s own)</li>
+        <li><span class="check"></span>Proper matcha &amp; wagashi in a garden tea house</li>
+      </ul>
+    </div>
+    <div>
+      <table><tr><th>Cheap &amp; Unmissable</th></tr></table>
+      <ul class="cl">
+        <li><span class="check"></span>Conbini breakfast: onigiri + egg sando</li>
+        <li><span class="check"></span>Standing soba at a train station (¥400)</li>
+        <li><span class="check"></span>Depachika food hall grazing</li>
+        <li><span class="check"></span>Taiyaki or melonpan, eaten warm</li>
+        <li><span class="check"></span>Vending-machine hot corn soup (winter)</li>
+        <li><span class="check"></span>Strawberry daifuku from a street stall</li>
+        <li><span class="check"></span>A ¥120 seasonal KitKat you can’t get home</li>
+      </ul>
+    </div>
+  </div>
+  <div style="height:5mm"></div>
+  <div class="tipbox">
+    <b>Local tip:</b> Lines in Japan usually mean “worth it,” but for ramen a 15-minute queue at 11:20 becomes 45 minutes by noon — eat lunch early (11:00–11:30) or late (14:00) and you will almost never wait.
+  </div>
+  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 08</span></div>
+</div>
+
+<!-- 11. PACKING -->
+<div class="page">
+  <div class="kicker">09 — Pack</div>
+  <h2>Packing List <span class="jp sub">持ち物リスト</span></h2>
+  <hr class="rule">
+  <div class="cols2">
+    <div>
+      <table><tr><th>Documents &amp; Money</th></tr></table>
+      <ul class="cl">
+        <li><span class="check"></span>Passport (+ photo of it in your phone)</li>
+        <li><span class="check"></span>Visit Japan Web QR screenshot</li>
+        <li><span class="check"></span>Two credit/debit cards, kept separately</li>
+        <li><span class="check"></span>Coin purse — you will collect coins fast</li>
+      </ul>
+      <div style="height:4mm"></div>
+      <table><tr><th>Tech</th></tr></table>
+      <ul class="cl">
+        <li><span class="check"></span>eSIM installed / pocket Wi-Fi booked</li>
+        <li><span class="check"></span>Power bank (long train days)</li>
+        <li><span class="check"></span>Plug type A adapter (100V, same as US shape)</li>
+      </ul>
+    </div>
+    <div>
+      <table><tr><th>Japan-Specific Smart Packs</th></tr></table>
+      <ul class="cl">
+        <li><span class="check"></span>Slip-on shoes — you’ll remove them at temples, some restaurants &amp; fitting rooms</li>
+        <li><span class="check"></span>Small hand towel (many restrooms have no dryers)</li>
+        <li><span class="check"></span>Foldable bag for trash — public bins are rare, you carry it until a conbini</li>
+        <li><span class="check"></span>Comfortable socks without holes (see: shoe removal)</li>
+        <li><span class="check"></span>Half-empty suitcase — you will fill it</li>
+        <li><span class="check"></span>Layers: Tokyo swings 10°C+ between morning and afternoon in spring/autumn</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 09</span></div>
+</div>
+
+<!-- 12. NOTES -->
+<div class="page">
+  <div class="kicker">10 — Remember</div>
+  <h2>Notes &amp; Memories <span class="jp sub">メモと思い出</span></h2>
+  <hr class="rule">
+  <div class="lined"></div><div class="lined"></div><div class="lined"></div><div class="lined"></div>
+  <div class="lined"></div><div class="lined"></div><div class="lined"></div><div class="lined"></div>
+  <div class="lined"></div><div class="lined"></div><div class="lined"></div><div class="lined"></div>
+  <div class="lined"></div><div class="lined"></div><div class="lined"></div><div class="lined"></div>
+  <div class="lined"></div><div class="lined"></div><div class="lined"></div><div class="lined"></div>
+  <div style="height:8mm"></div>
+  <div class="box" style="border-color:#b93a32;">
+    <div class="kicker" style="margin-bottom:2mm">Arigatou!</div>
+    <p class="sub">This planner was made in Shinjuku, Tokyo, and is updated as the city changes. Questions, corrections, or a tip of your own? We’d love to hear how your trip went. <span class="jp">よい旅を！</span> — have a wonderful journey.</p>
+  </div>
+  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 10 · v0.1 © 2026</span></div>
+</div>
+
+</body>
+</html>
