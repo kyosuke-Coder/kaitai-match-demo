@@ -1,9 +1,9 @@
-# Etsy出品ドラフト — Japan Travel Planner v0.1
+# Etsy出品ドラフト — Tokyo Travel Planner v0.2
 
 ## タイトル（140字以内・検索キーワード前方配置）
 
 ```
-Japan Travel Planner Printable PDF | Tokyo Itinerary Template, Budget Tracker, Packing List, Japanese Phrases | Made in Tokyo | A4 & GoodNotes
+Tokyo Travel Planner Printable PDF | Tokyo Itinerary Template, Japan Budget Tracker, Packing List, Japanese Phrases | Made in Tokyo | A4 GoodNotes
 ```
 
 ## 価格戦略
@@ -13,14 +13,14 @@ Japan Travel Planner Printable PDF | Tokyo Itinerary Template, Budget Tracker, P
 
 ## タグ（13個・各20字以内）
 
-`japan travel planner` / `tokyo itinerary` / `japan trip template` / `travel planner pdf` / `japan vacation plan` / `tokyo travel guide` / `japan packing list` / `japan budget planner` / `goodnotes travel` / `japan phrases` / `japan trip 2026` / `printable itinerary` / `made in japan`
+`tokyo travel planner` / `tokyo itinerary` / `japan travel planner` / `japan trip template` / `travel planner pdf` / `japan vacation plan` / `tokyo travel guide` / `japan packing list` / `japan budget planner` / `goodnotes travel` / `japan phrases` / `printable itinerary` / `made in tokyo`
 
 ## 説明文
 
 ```
-PLAN YOUR JAPAN TRIP LIKE A TOKYO LOCAL 🇯🇵
+PLAN YOUR TOKYO TRIP LIKE A LOCAL 🇯🇵
 
-Most Japan planners are made by people who visited once. This one is made — and updated — in Shinjuku, Tokyo.
+Most Tokyo planners are made by people who visited once. This one is made — and updated — in Shinjuku, a 10-minute walk from the world’s busiest station.
 
 WHAT'S INSIDE (10 pages, A4, print-ready or GoodNotes-friendly):
 ★ Trip overview & flight/hotel organizer
@@ -48,6 +48,6 @@ Questions about your Japan trip? Message us — we live here. 🗼
 
 - 商品画像10枚: 表紙モック / 中身3〜4ページのプレビュー / iPad(GoodNotes)モック / 「Made in Tokyo」訴求カード / サイズ・仕様カード。CanvaのEtsyモックアップテンプレで作成
 - カテゴリ: Paper & Party Supplies > Paper > Calendars & Planners
-- Digital file: PDF 1点（370KB）。購入者向けに印刷ガイド1枚を追加同梱すると評価が上がる
+- Digital file: PDF 1点（約380KB）+ 無料版Tokyo Cheat Sheet 1枚を同梱（口コミ装置）。購入者向けに印刷ガイド1枚を追加同梱すると評価が上がる
 - レビュー獲得: 最初の2週間はローンチ価格+Etsy内広告$1/日でレビュー5件を最速で取る
 - ショップ名候補: TokyoFieldNotes / MadeInShinjuku / TokyoLocalPapers（Etsy内で重複確認要）

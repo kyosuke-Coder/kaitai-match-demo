@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Japan Travel Planner</title>
+<title>Tokyo Travel Planner</title>
 <style>
   @page { size: A4; margin: 0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -13,49 +13,77 @@
     width: 210mm; height: 297mm; page-break-after: always; position: relative;
     padding: 18mm 16mm 16mm; overflow: hidden; background: #fff;
   }
-  .accent { color: #bc002d; }
+  .accent { color: #d5573b; }
   h1, h2 { font-family: 'DejaVu Serif', Georgia, serif; font-weight: 700; color: #1f2429; }
   h2 { font-size: 21px; letter-spacing: .5px; margin-bottom: 2mm; }
-  .kicker { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #bc002d; margin-bottom: 1.5mm; font-weight: bold; }
+  .kicker { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #d5573b; margin-bottom: 1.5mm; font-weight: bold; }
   .rule { border: 0; border-top: 2px solid #1f2429; margin: 4mm 0 6mm; }
   .sub { font-size: 10.5px; color: #6b7683; line-height: 1.55; }
   .footer { position: absolute; bottom: 9mm; left: 16mm; right: 16mm; display: flex; justify-content: space-between; font-size: 8px; letter-spacing: 1.5px; color: #9aa4ae; text-transform: uppercase; }
-  .footer .dot { color: #bc002d; }
+  .footer .dot { color: #d5573b; }
   table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; font-size: 8.5px; letter-spacing: 1.2px; text-transform: uppercase; color: #bc002d; padding: 2.2mm 2mm; border-bottom: 1.5px solid #1f2429; }
+  th { text-align: left; font-size: 8.5px; letter-spacing: 1.2px; text-transform: uppercase; color: #d5573b; padding: 2.2mm 2mm; border-bottom: 1.5px solid #1f2429; }
   td { font-size: 10px; padding: 3.4mm 2mm; border-bottom: .4px solid #cdd4da; color: #2b3440; vertical-align: top; }
   .writein td { height: 9mm; }
   .box { border: 1px solid #1f2429; border-radius: 2mm; padding: 5mm; }
-  .tipbox { background: #fdf1f2; border: none; border-left: 3px solid #bc002d; border-radius: 0 2mm 2mm 0; padding: 4mm 5mm; font-size: 9.5px; line-height: 1.6; color: #4d3a3d; }
-  .tipbox b { color: #bc002d; }
+  .tipbox { background: #fbf1ea; border: none; border-left: 3px solid #d5573b; border-radius: 0 2mm 2mm 0; padding: 4mm 5mm; font-size: 9.5px; line-height: 1.6; color: #59463c; }
+  .tipbox b { color: #d5573b; }
   .check { display: inline-block; width: 3.6mm; height: 3.6mm; border: 1.2px solid #1f2429; border-radius: .8mm; margin-right: 2.6mm; vertical-align: -0.7mm; }
   .cl li { list-style: none; font-size: 10px; padding: 2.1mm 0; border-bottom: .4px dotted #cdd4da; }
   .cols2 { display: flex; gap: 8mm; }
   .cols2 > div { flex: 1; }
   .lined { border-bottom: .5px solid #b9c2ca; height: 8.5mm; }
 
-  /* cover — hinomaru: white ground, one red sun */
-  .cover { background: #fff; color: #1f2429; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0; border: 4mm solid #fff; }
-  .cover-frame { flex: 1; align-self: stretch; margin: 10mm; border: .6mm solid #1f2429; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 18mm; }
-  .cover .sun { width: 64mm; height: 64mm; border-radius: 50%; background: #bc002d; margin-bottom: 14mm; }
-  .cover .kicker { color: #bc002d; margin-bottom: 5mm; }
+  /* cover — friendly: cream ground, vermillion sun over a tiny Tokyo skyline */
+  .cover { background: #fdf8f2; color: #1f2429; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 14mm; }
+  .cover-card { flex: 1; align-self: stretch; background: #fff; border: .6mm solid #f0e2d2; border-radius: 8mm; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 16mm; }
+  .cover .art { width: 120mm; margin-bottom: 8mm; }
+  .cover .kicker { color: #d5573b; margin-bottom: 5mm; }
   .cover h1 { color: #1f2429; font-size: 42px; line-height: 1.15; letter-spacing: 2px; }
-  .cover .jp-big { font-size: 13px; color: #bc002d; margin-top: 5mm; letter-spacing: 7px; }
-  .cover .rule-s { width: 24mm; border-top: 1mm solid #bc002d; margin: 10mm auto 0; }
-  .cover .byline { margin-top: 8mm; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #6b7683; line-height: 2; }
+  .cover .jp-big { font-size: 13px; color: #d5573b; margin-top: 5mm; letter-spacing: 7px; }
+  .cover .dots { margin-top: 9mm; font-size: 12px; color: #d5573b; letter-spacing: 10px; }
+  .cover .byline { margin-top: 7mm; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #8a939c; line-height: 2; }
 </style>
 </head>
 <body>
 
 <!-- 1. COVER -->
 <div class="page cover">
-  <div class="cover-frame">
-    <div class="sun"></div>
-    <div class="kicker">The Tokyo-Based Guide Series</div>
-    <h1>JAPAN TRAVEL<br>PLANNER</h1>
-    <div class="jp-big jp">日本旅行プランナー</div>
-    <div class="rule-s"></div>
-    <div class="byline">Itinerary · Budget · Checklists · Local Tokyo Tips<br>Made in Shinjuku, Tokyo — updated for 2026</div>
+  <div class="cover-card">
+    <svg class="art" viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg">
+      <!-- warm sun -->
+      <circle cx="222" cy="62" r="40" fill="#d5573b"/>
+      <circle cx="222" cy="62" r="52" fill="none" stroke="#f3c9ad" stroke-width="2" stroke-dasharray="1 8" stroke-linecap="round"/>
+      <!-- soft clouds -->
+      <rect x="30" y="30" width="52" height="12" rx="6" fill="#f0e2d2"/>
+      <rect x="252" y="104" width="44" height="11" rx="5.5" fill="#f0e2d2"/>
+      <!-- skyline -->
+      <rect x="36" y="88" width="26" height="44" rx="2.5" fill="#2a3038"/>
+      <rect x="68" y="72" width="20" height="60" rx="2.5" fill="#2a3038"/>
+      <rect x="196" y="96" width="24" height="36" rx="2.5" fill="#2a3038"/>
+      <rect x="226" y="84" width="18" height="48" rx="2.5" fill="#2a3038"/>
+      <!-- tokyo tower -->
+      <polygon points="142,34 162,132 122,132" fill="#d5573b"/>
+      <rect x="128" y="96" width="28" height="4.5" rx="2.2" fill="#fff"/>
+      <rect x="133.5" y="66" width="17" height="4" rx="2" fill="#fff"/>
+      <line x1="142" y1="34" x2="142" y2="20" stroke="#d5573b" stroke-width="3" stroke-linecap="round"/>
+      <!-- windows -->
+      <g fill="#f7ec9e">
+        <rect x="42" y="96" width="4.5" height="4.5" rx="1"/><rect x="52" y="96" width="4.5" height="4.5" rx="1"/>
+        <rect x="42" y="108" width="4.5" height="4.5" rx="1"/><rect x="52" y="108" width="4.5" height="4.5" rx="1"/>
+        <rect x="73" y="80" width="4" height="4" rx="1"/><rect x="80" y="80" width="4" height="4" rx="1"/>
+        <rect x="73" y="92" width="4" height="4" rx="1"/><rect x="80" y="92" width="4" height="4" rx="1"/>
+        <rect x="202" y="104" width="4" height="4" rx="1"/><rect x="210" y="104" width="4" height="4" rx="1"/>
+        <rect x="231" y="92" width="4" height="4" rx="1"/><rect x="238" y="92" width="4" height="4" rx="1"/>
+      </g>
+      <!-- ground -->
+      <rect x="16" y="130" width="288" height="4" rx="2" fill="#2a3038"/>
+    </svg>
+    <div class="kicker">Made in Shinjuku, Tokyo</div>
+    <h1>TOKYO TRAVEL<br>PLANNER</h1>
+    <div class="jp-big jp">東京旅行プランナー</div>
+    <div class="dots">● ● ●</div>
+    <div class="byline">Itinerary · Budget · Checklists · Local Tips &amp; Day Trips<br>Walk-tested by a local — updated for 2026</div>
   </div>
 </div>
 
@@ -97,7 +125,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 01</span></div>
+  <div class="footer"><span>Tokyo Travel Planner</span><span class="dot">●</span><span>Page 01</span></div>
 </div>
 
 <!-- 3. PRE-TRIP CHECKLIST -->
@@ -138,7 +166,7 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 02</span></div>
+  <div class="footer"><span>Tokyo Travel Planner</span><span class="dot">●</span><span>Page 02</span></div>
 </div>
 
 <!-- 4. BUDGET -->
@@ -173,7 +201,7 @@
       <div><b>Local tip:</b> Lunch is Tokyo’s best deal — the same restaurant that charges ¥6,000 at dinner often serves a ¥1,200–1,800 lunch set (<span class="jp">定食</span>). Plan your “nice meals” at noon and eat casual at night to cut food costs almost in half.</div>
     </div>
   </div>
-  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 03</span></div>
+  <div class="footer"><span>Tokyo Travel Planner</span><span class="dot">●</span><span>Page 03</span></div>
 </div>
 
 <!-- 5-6. DAILY ITINERARY x2 -->
@@ -206,7 +234,7 @@
       <div class="lined"></div><div class="lined"></div><div class="lined"></div>
     </div>
   </div>
-  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 04 · print one per day</span></div>
+  <div class="footer"><span>Tokyo Travel Planner</span><span class="dot">●</span><span>Page 04 · print one per day</span></div>
 </div>
 
 <!-- 7. TOKYO 3-DAY -->
@@ -235,7 +263,7 @@
     <tr><td class="accent" style="font-weight:bold">PM</td><td>Ginza — depachika food halls in the basements are free to wander and unforgettable → teamLab Planets (buy tickets online, timed entry)</td></tr>
     <tr><td class="accent" style="font-weight:bold">Night</td><td>Tokyo Station’s Ramen Street, then the Marunouchi red-brick station facade lit up — a quiet, perfect last photo</td></tr>
   </table>
-  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 05</span></div>
+  <div class="footer"><span>Tokyo Travel Planner</span><span class="dot">●</span><span>Page 05</span></div>
 </div>
 
 <!-- 8. DAY TRIPS -->
@@ -257,7 +285,7 @@
   <div class="tipbox">
     <b>Local tip:</b> For Hakone and Kawagoe, buy the private-railway “free pass” at Shinjuku’s Odakyu or Seibu counters — they bundle the round trip with unlimited local buses and small discounts, and staff speak English. Check typhoon forecasts in September; mountain ropeways stop in high wind.
   </div>
-  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 06</span></div>
+  <div class="footer"><span>Tokyo Travel Planner</span><span class="dot">●</span><span>Page 06</span></div>
 </div>
 
 <!-- 9. PHRASES -->
@@ -284,7 +312,7 @@
   <div class="tipbox">
     <b>Local tip:</b> “Sumimasen” is the single most useful word in Japan — it opens conversations, calls waiters (say it clearly, waving is fine), and apologizes for bumping someone, all at once. Nobody expects perfect Japanese; the attempt is what’s appreciated.
   </div>
-  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 07</span></div>
+  <div class="footer"><span>Tokyo Travel Planner</span><span class="dot">●</span><span>Page 07</span></div>
 </div>
 
 <!-- 10. FOOD BUCKET LIST -->
@@ -322,7 +350,7 @@
   <div class="tipbox">
     <b>Local tip:</b> Lines in Japan usually mean “worth it,” but for ramen a 15-minute queue at 11:20 becomes 45 minutes by noon — eat lunch early (11:00–11:30) or late (14:00) and you will almost never wait.
   </div>
-  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 08</span></div>
+  <div class="footer"><span>Tokyo Travel Planner</span><span class="dot">●</span><span>Page 08</span></div>
 </div>
 
 <!-- 11. PACKING -->
@@ -359,7 +387,7 @@
       </ul>
     </div>
   </div>
-  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 09</span></div>
+  <div class="footer"><span>Tokyo Travel Planner</span><span class="dot">●</span><span>Page 09</span></div>
 </div>
 
 <!-- 12. NOTES -->
@@ -373,11 +401,11 @@
   <div class="lined"></div><div class="lined"></div><div class="lined"></div><div class="lined"></div>
   <div class="lined"></div><div class="lined"></div><div class="lined"></div><div class="lined"></div>
   <div style="height:8mm"></div>
-  <div class="box" style="border-color:#bc002d;">
+  <div class="box" style="border-color:#d5573b;">
     <div class="kicker" style="margin-bottom:2mm">Arigatou!</div>
     <p class="sub">This planner was made in Shinjuku, Tokyo, and is updated as the city changes. Questions, corrections, or a tip of your own? We’d love to hear how your trip went. <span class="jp">よい旅を！</span> — have a wonderful journey.</p>
   </div>
-  <div class="footer"><span>Japan Travel Planner</span><span class="dot">●</span><span>Page 10 · v0.1 © 2026</span></div>
+  <div class="footer"><span>Tokyo Travel Planner</span><span class="dot">●</span><span>Page 10 · v0.1 © 2026</span></div>
 </div>
 
 </body>

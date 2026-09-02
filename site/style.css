@@ -1,5 +1,5 @@
 :root {
-  --ink: #1f2429; --paper: #fdfdfc; --accent: #bc002d; --gold: #bc002d;
+  --ink: #1f2429; --paper: #fdf8f2; --accent: #d5573b; --gold: #d5573b;
   --muted: #6b7683; --line: #e2ddd4;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -18,9 +18,9 @@ h2 { font-family: Georgia, serif; font-size: 24px; margin: 40px 0 12px; }
 h3 { font-size: 16px; margin: 24px 0 8px; }
 .sub { color: var(--muted); font-size: 16px; }
 .updated { display: inline-block; font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 20px; padding: 3px 12px; margin: 16px 0; }
-.card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 24px; margin: 24px 0; }
+.card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 24px; margin: 24px 0; }
 .card .kicker { margin-bottom: 6px; }
-.btn { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 6px; font-weight: 700; font-size: 14px; margin-top: 12px; }
+.btn { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 999px; font-weight: 700; font-size: 14px; margin-top: 12px; }
 .btn.ghost { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
 .tip { background: #fdf1f2; border-left: 3px solid var(--accent); padding: 14px 18px; border-radius: 0 8px 8px 0; font-size: 14px; margin: 20px 0; }
 .tip b { color: var(--accent); }
@@ -32,5 +32,5 @@ footer.site a { color: var(--muted); }
 .disclosure { font-size: 12px; color: var(--muted); border: 1px dashed var(--line); border-radius: 8px; padding: 10px 14px; margin: 16px 0; }
 article p { margin: 14px 0; }
 article ul, article ol { margin: 14px 0 14px 22px; }
-.newsletter input[type=email] { padding: 11px 14px; border: 1px solid var(--line); border-radius: 6px; width: 60%; font-size: 14px; }
+.newsletter input[type=email] { padding: 11px 14px; border: 1px solid var(--line); border-radius: 999px; width: 60%; font-size: 14px; }
 @media (max-width: 600px) { h1 { font-size: 29px; } .newsletter input[type=email] { width: 100%; margin-bottom: 8px; } }
