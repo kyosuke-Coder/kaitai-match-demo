@@ -51,3 +51,17 @@ Questions about your Japan trip? Message us — we live here. 🗼
 - Digital file: PDF 1点（約380KB）+ 無料版Tokyo Cheat Sheet 1枚を同梱（口コミ装置）。購入者向けに印刷ガイド1枚を追加同梱すると評価が上がる
 - レビュー獲得: 最初の2週間はローンチ価格+Etsy内広告$1/日でレビュー5件を最速で取る
 - ショップ名候補: TokyoFieldNotes / MadeInShinjuku / TokyoLocalPapers（Etsy内で重複確認要）
+
+
+---
+
+# Gumroad版（最速ルート・今夜出せる）
+
+- 商品名: **Tokyo Travel Planner — printable PDF made by a local (2026)**
+- 価格: **$5**（ローンチ価格） / 「Pay what you want」は使わない
+- URL slug: `tokyo-travel-planner`
+- 説明文: Etsy版の英文をそのまま使用（上記）。冒頭に1行追加:
+  `Launch price — planned & updated in Shinjuku, Tokyo.`
+- アップロード: `Tokyo-Travel-Planner-v0.2.pdf` + `Tokyo-Cheat-Sheet-Free.pdf`（おまけ同梱）
+- カバー画像: `marketing/etsy-main.png` / 2枚目: `marketing/etsy-inside.png`
+- 受け取り設定: PayPal or 銀行（Gumroadは日本の銀行に直接振込可）
